@@ -1,0 +1,34 @@
+// Get the root element
+var r = document.querySelector(':root');
+
+// Create a function for getting a variable value
+function myFunction_get() {
+  // Get the styles (properties and values) for the root
+  var rs = getComputedStyle(r);
+  // Alert the value of the --blue variable
+  alert("The value of --blue is: " + rs.getPropertyValue('--blue'));
+}
+
+// Create a function for setting a variable value
+function myFunction_set() {
+  // Set the value of variable --blue to another value (in this case "lightblue")
+  r.style.setProperty('--blue', 'lightblue');
+}
+</script>
+
+
+
+getComputedStyle(document.documentElement)
+    .getPropertyValue('--my-variable-name'); // #999999
+
+
+To set the value of a CSS variable using JavaScript, you use setProperty on documentElement's style property:
+document.documentElement.style
+    .setProperty('--my-variable-name', 'pink');
+
+
+var bodyStyles = window.getComputedStyle(document.body);
+var fooBar = bodyStyles.getPropertyValue('--foo-bar'); //get
+
+document.body.style.setProperty('--foo-bar', newValue);//set
+More Information 
