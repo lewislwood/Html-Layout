@@ -1,4 +1,4 @@
-###Read Me for HTML Layout Designer and Learing tool
+####  Read Me for HTML Layout Designer and Learing tool
 
 Fully accessible with live status updates to your screen reader.
 You can quickly use this website to get a feel for the color schemes and fonts, and responsive layout options for blind developers.
@@ -10,7 +10,7 @@ Works as a training tool, since it contrasts older javascript and html approache
 
 Demonstrates a file structure similar to what is used by many developers on many platforms. 
 Only exception is the "docs" folder which is typically named app or src, this was done to accomadate gitHub pages. GitHub Pages allows simple websites to be hosted. Just as this repositor is hosted. (see link below).
-####Page url 
+#####  Page url 
 
 [HTML Layout Designer](https://lewislwood.github.io/Html-Layout/ )
 
