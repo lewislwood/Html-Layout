@@ -4,8 +4,8 @@ import {navStyles } from './styles/navstyle.js';
 const hl = helpLog;
 const navList = 
 [
-  { "name": "Home", "href": "#home", "img": "", "title": "Non Component Home"},
-  { "name": "cHome", "href": "#chome", "img": "", "title": "Component based Home"},
+  { "name": "Home", "href": "index.html", "img": "", "title": "Non Component Home"},
+  { "name": "Web Components", "href": "webc.html", "img": "", "title": "Component based Home"},
   { "name": "About", "href": "#About", "img": "", "title": "Company About Page"},
   { "name": "Gallery", "href": "#Gallery", "img": "", "title": "Gallery Images"}
 ]
