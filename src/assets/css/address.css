@@ -1,0 +1,25 @@
+
+ul.addressList {
+    list-style-type:none ;
+    }
+    
+    .address {
+    background-color : var( --address_bg, yellow);
+    color: var( --address_fg, black);
+    display: flex;
+    flex-direction: row;   ;
+    justify-content: flex-end;
+    }
+    
+    .address-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    }
+    
+    
+    .address li {
+    display : inline-block;
+    MARGIN: 5PX;
+    }
+    
