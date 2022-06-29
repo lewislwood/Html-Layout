@@ -7,7 +7,7 @@
 
 </head>
 <body>
-    <lw-header></lw-header>    
+    <lw-layout header="TRue" >
 <article>
 <h1>Testing Components</h1>
     <p> this is a test. </p>
@@ -15,7 +15,7 @@
 
     </p>
 </article>
-<lw-footer></lw-footer>
+</lw-layout>
 <div class="devTools" id="lw-devTools" role="navigation" title="Dev Tools"  >
     <div class="leftEdge edge">
         <h5>Left Edge</h5>
@@ -41,13 +41,18 @@
 
 <script type="module" >
     import {helpLog,clearHelpLog,helpLogExists} from "./components/utils.js";
-     import getLayout  from "./components/layout.js";
+     import lwLayout from "./components/layout.js";
     const hl = helpLog; 
-    hl("Initializing Layout");
-    const lwLayout = getLayout;
     hl("Layout Ready to register..") ;
+    try {
 
-lwLayout();
+        lwLayout();
+
+    }
+    catch (e) {
+        hl("error: " + e.message);
+    }
+
 hl("Layout Registered and Ready") ;
 
 // Wire Up Clear Help Log Button
