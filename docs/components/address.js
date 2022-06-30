@@ -1,16 +1,6 @@
-import { helpLog } from "./utils.js";
+import { helpLog as hl} from "./utils.js";
+import companyInfo from "../data/companyInfo.js";
  import { addressStyle }  from './styles/addressStyle.js';
-
-
-const hl = helpLog;
-
-const companyInfo = {
-    name: "Htmel Layout Munsters",
-    street: "1313 Mockingbird Ln.",
-    csz: "OFallon, IL 62269",
-    phone: "(555) 411-1313",
-    email: "nightmare@2late4you.com"
-}
 
 const createLi = (text, link) => {
     const li = document.createElement('li');

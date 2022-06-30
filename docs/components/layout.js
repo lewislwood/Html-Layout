@@ -1,11 +1,11 @@
-import {helpLog} from "./utils.js";
+import {helpLog as hl} from "./utils.js";
 import { layoutStyle } from "./styles/layoutstyle.js";
 import {regFooter} from "./footer.js";
 import {regHeader } from "./header.js";
 
 
 const lwLayout = () => {
-    const hl = helpLog;
+
     hl("defining Layout");
     regHeader();
     regFooter();

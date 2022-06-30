@@ -1,14 +1,7 @@
-import { helpLog } from "./utils.js";
+import { helpLog as hl } from "./utils.js";
 import {navStyles } from './styles/navstyle.js';
+ import navList from "../data/menuData.js";
 
-const hl = helpLog;
-const navList = 
-[
-  { "name": "Home", "href": "index.html", "img": "", "title": "Non Component Home"},
-  { "name": "Web Components", "href": "webc.html", "img": "", "title": "Component based Home"},
-  { "name": "About", "href": "#About", "img": "", "title": "Company About Page"},
-  { "name": "Gallery", "href": "#Gallery", "img": "", "title": "Gallery Images"}
-]
 
 // Creates and appends the list item to the uul element
 function addListItem( ul, {name, href,img,title}) {

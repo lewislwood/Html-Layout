@@ -1,7 +1,5 @@
-import {helpLog} from "./utils.js";
+import {helpLog as hl} from "./utils.js";
  import { bannerStyle, bannerTitle, logoUrl, logoAlt  } from "./styles/bannerStyle.js";
-
-const hl = helpLog;
 
 class lwBanner extends HTMLElement {
     constructor() {

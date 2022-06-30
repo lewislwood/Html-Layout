@@ -1,55 +1,109 @@
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Schema Layout Page Test</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" id="testViewPort">
+    <title>Test file</title>
+    <link rel="stylesheet" href="./styles.css">
+
 </head>
-
 <body>
+    <lw-layout header="TRue" >
+<article>
+<h1>Testing Components</h1>
+    <p> this is a test. </p>
+    <p> I am just a farmer
 
-    <DIV role="main"">
-        <DIV role=" article">
+    </p>
+</article>
+</lw-layout>
+<div class="devTools" id="lw-devTools" role="navigation" title="Dev Tools"  >
+    <div class="leftEdge edge">
+        <h5>Left Edge</h5>
+    </div leftEdge>
+    <div class="helpLog" name="helpLog" >
+        <h5>Help Log</h5>
+        <button id="clearHelpLog" type="button">Clear Help Log</button>
+        <p id="helpLog"   aria-live="polite"> Waiting for you</p>
+    </div helplog>
 
-        <h3 id="aboutus">About Us Section</h3>
-        <P>
-            tHIS IS THE CONTENT FOR THE TEST OF THIS LAYOUT
-            cANYOU RELATE.<BR />
-            wELL THIS IS ANOTHER LINE OF DELIVER.<BR />
-            fINAL LINE OF CONTENT.
-        </P>
-    </DIV ARTICLE>
-    </DIV MAIN>
+    <div id="mouseTools">
+<h5>Mouse Coordinate announce Tool</h5>
+<button type="button" id="mouseLocator" >&Mouse On</button>
 
-    <div class="footer" role="navigation" TITLE="FOOTER">
+<button type="button" id="testView" >ViewPort</button>
 
-        <div class="navBar">
-            <ul class="navlist">
-                <li class="navItem"><a href="webc.html"> Web Component</a>>
-                </li>
-                <li class="navItem"><a href="#faq">FAQ></a></li>
-                <li class="navItem">Career</li>
-                <li class="navItem">Blog</li>
-                <li class="navItem">Contact Us</li>
-            </ul NAVLIST>
+</div mouseTools>    
 
-        </div Navbar>
+<div class="rightEdge edge">
+    <h5>Right Edge</h5>
+</div rightEdge >
+</div devTools>
 
-        <div class="address">
-            <ul class="addressList">
-                <LI>13 Mockingbird Ln,</LI>
-                <LI>OFalllon, IL 62269</li>
-                <li>+1-555-123-4567</li>
+<script type="module" >
+    import {helpLog,clearHelpLog,helpLogExists} from "./components/utils.js";
+     import lwLayout from "./components/layout.js";
+    const hl = helpLog; 
+    hl("Layout Ready to register..") ;
+    try {
 
-                <li>example@huddle.com</li>
-            </ul ADDRESS-LIST>
-    </div address>
-    </div footer>
+        lwLayout();
+
+    }
+    catch (e) {
+        hl("error: " + e.message);
+    }
+
+hl("Layout Registered and Ready") ;
+
+// Wire Up Clear Help Log Button
+let chl= document.querySelector("#clearHelpLog");
+if (chl!== null)  chl.onclick = () =>  clearHelpLog();
+
+// Wire Up Mouse Locator Button.
+let mbtn = document.querySelector("#mouseLocator");
+if (mbtn !== null)  mbtn.onclick = (e) => {
+    const btn = e.target;
+    const onOff = mbtn.getAttribute("value");
+    
+    if (onOff !== "1") {
+    document.addEventListener("click", logMouseLocation);
+clearHelpLog()
+btn.textContent = "Turn Locator Off";
+btn.setAttribute("value", "1");
+hl( "Mouse Location On");
+
+}
+else {
+    document.removeEventListener("click", logMouseLocation);
+    btn.setAttribute("value", "1");
+   btn.textContent = "TurnLocator On";
+   hl("Locator Turned Off");
+}
+}; //toggleMouseLocator
+
+const logMouseLocation= (event) => {
+    hl( "Mouse Client: " + event.clientX.toString() + "(x) " + event.clientY.toString() + " (y)");
+} ; // logMouseLocation
+
+// test ViewPort Devices
+let vbtn = document.querySelector("#testView");
+if (vbtn !== null)  vbtn.onclick = (e) => {
+    const w = document.defaultView;
+try {
+    hl( " width: " + w.screen.availWidth)
+w.resizeTo(800  ,1080 );
+
+}
+catch(e) {
+ hl( e.message);
+
+}
+};
 
 
 
-</body>
 
+</script>
+
+</body>  
 </html>

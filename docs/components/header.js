@@ -1,9 +1,6 @@
-import {helpLog} from "./utils.js";
+import {helpLog as hl} from "./utils.js";
 import { headerStyle} from "./styles/headerrStyle.js";
 import { regBanner } from './banner.js ';
-
-
-const hl = helpLog;
 
 class lwHeader extends HTMLElement {
     constructor() {

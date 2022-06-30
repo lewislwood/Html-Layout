@@ -1,9 +1,7 @@
-import {helpLog} from "./utils.js";
+import {helpLog as hl} from "./utils.js";
 import { footerStyle} from "./styles/footerStyle.js";
 import { regNavBar} from "./navbar.js";
 import { regAddress} from "./address.js";
-
-const hl = helpLog;
 
 // Create a class for the element
 class lwFooter extends HTMLElement {
