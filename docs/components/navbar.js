@@ -1,20 +1,9 @@
 import { helpLog as hl } from "./utils.js";
 import {navStyles } from './styles/navstyle.js';
- import navList from "../data/menuData.js";
+import menuList from "../data/menuData.js";
 
 
-// Creates and appends the list item to the uul element
-function addListItem( ul, {name, href,img,title}) {
-  const li= document.createElement("li");
-  li.setAttribute("class", "navItem");
-  const a = document.createElement("a");
-  a.setAttribute("href", href );
-  a.setAttribute("title", title);
-  a.textContent = name;
 
-  li.appendChild(a);  
-  ul.appendChild(li);  
-}  // end of addListItem
 
 
 // Create a class for the custom  lw-navbar  element
@@ -36,16 +25,28 @@ try {
     ul.setAttribute("class", "navlist");
 navbar.appendChild(ul);
 
-navList.forEach((value) => { addListItem(ul, value)});
+menuList.forEach((value) => { this.addListItem(ul, value)});
 
     shadow.appendChild(navbar);
 } catch(e) {
 hl("NavBar Error: " + e.message);
-}
+} //catch
+  } // constructor
 
+  // Creates and appends the list item to the uul element
+addListItem( ul, {name, href,img,title}) {
+  const li= document.createElement("li");
+  li.setAttribute("class", "navItem");
+  const a = document.createElement("a");
+  a.setAttribute("href", href );
+  a.setAttribute("title", title);
+  a.textContent = name;
 
-  }
-}
+  li.appendChild(a);  
+  ul.appendChild(li);  
+}  // end of addListItem
+
+} //Class
 
 // Define the new element
 export const regNavBar = () => {

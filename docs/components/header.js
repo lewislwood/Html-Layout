@@ -1,7 +1,14 @@
 import {helpLog as hl} from "./utils.js";
 import { headerStyle} from "./styles/headerrStyle.js";
 import { regBanner } from './banner.js ';
+ import lwMenu  from "./menu.js"; 
 
+ const lwHeader = () => {
+hl( "Registering LW-Header");
+regBanner()
+lwMenu();
+
+ customElements.define('lw-header', 
 class lwHeader extends HTMLElement {
     constructor() {
       super();
@@ -12,22 +19,28 @@ const shadow = this.attachShadow({mode: 'open'});
 const style = document.createElement('style');
 style.textContent = headerStyle;   
 shadow.appendChild(style);
+// Header container
 const header= document.createElement("header");
 header.setAttribute('class', 'lw-header');
 header.setAttribute('role', 'navigation');
 header.setAttribute('title', 'header');
+
+// Logo plus Banner container
 const lb= document.createElement("div");
 lb.setAttribute('class', 'header-logo-banner');
+
+// Banner 
 const b = document.createElement("lw-banner");
 lb.appendChild(b);
-const mb = document.createElement("div");
-mb.setAttribute('class', 'headerMenu ');
-header.appendChild(lb);
 
+// Menu
+const mb = document.createElement("lw-menu");
+mb.textContent = "this is menu";
+
+header.appendChild(lb);
 header.appendChild(mb);
 
 
-mb.textContent = "this is menu";
 
 shadow.appendChild( header);
 
@@ -38,16 +51,7 @@ catch(e) {
 
 
     } //constructor
-} //Class lwHeader
+}); //Class lw-header
+ }; // lwHeader}
 
-export const regHeader = () => {
-    hl("Initializing banner...");
-    const ban = regBanner;
-    ban()
-hl("Defining header.");  
-    customElements.define('lw-header', lwHeader);
-  
-    hl("lw-header defined.");
-  } // regheaderheader
-    
-    
+export default lwHeader ;

@@ -1,7 +1,7 @@
 
 
 
-export const menuStyles = `
+const menuStyles = `
 ul.navList {
     list-style-type:none ;
     }
@@ -37,3 +37,5 @@ ul.navList {
         }
   
 `
+
+export default menuStyles ;
