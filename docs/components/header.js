@@ -1,11 +1,11 @@
 import {helpLog as hl} from "./utils.js";
 import { headerStyle} from "./styles/headerrStyle.js";
-import { regBanner } from './banner.js ';
+import  lwBanner from './banner.js ';
  import lwMenu  from "./menu.js"; 
 
  const lwHeader = () => {
 hl( "Registering LW-Header");
-regBanner()
+lwBanner()
 lwMenu();
 
  customElements.define('lw-header', 

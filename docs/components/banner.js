@@ -1,7 +1,8 @@
 import {helpLog as hl} from "./utils.js";
  import { bannerStyle, bannerTitle, logoUrl, logoAlt  } from "./styles/bannerStyle.js";
-
-class lwBanner extends HTMLElement {
+ const lwBanner = () => {
+ customElements.define('lw-banner', 
+class extends HTMLElement {
     constructor() {
       super();
 try {
@@ -47,13 +48,7 @@ catch(e) {
 
 
     } //constructor
-} //Class lwBanner
+}); //Class lw-Banner
+} // lwBanner
 
-export const regBanner= () => {
-hl("Defining banner.");  
-    customElements.define('lw-banner', lwBanner );
-  
-    hl("lw-banner defined.");
-  } // regBanner
-    
-    
+export default lwBanner;
