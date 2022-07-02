@@ -1,5 +1,6 @@
 import {helpLog as hl} from "./utils.js";
- import { aboutStyle, logoUrl   } from "./styles/aboutStyle.js";
+ import { aboutStyle } from "./styles/aboutStyle.js";
+ import{bannerTitle, logoUrl, logoAlt  }  from "../data/companyInfo.js"; 
 
 export const lwAbout = () => {
 hl("registering lw-about..");
@@ -11,18 +12,18 @@ constructor() {
 const shadow = this.attachShadow({mode: "open"});
 
 const aC =document.createElement ("div");
-const aR =document.createElement ("article");
+const art =document.createElement ("article");
 const aL =document.createElement ("div");
 const aI =document.createElement ("div");
 aC.setAttribute("class", "lw-about");
-aR.setAttribute("class", "lw-article");
+art.setAttribute("class", "lw-article");
 aL.setAttribute("class", "logo");
 aI.setAttribute("class", "main");
-aC.appendChild(aR);
-aR.appendChild(aL);
-aR.appendChild(aI);
-aR.setAttribute("role", "main")
-AR.setAttribute("title", "About Company");
+aC.appendChild(art);
+art.appendChild(aL);
+art.appendChild(aI);
+art.setAttribute("role", "main")
+art.setAttribute("title", "About Company");
 
 const img = document.createElement("img");
 img.setAttribute("href", logoUrl);

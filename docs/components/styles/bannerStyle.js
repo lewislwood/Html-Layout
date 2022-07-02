@@ -1,7 +1,4 @@
-// Banner Title & logo images
-export const bannerTitle = "Html Layout Designer";
-export const logoUrl = "./assets/images/blind girl white cane.png";
-export const logoAlt = "Clever Logo Designer...";
+
 
 // CLASSES LOGO-BANNER-flex, LOGO-CONTAINER, BANNER,logoImage, BANNER-CONTAINER 
 export const bannerStyle = `

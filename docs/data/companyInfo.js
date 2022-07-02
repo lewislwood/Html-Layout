@@ -1,4 +1,9 @@
+// Banner Title & logo images
+export const bannerTitle = "Html Layout Designer";
+export const logoUrl = "./assets/images/blind girl white cane.png";
+export const logoAlt = "Clever Logo Designer...";
 
+//Company Information
 const companyInfo = {
     name: "Htmel Layout Munsters",
     street: "1313 Mockingbird Ln.",
@@ -6,5 +11,7 @@ const companyInfo = {
     phone: "(555) 411-1313",
     email: "nightmare@2late4you.com"
 }
+
+
 
 export default companyInfo
