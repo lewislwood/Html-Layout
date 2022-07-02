@@ -1,0 +1,25 @@
+
+:root {
+    --main_bg : #000080;
+    --main_fg: yellow;
+    --header_bg : black;
+    --header_fg: white;
+    --menu_fg:var( --header_fg);
+    --menu_bg: var( --header_bg); 
+     --footer_bg: black; 
+    --footer_fg: white;
+    --navBar_bg: var( --footer_bg, black); 
+    --navBar_fg:var( --footer_fg,  white);    
+    --address_bg: var( --footer_bg, black); 
+    --address_fg:var( --footer_fg,  white);    
+}
+
+
+body {
+    background-color: var( --main_bg, blue);
+    color: var( --main_fg, white);
+    font-size:18PX ;
+    font-weight: 700;
+}
+
+
