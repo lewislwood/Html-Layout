@@ -1,7 +1,8 @@
 // Banner Title & logo images
 export const bannerTitle = "Html Layout Designer";
-export const logoUrl = "./assets/images/blind girl white cane.png";
-export const logoAlt = "Clever Logo Designer...";
+export const companyName = "LWood Development";
+export const logoUrl = "./assets/images/blind_girl_white_cane.png";
+export const logoAlt = "LWood Logo...";
 
 //Company Information
 const companyInfo = {
