@@ -36,3 +36,38 @@ a, a:link, a:visited , a:active, a:hover {
   }
 
 `;
+
+export const addressAboutStyle = `
+ul{
+  list-style-type:none ;
+  display:flex;
+  }
+
+a, a:link, a:visited , a:active, a:hover {
+      border: none;
+      background-color: var(--footer_bg);
+      color: var(--footer_fg);
+}
+
+        .addrItem {
+          margin-left  : 5px;
+          margin-right: 5px;
+          width: 100%;
+      }
+
+      a:hover {
+        font-weight: bold; 
+        font-size: larger;
+      }
+
+      .addressColumn, addressList {
+      background-color: var(--footer_bg);
+      color: var(--footer_fg);
+    display:flex;
+  font-weight: 600;
+  flex-direction:column ; 
+  align-items: left;
+  justify-content: left;
+  }
+
+`;

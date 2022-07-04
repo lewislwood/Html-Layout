@@ -1,10 +1,14 @@
 import {helpLog as hl} from "./utils.js";
 import { footerStyle} from "./styles/footerStyle.js";
-import { regNavBar} from "./navbar.js";
-import { regAddress} from "./address.js";
+import lwNavBar from "./navbar.js";
+import lwAddress from "./address.js";
 
-// Create a class for the element
-class lwFooter extends HTMLElement{
+function lwFooter () {
+  lwNavBar();
+lwAddress()  
+customElements.define('lw-footer', 
+class extends HTMLElement{
+  
     constructor() {
       super();
 try   {
@@ -29,7 +33,7 @@ footer.appendChild(lwNavBar);
 } // if navBar
 // Address
 
-if( fOptions.address === "true") {
+if( fOptions.address !== "false") {
 const lwAddress = document.createElement('lw-address');
 footer.appendChild(lwAddress);
 } // if address
@@ -56,19 +60,7 @@ hl( "Footer creation error: " + e.message);
           return a; 
           } // defaultAttribute
           
-  } // class lwFooter
+  }); // class lw-Footer
+}; // lwFooter
   
-  // Define the new element
-export const regFooter =() => {
-  const nb = regNavBar;
-  nb();
-
-  const a = regAddress;
-  a();
-
-  customElements.define('lw-footer', lwFooter);
-
-  hl("lw-footer defined.");
-}
-  
-  
+export default lwFooter;

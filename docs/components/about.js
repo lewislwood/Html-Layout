@@ -28,14 +28,14 @@ art.appendChild(aI);
 art.setAttribute("role", "main")
 art.setAttribute("title", "About Company");
 
-const img = document.createElement("img");
-img.setAttribute("src", logoUrl);
-img.setAttribute("alt", logoAlt);
-aL.appendChild(img);
+aL.innerHTML = ` 
+<img = src="${logoUrl}" alt="${logoAlt}"/>
+`
 
-const h = document.createElement("h1"); 
-h.textContent = companyName ;
-aI.appendChild(h);
+aI.innerHTML= `
+<h1>${companyName}</h1> 
+<lw-address type="about"  />
+`
 
 shadow.appendChild(aC);
     } //try

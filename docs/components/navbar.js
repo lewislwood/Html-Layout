@@ -2,12 +2,12 @@ import { helpLog as hl } from "./utils.js";
 import {navStyles } from './styles/navstyle.js';
 import menuList from "../data/menuData.js";
 
+function lwNavBar() {
 
 
+customElements.define("lw-navbar", 
 
-
-// Create a class for the custom  lw-navbar  element
-class lwNavBar extends HTMLElement {
+class extends HTMLElement {
   constructor() {
     super();
 try {
@@ -46,10 +46,7 @@ addListItem( ul, {name, href,img,title}) {
   ul.appendChild(li);  
 }  // end of addListItem
 
-} //Class
+}); //Class
+}; // lwNavBar
 
-// Define the new element
-export const regNavBar = () => {
-  customElements.define("lw-navbar", lwNavBar);
-  hl("lw-navbar registered.");
-};
+export default lwNavBar;

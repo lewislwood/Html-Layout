@@ -1,6 +1,6 @@
 import {helpLog as hl} from "./utils.js";
 import { layoutStyle } from "./styles/layoutstyle.js";
-import {regFooter} from "./footer.js";
+import lwFooter from "./footer.js";
 import lwHeader from "./header.js";
 
 
@@ -8,7 +8,7 @@ const lwLayout = () => {
 
     hl("defining Layout");
     lwHeader ();
-    regFooter();
+    lwFooter()
 customElements.define('lw-layout', 
 class extends HTMLElement {
 constructor() {
