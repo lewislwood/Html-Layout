@@ -16,11 +16,9 @@ Only exception is the "docs" folder which is typically named app or src, this wa
 
 
 Tasks to do
-* Menu component
-* Main non - component page (straight html )
 * Main body of home page. Displays color variables and colums
+* Main non - component page (straight html )
 * Images (this one I deplore, but is neccessary).
-*About Page sample
 * image gallery sample.
 
 
