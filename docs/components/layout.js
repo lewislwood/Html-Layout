@@ -33,10 +33,12 @@ layout.setAttribute("class", "lw-layout");
  const lOptions =this.layoutOptions ();
 
  if( lOptions.header === "true") {
+    hl("Layout doing lw-header");
  const h = document.createElement("div");
- h.innerHTML = ` <lw-header 
+ h.innerHTML = ` <lw-header
  logo="${lOptions.logoHeader}"
  menu="${lOptions.menu}"
+ </>>
  `
 layout.appendChild(h);
 }
