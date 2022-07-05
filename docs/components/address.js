@@ -23,16 +23,8 @@ try {
     const address= document.createElement("div");
     address.setAttribute("class",  (lAbout ? "addressColumn" : "addressBar"));
 
-    const ul = document.createElement("ul");
-    ul.setAttribute("class", "addressList");
-address.appendChild(ul);
-
-
 // Define Address List Items
-ul.appendChild(this.createLi(companyInfo .street)); 
-ul.appendChild(this.createLi(companyInfo .csz)); 
-ul.appendChild(this.createLi(companyInfo .phone, "tel:" + companyInfo .phone)); 
-ul.appendChild(this.createLi(companyInfo .email, "mailto:" + companyInfo .email)); 
+    address.innerHTML =  this.buildAddress(lAbout);
 
     shadow.appendChild(address);
 } catch(e) {
@@ -40,19 +32,19 @@ hl("Address Error: " + e.message);
 } // catch
   } // constructor
 
-createLi(text, link) {
-    const li = document.createElement('li');
-    li.setAttribute("class", "addrItem");
+createItem( tag, text, link) {
+var li = `<${tag} class="addressItem">`;
+    
 try {
 if (typeof(link)  !== "undefined") {
-const a = document.createElement("a");
-a.setAttribute("href",link );
-a.textContent =  text;
-li.appendChild(a);
-    } else {
-li.textContent = text;
-    }
 
+    li = li + `
+<a href="${link}">${text}</a>
+</${tag}>
+`
+    } else {
+        li = li + `${text} </${tag}>`  
+    }
 } // try 
 catch(e) {
     hl("AddressItem error: " + e.message);
@@ -67,7 +59,19 @@ defaultAttr( attr, defValue) {
     return a; 
     } // defaultAttribute
     
-
+buildAddress(lAbout){
+    const tag = (lAbout ? "p": "li"); 
+    const pre = (lAbout ? "" : `<ul class="addrList">`);
+    const post = (lAbout ? "" : "</ul>");
+    return `
+    ${pre}
+${this.createItem( tag, companyInfo .street)}
+    ${this.createItem( tag, companyInfo .csz) }
+    ${this.createItem( tag, companyInfo .phone, "tel:" + companyInfo .phone)}
+    ${this.createItem( tag, companyInfo .email, "mailto:" + companyInfo .email) }
+${post}
+`
+}
 }); // class lw-address
 }; // lwAddress
 

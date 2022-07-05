@@ -39,8 +39,11 @@ a, a:link, a:visited , a:active, a:hover {
 
 export const addressAboutStyle = `
 ul{
-  list-style-type:none ;
-  display:flex;
+  display:block;
+  }
+  li {
+    width: 100%;
+    display: inline block;
   }
 
 a, a:link, a:visited , a:active, a:hover {
@@ -50,6 +53,7 @@ a, a:link, a:visited , a:active, a:hover {
 }
 
         .addrItem {
+          display:inline;
           margin-left  : 5px;
           margin-right: 5px;
           width: 100%;
@@ -60,14 +64,13 @@ a, a:link, a:visited , a:active, a:hover {
         font-size: larger;
       }
 
-      .addressColumn, addressList {
+      .addressColumn, {
+        justify-items: unset;
       background-color: var(--footer_bg);
       color: var(--footer_fg);
-    display:flex;
+    display: block;
   font-weight: 600;
-  flex-direction:column ; 
   align-items: left;
-  justify-content: left;
   }
 
 `;
