@@ -20,7 +20,7 @@ const style = document.createElement('style');
 style.textContent = footerStyle;   
 shadow.appendChild(style);
 
-const footer= document.createElement('footer');
+const footer= document.createElement('div');
 footer.setAttribute('class', 'footer');
 footer.setAttribute('role', 'navigation');
 footer.setAttribute('title', 'footer');

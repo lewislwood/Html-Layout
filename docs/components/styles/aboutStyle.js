@@ -3,23 +3,29 @@
 export const aboutStyle = `
 .aboutContainer{
     display: flex;
-flex-direction: row;
-    height: 300px;
     width: 100%;
-    justify-content: center;
+    flex-direction:column ; 
+    align-items: center;
 
 }
 .aboutFlex{
     display : flex;
-    width: 60%;
+    width: 45%;
+    justify-self:center ;
+    flex-direction: row; 
+
 }
 .logo{
+    display: block;
     width:40%;
 }
 img {
+    display: block;
         width: 100%;
 }
 .main {
-    width: 50%;
+    width: 40%;
+    display: block;
 }
+
 `

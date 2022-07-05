@@ -18,6 +18,7 @@ try {
     // Children section
     //  Do before shadow..
 const ch = document.createElement("div"); 
+ch.setAttribute("class", "layoutBody");
 
 if(this.hasChildNodes())   {
 ch.innerHTML = this.innerHTML;
@@ -29,12 +30,14 @@ const style = document.createElement("style");
 style.textContent = layoutStyle ;
 shadow.appendChild(style);
 const layout = document.createElement("div");
-layout.setAttribute("class", "lw-layout");
+layout.setAttribute("class", "layout");
+layout.setAttribute("id", "lw-layout_id");
  const lOptions =this.layoutOptions ();
 
  if( lOptions.header === "true") {
     hl("Layout doing lw-header");
  const h = document.createElement("div");
+ h.setAttribute("class", "layoutHeader");
  h.innerHTML = ` <lw-header
  logo="${lOptions.logoHeader}"
  menu="${lOptions.menu}"
@@ -48,6 +51,7 @@ layout.appendChild(h);
 // Footer section
 if( lOptions.footor === "true") {
     const f = document.createElement("div");
+    f.setAttribute("class", "layoutFooter");
     f.innerHTML = `<lw-footer
      logo="${lOptions.logofooter}"
       navbar="${lOptions.navBar}" 
