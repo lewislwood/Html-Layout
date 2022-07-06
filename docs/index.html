@@ -10,7 +10,7 @@
     <lw-layout header="true" >
 <article>
 <h1>Testing Components</h1>
-    <p> this is a test. </p>
+    <lw-cssvar />
     <p> I am just a farmer
 
     </p>
@@ -40,13 +40,15 @@
 </div devTools>
 
 <script type="module" >
-    import {helpLog,clearHelpLog,helpLogExists} from "./components/utils.js";
+    import {helpLog as hl,clearHelpLog,helpLogExists} from "./components/utils.js";
      import lwLayout from "./components/layout.js";
-    const hl = helpLog; 
+import lwCssVar from "./components/cssVar.js";
+
     hl("Layout Ready to register..") ;
     try {
 
         lwLayout();
+        lwCssVar()
 
     }
     catch (e) {
