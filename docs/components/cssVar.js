@@ -14,22 +14,21 @@ class extends HTMLElement {
     super();
     
     try {
-        const shadow = this.attachShadow({ mode: "open"});
+        const shadow = this.attachShadow({mode: "open", delegatesFocus: false});
         const style = document.createElement("style");
+        style.textContent = cssVarStyle;
         shadow.appendChild(style);
 const bC = document.createElement("div");
 bC.setAttribute("class", "bodyContainer");
+bC.setAttribute("role", "main");
+bC.setAttribute("title", "main");
+bC.innerHTML = `
+<h1 id="mainContent">Css Variables</h1>`;
+const form = document.createElement("form");
 
 
-
-
-bC.innerHTML = `<h1>ccsVars Conainer displayed.</h1>
-<ul>
- ${this.CssVarsList()}
-</ul>
-`;
-
-
+bC.appendChild(form);
+form.appendChild(this.CssVarsList());
 
 shadow.appendChild(bC);
 hl("cssVar Element generated");
@@ -40,21 +39,57 @@ hl( "cssVar Error: " +  e.message);
 
 } // constructor //
 
+connectedCallback() {
+    hl("Connected CssVar");
+
+ try {
+    const 
+    el = this.shadowRoot        .querySelector("#mainContent");
+    el.setAttribute("tabIndex", "0");
+    const sh =this.parentNode.getRootNode({composed: false});
+    
+    const btn = sh.querySelector("#layoutSkipToContent");;
+    btn.onclick = () => {el.focus() .bind(el);}
+ } // try
+ catch(e) {
+hl("cssVars Connected Callback error: " + e.message);
+ } //catch
+
+}; // connected-callback
+    
+      disconnectedCallback() {
+        hl("Disconnected CssVar.");
+      }
+    
+
 CssVarsList() {
 const cVars = getAllCSSVariableNames();
-return cVars.map((n) => (this.HTMLCssVarItem(n)  ) );
+const htm = cVars.map((n) => (this.HTMLCssVarItem(n)  ) );
+const fs = document.createElement("fieldset");
+const lg = document.createElement("legend"); 
+
+lg.textContent = "Css Color Variables";
+fs.appendChild(lg);
+htm.forEach((value) => fs.appendChild(value));
+return fs;
 }; // cssVarsList
 HTMLCssVarItem( key) {
     
 
     try {
         const i = this.getCssVarItem(key);
+const spn= document.createElement("span");
+spn.setAttribute("class","row");
+spn.innerHTML = `
+<label for="default${i.name}" title="${i.desc}" >${i.name}  Color : </label>
+<input name="${i.name}"  type="text" id="default${i.name}" value="${i.Def}"  aria-label="Set color to value of another value or custom color" >${i.def}</input>
+<input type="color" id="color${i.name}" name="color${i.name}" size=12 value="#000080" >#000080</input>${i.value}</input>
+
+`
 
 
 
-    return `
-    <li>${i.name}: ${i.value} Default: ${i.Def}  :: ${ i.desc} </li>
-    `;
+return spn;    
 } // HTMLCssVarItem// try
 catch(e) {
     hl("HTMLItem Error(" + key +") : " + e.message );

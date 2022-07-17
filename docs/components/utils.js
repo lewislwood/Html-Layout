@@ -2,6 +2,49 @@
 
 const hl = document.querySelector("#helpLog");
 
+const getSkipToContent = () => {return document.body.querySelector( "#layoutSkipToContent");};
+
+
+// Set the data attribute to where you want it to skip to
+export const setSkipToContent = (cSelector) => {
+  try {
+    const btn = getSkipToContent ();
+    btn.setAttribute("data-skip-to-content", cSelector);
+
+  } //try
+    catch(e) {
+helpLog( "setSkipToContent Error: " + e.message);
+  } // catch
+} //setSkipToContent 
+
+
+
+// attach click event handler to skipToContent buttonthe
+export const initSkipToContent = () => {
+try {
+  const btn = getSkipToContent ();
+  btn.addEventListener("click", (we) => {
+    try {
+      const cT = document.body.dataset.skipToContent;
+      const el = document.querySelector(cT);
+      el.focus();
+    } //try
+    catch(error) {
+      helpLog("SkipToContent Error: " + error.message)
+
+    } // catch
+})
+
+} //try
+catch(e) {
+helpLog("initSkipToContent  error: " + e.message);
+} //catch
+} //initSkipToContent 
+
+
+
+
+
 const devEmulators= [ 
   {name: "iPhone", width: 768, height: 900},
   {name: "tablet", width: 1080, height: 900},

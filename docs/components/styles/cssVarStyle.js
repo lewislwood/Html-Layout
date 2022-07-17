@@ -1,22 +1,27 @@
 
 
-// CLASSES LOGO-BANNER-flex, LOGO-CONTAINER, BANNER,logoImage, BANNER-CONTAINER 
+// CLASSES container    row
 export const cssVarStyle = `
-.LOGO-BANNER-flex{
+.Container-flex{
   display: flex;
-  flex-direction: row;
-  background-color: var( --header_bg, white);
-  color : var(--header_fg, red);
+  flex-direction: column;
+  background-color: var( --main_bg, white);
+  color : var(--main_fg, red);
   opacity: 1;
-  WIDTH: 100%;
+  WIDTH: %;
   PADDING: 0;
   margin:0; 
   height: 80px;
 }
 
-.BANNER-CONTAINER {
+fieldset {
+  flex-direction: column;
   display: flex;
-  vertical-align: middle;
+}
+.row {
+  display: inline;
+  align: left;
+  flex-direction: column;
 }
 `
 

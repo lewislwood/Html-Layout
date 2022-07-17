@@ -1,4 +1,4 @@
-import {helpLog as hl} from "./utils.js";
+import {helpLog as hl, initSkipToContent } from "./utils.js";
 import { layoutStyle } from "./styles/layoutstyle.js";
 import lwFooter from "./footer.js";
 import lwHeader from "./header.js";
@@ -19,19 +19,26 @@ try {
     //  Do before shadow..
 const ch = document.createElement("div"); 
 ch.setAttribute("class", "layoutBody");
+ch.setAttribute("id", "layout-body-main")
+
 
 if(this.hasChildNodes())   {
-ch.innerHTML = this.innerHTML;
+ch.innerHTML =  this.innerHTML;
 this.innerHTML = ""
 }
 
-    const shadow = this.attachShadow({mode: "open"});
+    const shadow = this.attachShadow({mode: "open", delegatesFocus: true});
 const style = document.createElement("style"); 
 style.textContent = layoutStyle ;
 shadow.appendChild(style);
+shadow.appendChild(this.addSkipTo());
 const layout = document.createElement("div");
 layout.setAttribute("class", "layout");
 layout.setAttribute("id", "lw-layout_id");
+
+
+
+
  const lOptions =this.layoutOptions ();
 
  if( lOptions.header === "true") {
@@ -69,6 +76,39 @@ catch(e) {
     hl("lw-layout Error: " + e.message);
 } // catch
 } // constructor
+
+addSkipTo() {
+    const sD = document.createElement("div");
+    sD.setAttribute('class',"skip-to-container");
+    sD.innerHTML = `
+    <button  id="layoutSkipToContent" 
+    type="link" 
+    class="skipToContent"
+    data-skip-to-content="layout-body-main"
+    >Skip To Content</button>`
+return sD;    
+};
+
+connectedCallback() {
+    try {
+        hl("layoutConnectedCallback... initializing..");
+        const btn = this.shadowRoot.querySelector("#layoutSkipToContent");;
+hl(this.shadowRoot.mode);
+        const el = this.shadowRoot.querySelector("#layout-body-main");
+btn.onclick = (e) => { el.onclick();};
+
+
+    } // try
+    catch(e) {
+        hl("layout connected callback: "+e.message);
+    }
+    
+  } // connected_Callback
+
+  disconnectedCallback() {
+    hl("Disconnected Layout.");
+  }
+
 layoutOptions() {
 return{ 
     header: this.defaultAttr("header", 'true'),
