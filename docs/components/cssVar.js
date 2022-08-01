@@ -1,12 +1,12 @@
 import {helpLog as hl, getCssVar , getAllCSSVariableNames} from "./utils.js";
  import { cssVarStyle } from "./styles/cssVarStyle.js";
- import { cssVarsDataDef, cssVarsDataDesc   } from "../data/cssVarData.js";
+import {cssVars, isColorVar, newColor   } from "../data/cssVarData.js";
 
 function lwCssVar() {
 
     
 
-hl("ginerating  cssVar");
+hl("ginerating  cssVar ");
 
 customElements.define("lw-cssvar", 
 class extends HTMLElement {
@@ -28,6 +28,7 @@ const form = document.createElement("form");
 
 
 bC.appendChild(form);
+
 form.appendChild(this.CssVarsList());
 
 shadow.appendChild(bC);
@@ -38,6 +39,7 @@ hl( "cssVar Error: " +  e.message);
     } // catch
 
 } // constructor //
+
 
 connectedCallback() {
     hl("Connected CssVar");
@@ -50,6 +52,9 @@ connectedCallback() {
     
     const btn = sh.querySelector("#layoutSkipToContent");;
     btn.onclick = () => {el.focus() .bind(el);}
+const bCP = this.shadowRoot            .querySelectorAll("button[name='btnColorPicker']");
+bCP.forEach((el)  => el.onclick = myColorPicker);
+
  } // try
  catch(e) {
 hl("cssVars Connected Callback error: " + e.message);
@@ -57,83 +62,168 @@ hl("cssVars Connected Callback error: " + e.message);
 
 }; // connected-callback
     
+
       disconnectedCallback() {
         hl("Disconnected CssVar.");
       }
     
 
 CssVarsList() {
-const cVars = getAllCSSVariableNames();
-const htm = cVars.map((n) => (this.HTMLCssVarItem(n)  ) );
+    hl("Doing vars list");
+const [ colorVars, otherVars] = myCssValues();
+
+const htm = Object.values(colorVars).map((n) => (this.HTMLCssVarItem(n)  ) );
 const fs = document.createElement("fieldset");
 const lg = document.createElement("legend"); 
 
 lg.textContent = "Css Color Variables";
 fs.appendChild(lg);
-htm.forEach((value) => fs.appendChild(value));
+
+const di = document.createElement("div");
+di.innerHTML = htm;
+fs.appendChild(di);
 return fs;
 }; // cssVarsList
-HTMLCssVarItem( key) {
+
+// Pulls out all the Color css Vars
+getColorVars( aCssVars){
+const  aVars = Object.entries(cssVars);
+
+
+} //getColorVars
+
+
+
+
+HTMLCssVarItem( cI) {
     
 
     try {
-        const i = this.getCssVarItem(key);
-const spn= document.createElement("span");
-spn.setAttribute("class","row");
-spn.innerHTML = `
-<label for="default${i.name}" title="${i.desc}" >${i.name}  Color : </label>
-<input name="${i.name}"  type="text" id="default${i.name}" value="${i.Def}"  aria-label="Set color to value of another value or custom color" >${i.def}</input>
-<input type="color" id="color${i.name}" name="color${i.name}" size=12 value="#000080" >#000080</input>${i.value}</input>
+        hl("Generating item for " + cI.name);
+        const sObj = JSON.stringify(cI);
+const htm  = `
+<div class="cssRow"data-color-values="${sObj}" >
+
+<div class="colorName" >
+<span class="nameSpan">${cI.name}</span>
+</div colorName>
+<div class="inheritValues">${cI.inHerit_fg}<br/>${cI.inHerit_bg}
+${this.getColorSwatch(cI.fg, cI.bg)}
+<button type="button" name="btnColorPicker" >Change</br>Color</button>
+ </div row>
+
+</div cssRow>
 
 `
+hl("Item generated.");
+return htm  ;
 
-
-
-return spn;    
 } // HTMLCssVarItem// try
 catch(e) {
-    hl("HTMLItem Error(" + key +") : " + e.message );
+    hl("HTMLItem Error(" + cI.name +") : " + e.message );
 } // catch
+return "ERROR: " + cI
 } // HTMLCssVarItem
 
-getCssVarItem( key) {
-try {
-
-    return {name: key,
-         value:  getCssVar(key),
-         Def: this.getCssVarDefault(key),
-         desc: this.getCssVarDesc(key)
-        } ;
-}
-catch(e) {
-    hl( key + " = " + e.message);
-}
-} // getCssVarItem
-
-getCssVarDefault( key) {
-try {
-return cssVarsDataDef[key];
-}
-catch(e){
-    return e.message;
-}
-} // getCssVarDefault
-
-getCssVarDesc( key) {
-    try {
-return cssVarsDataDesc  [key];
-    }
-    catch(e){
-        return e.message;
-    }
-    } // getCssVarDesc
-    
-
-
-    
-
+getColorSwatch( fg, bg) {
+    var style = "";
+    var colors;
+if (fg === ""){  colors = "default/<br/>";}
+else { colors = fg + "/<br/>"; style= "color: " + fg + ";"; };
+if (bg === ""){  colors =colors + "default";}
+else { colors = colors + bg; style= style + "background-color: " + bg + ";"; };
+return `
+<div class="colorSwatch"style="${style}">${colors}</div> 
+`
+}; // getColorSwatch
 }); // Class lw-cssvar
 }; // lwCssVar
+//****/
+// Testing
+function myCssValues() {
+    const [cssColors, cssOthers] = parseCssVars();
+    const cssVarsTemplate = Object.entries( cssVars);
+    const colorVars = {};
+// Make a clone of data Template version as starter point
+cssVarsTemplate.forEach( entry => {
+         const [key, value] = entry;
+         colorVars[key] = {...value} ;
+}); //foreach
+
+// Add any missing cssColor Variables not in template
+cssColors.push("testing");
+hl("Colors in css " + cssColors.length);
+cssColors.forEach((e) => {
+    
+
+if ( colorVars[e] === undefined) {
+const vn= newColor(e);
+colorVars[e] = vn;
+} // if new value
+}) // forEach cssColors
+
+// Get current css color values
+Object.values(colorVars).forEach(( v) => {
+const css = "--" + v.name; 
+
+v.fg =getCssVar(css +   "_fg");  
+v.bg =getCssVar(css + "_bg");  
+
+}) // Get Color values);
+
+
+
+//   Object.entries( colorVars).forEach(([key, value])  => console.log(value));
+return[colorVars, cssOthers];
+
+
+
+} // myCssValues
+
+
+function parseCssVars() {
+    const CssVarsList = getAllCSSVariableNames();
+    const [ colorVars, otherVars] = [[],[]];
+
+    // hl( "Parsing cssVars " );
+    CssVarsList .forEach( (value) => {
+if (typeof(value) === "string") {
+    // hl( "Proccessing " + value);
+        if ( isColorVar(value)) {
+            // Strip Color Vars, thus no _fg or _bg, or --
+    const n = stripColorVar( value); 
+    // unique values only
+    if ( ! colorVars.find((v) => (v === n))) { colorVars.push(n); };
+            } // if isColor
+            else { otherVars.push(value); };
+        } // if string
+        else {
+hl("Skipped value: " + value);
+        } //else
+            } ); // forEach
+            hl(" Parse colorVars have " +colorVars.length );
+return [colorVars, otherVars];
+} // parseCssVars
+//
+const stripColorVar = (cVar) => {
+    if ( cVar.startsWith("--")) {cVar = cVar.substr(2); };
+    if ( cVar.endsWith("_fg") || cVar.endsWith("_bg") ) { cVar = cVar.substr(0, cVar.length - 3); };
+    return cVar;
+} // stripColor
+
+
+const myColorPicker = (e) =>  {
+const p = e.target.parentNode;
+const sObj = p.getAttribute("data-color-values");
+const cI = JSON.parse( sObj);
+const sMsg = `name: ${cI.name}, Colors: ${cI.fg}/${cI.bg};  <br/> ${cI.notes}<br/>  Coming Soon be Patient!`
+alert(sMsg);
+} // myColorPicker
+
+
+
+
+
 
 
 

@@ -91,9 +91,7 @@ return sD;
 
 connectedCallback() {
     try {
-        hl("layoutConnectedCallback... initializing..");
         const btn = this.shadowRoot.querySelector("#layoutSkipToContent");;
-hl(this.shadowRoot.mode);
         const el = this.shadowRoot.querySelector("#layout-body-main");
 btn.onclick = (e) => { el.onclick();};
 

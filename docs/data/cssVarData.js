@@ -1,47 +1,31 @@
 import {helpLog as hl} from "../components/utils.js";
 
-export const cssVarsDataDesc  = {
-    "--main_bg":
-      "Main background. This color sets above all and many may inherit from it.",
-    "--main_fg":
-      "Main foreground. This color sets above all and many may inherit from it. Used by fonts and borders.",
-    "--header_bg": "Header background.",
-    "--header_fg": "Header fordeground. Used by fonts and borders.",
-    "--footer_bg": "Footer background color",
-    "--banner_bg": "Banner background color.",
-    "--banner_fg": "Banner foreground color.",
-    "--menu_bg":
-      "Menu in the header background color. Normally set to Header value",
-    "--menu_fg":
-      "Menu in the header foregroundcolor. Normally set to Header value",
-    "--navBar_bg":
-      "Navigational bar in footer region. Normally default footer background color",
-    "--navBar_fg":
-      "Navigational bar in footer region. Normally default footer foregrouund color",
-    "--address_bg":
-      "Address background normally defaulted to footer background",
-    "--address_fg":
-      "Address foreground normally defaulted to footer foreground ",
-    "--about_bg":
-      "About page background for main portion Defaults typically to Main.",
-    "--about_fg":
-      "About page foreground for main portion Usually defaults to Main."
-  };
+  export const cssVars = {
+    "main": { name: "main", inHerit_fg: "", inherit_bg: "", fg: "", bg: "", notes: "Default color used throughout the web"},
+    "header": { name: "header", inHerit_fg: "main", inherit_bg: "main", fg: "", bg: "", notes: "Default colors used by objects in the header area."},
+    "footer": { name: "footer", inHerit_fg: "main", inherit_bg: "main", fg: "", bg: "", notes: "Default colors used by the objects placed in the footer area."},
+    "banner": { name: "banner", inHerit_fg: "header", inherit_bg: "header", fg: "", bg: "", notes: "Colors used in the banner area. Typically inherits header colors."},
+    "menu": { name: "menu", inHerit_fg: "header", inherit_bg: "header", fg: "", bg: "", notes: "Menu bar colors in the header area. Typically inherits from header."},
+"navBar": { name: "navBar", inHerit_fg: "footer", inherit_bg: "footer", fg: "", bg: "", notes: "Navigation Bar is similar to menu, but resiexit  in the footer area. Typically inherits footer colors."},
+    "address": { name: "addres", inHerit_fg: "footer", inherit_bg: "footer", fg: "", bg: "", notes: "Address bar is the company address and resides in the footer. Typically inherits footer colors."},
+    "about": { name: "about", inHerit_fg: "main", inherit_bg: "main", fg: "", bg: "", notes: "About page colors. Typically inherits from main colors."},
+  }
 
 
-export   const cssVarsDataDef  =   {
-    "--header_bg": "--main_bg",
-    "--header_fg": "--main_fg",
-    "--footer_bg": "--main_bg",
-    "--footer_fg": "--main_fg",
-    "--banner_bg": "--header_bg",
-    "--banner_fg": "--header_fg",
-    "--menu_bg":"--header_bg",
-    "--menu_fg": "--header_fg",
-    "--navBar_bg":"--footer_bg",
-    "--navBar_fg":"--footer_fg",
-    "--address_bg":"--footer_bg",
-    "--address_fg":"--footer_fg",
-    "--about_bg":"--main_bg",
-    "--about_fg":"--main_fg"
-  };
+
+  export const newColor = (color) => {
+    const nc = { 
+      name: color, 
+      inHerit_fg: "", inherit_bg: "", 
+      fg: "", bg: "" , 
+      notes: color + " added"
+    };
+    return nc; };;
+
+
+  
+    export const isColorVar = (cVar) => {
+return ((typeof(cVar) === "string") ? (cVar.endsWith("_bg") || cVar.endsWith("_fg")): false); 
+    }; 
+
+    
