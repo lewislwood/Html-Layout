@@ -22,14 +22,12 @@ const bC = document.createElement("div");
 bC.setAttribute("class", "bodyContainer");
 bC.setAttribute("role", "main");
 bC.setAttribute("title", "main");
-bC.innerHTML = `
-<h1 id="mainContent">Css Variables</h1>`;
-const form = document.createElement("form");
+const h = document.createElement("h1") ;
+h.setAttribute("id", "mainContent");
+bC.appendChild(h);
+// bC.innerHTML = `<h1 id="mainContent">Css Variables</h1>`;
 
-
-bC.appendChild(form);
-
-form.appendChild(this.CssVarsList());
+bC.appendChild(this.CssVarsList());
 
 shadow.appendChild(bC);
 hl("cssVar Element generated");
@@ -42,7 +40,7 @@ hl( "cssVar Error: " +  e.message);
 
 
 connectedCallback() {
-    hl("Connected CssVar");
+    // hl("Connected CssVar");
 
  try {
     const 
@@ -69,20 +67,24 @@ hl("cssVars Connected Callback error: " + e.message);
     
 
 CssVarsList() {
-    hl("Doing vars list");
+    // hl("Doing vars list");
 const [ colorVars, otherVars] = myCssValues();
 
 const htm = Object.values(colorVars).map((n) => (this.HTMLCssVarItem(n)  ) );
-const fs = document.createElement("fieldset");
-const lg = document.createElement("legend"); 
-
-lg.textContent = "Css Color Variables";
-fs.appendChild(lg);
-
-const di = document.createElement("div");
-di.innerHTML = htm;
-fs.appendChild(di);
-return fs;
+const cssGr = document.createElement("div");
+cssGr .innerHTML = `
+<h2>Color Variables</h2>
+<table id="colorsValuesContainter"  class="cssContainer" >
+<tr>
+<th scope="col">Color</th>
+<th scope="col">Inherit fg/bg</th>
+<th scope="col">Values fg/bg</th>
+<th scope="col">Picker</th>
+</tr>
+ ${htm}
+ </table>
+ `
+return cssGr;
 }; // cssVarsList
 
 // Pulls out all the Color css Vars
@@ -100,20 +102,13 @@ HTMLCssVarItem( cI) {
 
     try {
         const sObj = JSON.stringify(cI);
-        // data-color-values="${sObj}" 
 const htm  = `
-<div id="${cI.name}-color"   class="rowContainer" data-color="found me."  >
-
-<div class="colorName" >
-<span class="nameSpan">${cI.name}</span>
-</div colorName>
-<div class="inheritValues">${cI.inHerit_fg}<br/>${cI.inHerit_bg}
+<trid="${cI.name}-color"   class="rowContainer" data-color-values='${sObj}'  >
+<td class="nameSpan">${cI.name}</td>
+<td class="inheritValues">${cI.inHerit_fg}<br/>${cI.inHerit_bg}
 ${this.getColorSwatch(cI.fg, cI.bg)}
-<button type="button" name="btnColorPicker" data-color="${cI.name}" >Change</br>Color</button>
- </div row>
-
-</div cssRow>
-
+<td><button class="btnColorPicker"  type="button" name="btnColorPicker" data-color="${cI.name}" >Change</br>Color</button></td>
+</tr>
 `
 return htm  ;
 
@@ -132,7 +127,7 @@ else { colors = fg + "/<br/>"; style= "color: " + fg + ";"; };
 if (bg === ""){  colors =colors + "default";}
 else { colors = colors + bg; style= style + "background-color: " + bg + ";"; };
 return `
-<div class="colorSwatch"style="${style}">${colors}</div> 
+<td class="colorSwatch"style="${style}">${colors}</td> 
 `
 }; // getColorSwatch
 }); // Class lw-cssvar
@@ -151,7 +146,7 @@ cssVarsTemplate.forEach( entry => {
 
 // Add any missing cssColor Variables not in template
 cssColors.push("testing");
-hl("Colors in css " + cssColors.length);
+// hl("Colors in css " + cssColors.length);
 cssColors.forEach((e) => {
     
 
@@ -200,7 +195,7 @@ if (typeof(value) === "string") {
 hl("Skipped value: " + value);
         } //else
             } ); // forEach
-            hl(" Parse colorVars have " +colorVars.length );
+            // hl(" Parse colorVars have " +colorVars.length );
 return [colorVars, otherVars];
 } // parseCssVars
 //
@@ -214,13 +209,16 @@ const stripColorVar = (cVar) => {
 const myColorPicker = (e) =>  {
  try {
     const sh = e.target.parentNode.getRootNode({composed: false}); 
-const el = e.target.getAttribute("data-color");
-const di= sh.querySelector("#main-color");
- hl(di.id + " : " + di.dataset.color);
+const c  = e.target.getAttribute("data-color");
+const di= sh.querySelector("#" + c+ "-color");
+const sObj = di.dataset.colorValues;
+// hl(di.id + " : [" + sObj + "]");
+
+const cI = JSON.parse(sObj);
 
  
-// const sMsg = `name: ${cI.name}, Colors: ${cI.fg}/${cI.bg};  <br/> ${cI.notes}<br/>  Coming Soon be Patient!`
-// alert(sMsg);
+const sMsg = `name: ${cI.name}, Colors: ${cI.fg}/${cI.bg};  <br/> ${cI.notes}<br/>  Coming Soon be Patient!`
+alert(sMsg);
  } // try
  catch(err) {
     hl("ColorPicker Error: " + err.message);
