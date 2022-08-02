@@ -103,11 +103,11 @@ HTMLCssVarItem( cI) {
     try {
         const sObj = JSON.stringify(cI);
 const htm  = `
-<trid="${cI.name}-color"   class="rowContainer" data-color-values='${sObj}'  >
+<tr id="${cI.name}-color"   class="rowContainer" data-color-values='${sObj}'  >
 <td class="nameSpan">${cI.name}</td>
 <td class="inheritValues">${cI.inHerit_fg}<br/>${cI.inHerit_bg}
 ${this.getColorSwatch(cI.fg, cI.bg)}
-<td><button class="btnColorPicker"  type="button" name="btnColorPicker" data-color="${cI.name}" >Change</br>Color</button></td>
+<td class="btnColorPicker"><button  type="button" name='btnColorPicker'  data-color="${cI.name}" >Change</br>Color</button></td>
 </tr>
 `
 return htm  ;
@@ -209,7 +209,8 @@ const stripColorVar = (cVar) => {
 const myColorPicker = (e) =>  {
  try {
     const sh = e.target.parentNode.getRootNode({composed: false}); 
-const c  = e.target.getAttribute("data-color");
+const c = e.target.getAttribute("data-color");
+hl("data color is " + c);
 const di= sh.querySelector("#" + c+ "-color");
 const sObj = di.dataset.colorValues;
 // hl(di.id + " : [" + sObj + "]");
