@@ -2,7 +2,7 @@
 
 // CLASSES container    row
 export const cssVarStyle = `
-.Container-flex{
+.rowContainer-flex{
   display: flex;
   flex-direction: column;
   background-color: var( --main_bg, white);

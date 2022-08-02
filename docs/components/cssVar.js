@@ -99,23 +99,22 @@ HTMLCssVarItem( cI) {
     
 
     try {
-        hl("Generating item for " + cI.name);
         const sObj = JSON.stringify(cI);
+        // data-color-values="${sObj}" 
 const htm  = `
-<div class="cssRow"data-color-values="${sObj}" >
+<div id="${cI.name}-color"   class="rowContainer" data-color="found me."  >
 
 <div class="colorName" >
 <span class="nameSpan">${cI.name}</span>
 </div colorName>
 <div class="inheritValues">${cI.inHerit_fg}<br/>${cI.inHerit_bg}
 ${this.getColorSwatch(cI.fg, cI.bg)}
-<button type="button" name="btnColorPicker" >Change</br>Color</button>
+<button type="button" name="btnColorPicker" data-color="${cI.name}" >Change</br>Color</button>
  </div row>
 
 </div cssRow>
 
 `
-hl("Item generated.");
 return htm  ;
 
 } // HTMLCssVarItem// try
@@ -213,19 +212,19 @@ const stripColorVar = (cVar) => {
 
 
 const myColorPicker = (e) =>  {
-const p = e.target.parentNode;
-const sObj = p.getAttribute("data-color-values");
-const cI = JSON.parse( sObj);
-const sMsg = `name: ${cI.name}, Colors: ${cI.fg}/${cI.bg};  <br/> ${cI.notes}<br/>  Coming Soon be Patient!`
-alert(sMsg);
+ try {
+    const sh = e.target.parentNode.getRootNode({composed: false}); 
+const el = e.target.getAttribute("data-color");
+const di= sh.querySelector("#main-color");
+ hl(di.id + " : " + di.dataset.color);
+
+ 
+// const sMsg = `name: ${cI.name}, Colors: ${cI.fg}/${cI.bg};  <br/> ${cI.notes}<br/>  Coming Soon be Patient!`
+// alert(sMsg);
+ } // try
+ catch(err) {
+    hl("ColorPicker Error: " + err.message);
+ } // catch
 } // myColorPicker
-
-
-
-
-
-
-
-
 export default lwCssVar;
  
