@@ -2,6 +2,8 @@ import {helpLog as hl, getCssVar , getAllCSSVariableNames} from "./utils.js";
  import { cssVarStyle } from "./styles/cssVarStyle.js";
 import {cssVars, isColorVar, newColor   } from "../data/cssVarData.js";
 
+
+
 function lwCssVar() {
 
     
@@ -22,12 +24,12 @@ const bC = document.createElement("div");
 bC.setAttribute("class", "bodyContainer");
 bC.setAttribute("role", "main");
 bC.setAttribute("title", "main");
-const h = document.createElement("h1") ;
-h.setAttribute("id", "mainContent");
-bC.appendChild(h);
-// bC.innerHTML = `<h1 id="mainContent">Css Variables</h1>`;
-
-bC.appendChild(this.CssVarsList());
+// Content Panel
+bC.appendChild( this.MainContent());
+// Left Panel
+bC.appendChild(this.sidePanel("left"));
+// Right Panel
+bC.appendChild(this.sidePanel("right"));
 
 shadow.appendChild(bC);
 hl("cssVar Element generated");
@@ -64,7 +66,66 @@ hl("cssVars Connected Callback error: " + e.message);
       disconnectedCallback() {
         hl("Disconnected CssVar.");
       }
-    
+
+MainContent() {
+const mC = document.createElement("div");
+mC.setAttribute("class", "contentPanel");
+const h = document.createElement("h1") ;
+h.setAttribute("id", "mainContent");
+h.textContent = "Css Variables Settings";
+mC.appendChild(h);
+const p = document.createElement("p");
+p.textContent = "Here the developer or the client can choose color scheme, fonts, and columns.  A button later on will allow you to save to local storage, coly the css variable settings.  These settings can easily be imported in any app that uses css files. ";
+mC.appendChild(p);
+const p2 = document.createElement("p");
+p2.textContent = "Also srves as a great reference and training tool.  Shows how files are arranged. Pragramming practices that aid a visually impaired individual person to write code. Blind coders do not see many lines at once, they are line oriented and must develop techniques that help them know where they are.  Also component based programming is smaller reusable type of programming, which is easier to navigate for visually impaired persons programmers.";
+mC.appendChild(p2);
+
+try {
+    mC.appendChild(this.CssVarsList());
+} // try
+catch(e) {
+hl("mainContent Error: " + e.message);
+} // Catch
+
+
+
+return mC;
+}       // mainContent
+
+sidePanel( side) {
+    const sp = document.createElement("div");
+    const id = side + "Panel";
+sp.setAttribute("class", id + " sidePanel");
+sp.setAttribute("id", id);
+try {
+    sp.appendChild(this.getStatus(side));
+
+const ul = document.createElement("ul");
+// Just some junk..
+const left = ["JavaScript Rules", "Feel the joy of solving", "Braille tools", "Doctor Who is great", "Star Trek dares to dream"];
+const right= ["Looks Perfect", "Time to pay off", "Need advertisers", "Selling Blood", "Surviving on Fester is hungry! Any light Bulbs around?"];
+const list = (side === 'left' ? left : right);
+ul.innerHTML = list.map((l) => { return ` <li>${l}</li> `;});
+sp.appendChild(ul);
+} // try
+catch(e) {
+hl(id + " error: " + e.message)
+} // catch
+
+return sp;
+} // side panel
+
+getStatus(panel) {
+    sp = document()
+const id = "status" + panel;[0].toUpperCase() +panel.substring(1);
+const sp = document.createElement("p");
+sp.setAttribute("id", id);
+sp.setAttribute("aria-live", "polite");
+sp.setAttribute("class",id + " statusPanel" );
+sp.textContent = "This is help text and descriptive text for items this.ariaSelected. JavaScript will hide 2 statuses and only 1 of them will be visible.  1 column Mode only Content panel will be visible, 2 column mode, only the Left or either status will be visible.  Depends on your selection. Screen readers will automatically read changes in this text as it is updated.";
+return sp;
+}
 
 CssVarsList() {
     // hl("Doing vars list");

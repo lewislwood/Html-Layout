@@ -16,7 +16,8 @@ Only exception is the "docs" folder which is typically named app or src, this wa
 
 
 Tasks to do
-* Main body of home page. Displays color variables and colums
+#  Panels, 3, 2, 1 Left or Right or just Content
+*  Table of Color Variables Needs color picker button modal dialogue
 * Main non - component page (straight html )
 * Images (this one I deplore, but is neccessary).
 * image gallery sample.
