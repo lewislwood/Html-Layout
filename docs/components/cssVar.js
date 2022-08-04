@@ -231,7 +231,7 @@ v.bg =getCssVar(css + "_bg");
 
 
 
-   Object.values( colorVars).forEach((value)  => hl(JSON.stringify(value)));
+//    Object.values( colorVars).forEach((value)  => hl(JSON.stringify(value)));
 return[colorVars, cssOthers];
 
 
