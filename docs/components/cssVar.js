@@ -23,11 +23,12 @@ class extends HTMLElement {
 const bC = document.createElement("div");
 bC.setAttribute("class", "bodyContainer");
 
+// Left Panel
+bC.appendChild(this.sidePanel("left"));
 
 // Content Panel
 bC.appendChild( this.MainContent());
-// Left Panel
-bC.appendChild(this.sidePanel("left"));
+
 // Right Panel
 bC.appendChild(this.sidePanel("right"));
 
