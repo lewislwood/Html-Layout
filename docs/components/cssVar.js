@@ -22,8 +22,8 @@ class extends HTMLElement {
         shadow.appendChild(style);
 const bC = document.createElement("div");
 bC.setAttribute("class", "bodyContainer");
-bC.setAttribute("role", "main");
-bC.setAttribute("title", "main");
+
+
 // Content Panel
 bC.appendChild( this.MainContent());
 // Left Panel
@@ -70,6 +70,8 @@ hl("cssVars Connected Callback error: " + e.message);
 MainContent() {
 const mC = document.createElement("div");
 mC.setAttribute("class", "contentPanel");
+mC.setAttribute("role", "main");
+mC.setAttribute("title", "main");
 const h = document.createElement("h1") ;
 h.setAttribute("id", "mainContent");
 h.textContent = "Css Variables Settings";
@@ -98,6 +100,8 @@ sidePanel( side) {
     const id = side + "Panel";
 sp.setAttribute("class", id + " sidePanel");
 sp.setAttribute("id", id);
+sp.setAttribute("role", "navigation");
+sp.setAttribute("title", side + " panel");
 try {
     sp.appendChild(this.getStatus(side));
 
@@ -117,8 +121,8 @@ return sp;
 } // side panel
 
 getStatus(panel) {
-    sp = document()
-const id = "status" + panel;[0].toUpperCase() +panel.substring(1);
+
+const id = "status" + panel[0].toUpperCase( )[0] +panel.substring(1);
 const sp = document.createElement("p");
 sp.setAttribute("id", id);
 sp.setAttribute("aria-live", "polite");
