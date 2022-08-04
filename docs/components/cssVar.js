@@ -144,8 +144,8 @@ cssGr .innerHTML = `
 <table id="colorsValuesContainter"  class="cssContainer" >
 <tr>
 <th scope="col">Color</th>
-<th scope="col">Inherit fg/bg</th>
-<th scope="col">Values fg/bg</th>
+<th scope="col">Inherit Bg/Fg</th>
+<th scope="col">Values Bg/Fg</th>
 <th scope="col">Picker</th>
 </tr>
  ${htm}
@@ -172,8 +172,8 @@ HTMLCssVarItem( cI) {
 const htm  = `
 <tr id="${cI.name}-color"   class="rowContainer" data-color-values='${sObj}'  >
 <td class="nameSpan">${cI.name}</td>
-<td class="inheritValues">${cI.inHerit_fg}<br/>${cI.inHerit_bg}
-${this.getColorSwatch(cI.fg, cI.bg)}
+<td class="inheritValues">${cI.inHerit_bg}<br/>${cI.inHerit_fg}
+${this.getColorSwatch(cI.name, cI.fg, cI.bg)}
 <td class="btnColorPicker"><button  type="button" name='btnColorPicker'  data-color="${cI.name}" >Change</br>Color</button></td>
 </tr>
 `
@@ -186,15 +186,12 @@ catch(e) {
 return "ERROR: " + cI
 } // HTMLCssVarItem
 
-getColorSwatch( fg, bg) {
-    var style = "";
-    var colors;
-if (fg === ""){  colors = "default/<br/>";}
-else { colors = fg + "/<br/>"; style= "color: " + fg + ";"; };
-if (bg === ""){  colors =colors + "default";}
-else { colors = colors + bg; style= style + "background-color: " + bg + ";"; };
+getColorSwatch(name,  fg, bg) {
+    name = "--" + name;
+    const  style = "background-color :  VAR("+ name + "_bg); color : VAR("+ name + "_fg);";
+// if (fg === "")fg = ""default"{ }
 return `
-<td class="colorSwatch"style="${style}">${colors}</td> 
+<td class="colorSwatch"style="${style}">${bg}/<br/>${fg}</td> 
 `
 }; // getColorSwatch
 }); // Class lw-cssvar
@@ -234,7 +231,7 @@ v.bg =getCssVar(css + "_bg");
 
 
 
-//   Object.entries( colorVars).forEach(([key, value])  => console.log(value));
+   Object.values( colorVars).forEach((value)  => hl(JSON.stringify(value)));
 return[colorVars, cssOthers];
 
 
