@@ -70,7 +70,7 @@ hl("cssVars Connected Callback error: " + e.message);
 
 MainContent() {
 const mC = document.createElement("div");
-mC.setAttribute("class", "contentPanel");
+mC.setAttribute("class", "contentPanel panel");
 mC.setAttribute("role", "main");
 mC.setAttribute("title", "main");
 const h = document.createElement("h1") ;
@@ -86,6 +86,7 @@ mC.appendChild(p2);
 
 try {
     mC.appendChild(this.CssVarsList());
+    mC.appendChild(this.getStatus("content"));
 } // try
 catch(e) {
 hl("mainContent Error: " + e.message);
@@ -99,7 +100,7 @@ return mC;
 sidePanel( side) {
     const sp = document.createElement("div");
     const id = side + "Panel";
-sp.setAttribute("class", id + " sidePanel");
+sp.setAttribute("class", id + " sidePanel panel");
 sp.setAttribute("id", id);
 sp.setAttribute("role", "navigation");
 sp.setAttribute("title", side + " panel");

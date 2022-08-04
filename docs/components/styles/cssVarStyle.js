@@ -3,16 +3,49 @@
 // CLASSES container    row
 export const cssVarStyle = ` 
 .bodyContainer {
-  display: block;
+  display: flex;
+  flex-direction: row;
   width: 100%;
   background-color: var( --main_bg, white);
   color : var(--main_fg, red);
 }
 
+
+.panel {
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 8px;
+}
+.contentPanel {
+  width: 48%;
+  
+}
+.sidePanel{
+  width: 24%;
+  background-color: var( --header_bg, white);
+  color : var(--header_fg, black);
+  
+}
+.rightPanel {
+  font-size: 2rem;
+}
+.rightPanelli  {
+  font-weight: 800;     
+}
+.statusPanel {
+  background-color: blue;
+  color: sunshine;
+  font-weight: 200;
+  font-size: 0.75rem;
+}
+
 .cssContainer {
   display: block;
-  width : 60%;
 }
+
+
 table {
   border-spacing: 5px;
   border-width: -= 4px;
