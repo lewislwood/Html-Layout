@@ -20,16 +20,22 @@ export const cssVarStyle = `
 }
 .contentPanel {
   width: 48%;
-  
+  background-color : var( --panel-content_bg, --header_bg );
+  color : var( --panel-content_fg, --header_fg );
 }
 .sidePanel{
   width: 24%;
-  background-color: var( --header_bg, white);
-  color : var(--header_fg, black);
   
+  
+}
+.leftPanel {
+  background-color: var( --panel-left_bg, white);
+  color : var(--panel-left_fg, black);
 }
 .rightPanel {
   font-size: 2rem;
+  background-color: var( --panel-right_bg, white);
+  color : var(--panel-right_fg, black);
 }
 .rightPanelli  {
   font-weight: 800;     
@@ -76,20 +82,15 @@ td {
   width: 25%;
 }
 
-
-
-fieldset {
-  flex-direction: column;
+.radioColumns {
   display: flex;
-}
-.row {
-  display: inline;
-  align: left;
   flex-direction: column;
+  align: right;
+
 }
+
 `
 
-// /*   panels */
 // --panel-side_bg: #000080;
 // --panel-side_fg: sunshine;
 // --panel-content_fg : yellow;

@@ -19,7 +19,7 @@
     --panel-side_bg: #000080;
     --panel-side_fg: sunshine;
     --panel-content_fg : yellow;
-    --panel-content_bg : brown;
+    --panel-content_bg : #051Ac9 ;
     --panel-left_bg : var(--panel-side_bg);
     --panel-left_fg : var(--panel-side_fg);
     --panel-right_bg : var(--panel-side_bg);

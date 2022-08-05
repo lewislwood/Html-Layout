@@ -6,6 +6,8 @@ export const layoutStyle = `
     background-color: var( --main_bg, yellow);
     display: block;
     width: 100%;
+    padding-left: 15px;
+    padding-right : 0px;
 }
 .skip-to-content-link {
     background: --main_bg;

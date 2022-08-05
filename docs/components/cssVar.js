@@ -139,9 +139,12 @@ const [ colorVars, otherVars] = myCssValues();
 
 const htm = Object.values(colorVars).map((n) => (this.HTMLCssVarItem(n)  ) );
 const cssGr = document.createElement("div");
-cssGr .innerHTML = `
+cssGr.setAttribute("class", "cssContainer");
+
+const t = document.createElement("table");
+t.innerHTML = `
 <h2>Color Variables</h2>
-<table id="colorsValuesContainter"  class="cssContainer" >
+<table id=  class="cssContainer" >
 <tr>
 <th scope="col">Color</th>
 <th scope="col">Inherit Bg/Fg</th>
@@ -151,6 +154,7 @@ cssGr .innerHTML = `
  ${htm}
  </table>
  `
+ cssGr.appendChild(this.getColumnRadio());
 return cssGr;
 }; // cssVarsList
 
@@ -194,6 +198,38 @@ return `
 <td class="colorSwatch"style="${style}">${bg}/<br/>${fg}</td> 
 `
 }; // getColorSwatch
+
+getColumnRadio() {
+const fs = document.createElement("fieldset");
+fs.setAttribute("class", "radioColumns");
+fs.setAttribute("id", "radioColumns");
+const lg = document.createElement("legend");
+lg.textContent = "How many columns?";
+fs.appendChild(lg);
+
+//Columns
+const makeColumn =   (value, label, desc, isChecked) => { 
+    const [c, l] = [document.createElement("label"), document.createElement("input")];
+c.setAttribute("type", "radio");
+c.setAttribute("name", "selectColumns");
+this.setAttribute("data-desc", desc);
+c.setAttribute("id",  value + "RadioColumn",  );
+c.setAttribute("value",value );
+c.setAttribute("checked", isChecked)
+l.setAttribute("for", + "RadioColumn");
+l.textContent = label; 
+const s = document.createElement("span");s.setAttribute("class", "columnSpan");
+s.append( l, c);
+return s;
+    }; //makeColumn
+fs.appendChild(makeColumn("all", "All columns (L, C, R)", "Displays all three columns. Left panel, main content, and right panel.", "true"))
+fs.append( makeColumn("cr", "2 Columns ( C , R)", "Display two columns. The Main content and right panel are visible.", "false"))
+fs.append( makeColumn("lc", "2 Columns (L, C )", "Display two columns. The left and Main content panels are visible.", "false"));
+fs.append( makeColumn("c", "One Column Only", "Displays the main content panel only..", "false"))
+return fs;
+} // getColumnRadio
+
+
 }); // Class lw-cssvar
 }; // lwCssVar
 //****/
