@@ -141,8 +141,8 @@ const htm = Object.values(colorVars).map((n) => (this.HTMLCssVarItem(n)  ) );
 const cssGr = document.createElement("div");
 cssGr.setAttribute("class", "cssContainer");
 
-const t = document.createElement("table");
-t.innerHTML = `
+const color  = document.createElement("div");
+color.innerHTML = `
 <h2>Color Variables</h2>
 <table id=  class="cssContainer" >
 <tr>
@@ -154,6 +154,8 @@ t.innerHTML = `
  ${htm}
  </table>
  `
+
+ cssGr.appendChild( color);
  cssGr.appendChild(this.getColumnRadio());
 return cssGr;
 }; // cssVarsList
@@ -209,7 +211,8 @@ fs.appendChild(lg);
 
 //Columns
 const makeColumn =   (value, label, desc, isChecked) => { 
-    const [c, l] = [document.createElement("label"), document.createElement("input")];
+    const l = document.createElement("label");
+const c =     document.createElement("input");
 c.setAttribute("type", "radio");
 c.setAttribute("name", "selectColumns");
 this.setAttribute("data-desc", desc);
@@ -218,14 +221,22 @@ c.setAttribute("value",value );
 c.setAttribute("checked", isChecked)
 l.setAttribute("for", + "RadioColumn");
 l.textContent = label; 
-const s = document.createElement("span");s.setAttribute("class", "columnSpan");
-s.append( l, c);
+const s = document.createElement("span");
+s.setAttribute("class", "columnSpan");
+s.appendChild(c);
+s.appendChild(l);
+
 return s;
     }; //makeColumn
+    try {
 fs.appendChild(makeColumn("all", "All columns (L, C, R)", "Displays all three columns. Left panel, main content, and right panel.", "true"))
 fs.append( makeColumn("cr", "2 Columns ( C , R)", "Display two columns. The Main content and right panel are visible.", "false"))
 fs.append( makeColumn("lc", "2 Columns (L, C )", "Display two columns. The left and Main content panels are visible.", "false"));
 fs.append( makeColumn("c", "One Column Only", "Displays the main content panel only..", "false"))
+    } // Try
+    catch (e) {
+        hl( "getColumn Error: " + e.message);
+    } // catch
 return fs;
 } // getColumnRadio
 
@@ -245,7 +256,7 @@ cssVarsTemplate.forEach( entry => {
 }); //foreach
 
 // Add any missing cssColor Variables not in template
-cssColors.push("testing");
+// cssColors.push("testing");
 // hl("Colors in css " + cssColors.length);
 cssColors.forEach((e) => {
     
