@@ -1,8 +1,10 @@
-import {helpLog as hl, getCssVar , getAllCSSVariableNames} from "./utils.js";
+import {helpLog as hl, getCssVar, setCssVar , getAllCSSVariableNames} from "./utils.js";
  import { cssVarStyle } from "./styles/cssVarStyle.js";
 import {cssVars, isColorVar, newColor   } from "../data/cssVarData.js";
 
 
+// Object holds reference to Left, content, Right Panels
+const panelList = { "left": null, "content": null, "right": null};
 
 function lwCssVar() {
 
@@ -53,8 +55,16 @@ connectedCallback() {
     
     const btn = sh.querySelector("#layoutSkipToContent");;
     btn.onclick = () => {el.focus() .bind(el);}
-const bCP = this.shadowRoot            .querySelectorAll("button[name='btnColorPicker']");
+const bCP = this.shadowRoot.querySelectorAll("button[name='btnColorPicker']");
 bCP.forEach((el)  => el.onclick = myColorPicker);
+// Columns radio buttons
+const rc = this.shadowRoot.querySelectorAll("input[name='selectColumns']");
+rc.forEach((el)  => el.onclick =ColumnsClicked );
+
+// panels
+panelList.left = this.shadowRoot.querySelector("#leftPanel");
+panelList.right = this.shadowRoot.querySelector("#rightPanel");
+panelList.content = this.shadowRoot.querySelector("#contentPanel");
 
  } // try
  catch(e) {
@@ -91,9 +101,6 @@ try {
 catch(e) {
 hl("mainContent Error: " + e.message);
 } // Catch
-
-
-
 return mC;
 }       // mainContent
 
@@ -210,7 +217,7 @@ lg.textContent = "How many columns?";
 fs.appendChild(lg);
 
 //Columns
-const makeColumn =   (value, label, desc, isChecked) => { 
+const makeColumn =   (value, label, desc) => { 
     const l = document.createElement("label");
 const c =     document.createElement("input");
 c.setAttribute("type", "radio");
@@ -218,7 +225,8 @@ c.setAttribute("name", "selectColumns");
 this.setAttribute("data-desc", desc);
 c.setAttribute("id",  value + "RadioColumn",  );
 c.setAttribute("value",value );
-c.setAttribute("checked", isChecked)
+if (value === "all") {
+c.setAttribute("checked","true" );};
 l.setAttribute("for", + "RadioColumn");
 l.textContent = label; 
 const s = document.createElement("span");
@@ -336,5 +344,79 @@ alert(sMsg);
     hl("ColorPicker Error: " + err.message);
  } // catch
 } // myColorPicker
+
+
+let tmrColumn;
+
+
+const changeColumn = (nextColumn) => {
+    tmrColumn = undefined;
+
+    try {
+switch (nextColumn) {
+case 'all':
+    hl( "Changing to all");
+    setCssVar("--panel-side-width","24%");
+    panelList.left.classList.remove("hidePanel");
+    panelList.right.classList.remove("hidePanel");
+
+    setCssVar("--panel-content-width", "49%");
+    setCssVar("--panel-right-enabled", "1");
+    setCssVar("--panel-left-enabled", "1");
+    setCssVar("--panel-columns"), "3";
+    break;
+    case "cr":
+        hl( "Changing to 2 columns Right");
+        setCssVar("--panel-side-width","39%");
+    panelList.left.classList.add("hidePanel");
+    panelList.right.classList.remove("hidePanel");
+
+    setCssVar("--panel-content-width", "59%");
+    setCssVar("--panel-right-enabled", "1");
+    setCssVar("--panel-left-enabled", "0");
+    setCssVar("--panel-columns"), "2";
+        break;
+        case "lc":
+            hl("changing to 2 columns Left");
+            setCssVar("--panel-side-width","38%");
+    panelList.left.classList.remove("hidePanel");
+    panelList.right.classList.add("hidePanel");
+    setCssVar("--panel-content-width", "59%");
+    setCssVar("--panel-right-enabled", "0");
+    setCssVar("--panel-left-enabled", "1");
+    setCssVar("--panel-columns"), "2";
+            break;
+            case "c":
+                hl( "Changing to one column");
+    panelList.left.classList.add("hidePanel");
+    panelList.right.classList.add("hidePanel");
+    setCssVar("--panel-content-width", "98%");
+    setCssVar("--panel-right-enabled", "0");
+    setCssVar("--panel-left-enabled", "0");
+    setCssVar("--panel-columns"), "1";
+                break;
+                default:
+                    hl("Invalid columns "+ nextColumn)
+} // switch
+} // try
+catch(e) {
+    hl( "changeColumns error: " + e.message);
+} // catch
+
+} // changeColumn
+
+const ColumnsClicked= (e) => {
+try {
+    const v = e.target.value;
+    if (typeof( tmrColumn) !== "undefined") { clearTimeout( tmrColumn); };
+    tmrColumn = setTimeout ( changeColumn, 2500, v);
+    hl( "You clicked " + v);
+} // try
+catch(e) {
+    hl("clickColumn error: " + e.message);
+} // catch
+
+} // ColumnsClicked 
+
 export default lwCssVar;
  

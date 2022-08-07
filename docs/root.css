@@ -25,8 +25,8 @@
     --panel-right_bg : var(--panel-side_bg);
     --panel-right_fg : var(--panel-side_fg);
 
-    --panel-right-used : 1;
-    --panel-left-used : 1
+    --panel-right-enabled: 1;
+    --panel-left-enabled: 1
     --panel-columns : 3;
     --panel-content-width : 48%;
     --panel-side-width : 24%;

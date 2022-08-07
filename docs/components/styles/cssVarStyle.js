@@ -8,6 +8,8 @@ export const cssVarStyle = `
   width: 100%;
   background-color: var( --main_bg, white);
   color : var(--main_fg, red);
+  justify-items:center;
+
 }
 
 
@@ -18,13 +20,21 @@ export const cssVarStyle = `
   margin-bottom: 10px;
   padding: 8px;
 }
+.hidePanel {
+  transform: scale(0,0);
+  z-index: 0;
+  position: absolute;
+  top: -10;
+  left: -10;
+
+}
 .contentPanel {
-  width: 48%;
+  width: var(--panel-content-width);
   background-color : var( --panel-content_bg, --header_bg );
   color : var( --panel-content_fg, --header_fg );
 }
 .sidePanel{
-  width: 24%;
+  width: var( --panel-side-width);
   
   
 }
@@ -100,8 +110,8 @@ td {
 // --panel-right_bg : var(--panel-side_bg);
 // --panel-right_fg : var(--panel-side_fg);
 
-// --panel-right-used : 1;
-// --panel-left-used : 1
+// --panel-right-enabled: 1;
+// --panel-left-enabled: 1
 // --panel-columns : 3;
 // --panel-content-width : 48%;
 // --panel-side-width : 24%;
