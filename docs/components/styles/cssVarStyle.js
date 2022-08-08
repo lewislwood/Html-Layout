@@ -32,7 +32,13 @@ export const cssVarStyle = `
   width: var(--panel-content-width);
   background-color : var( --panel-content_bg, --header_bg );
   color : var( --panel-content_fg, --header_fg );
+  text-align: center;
 }
+.contentPanel p {
+  text-align: center;
+  font-size: 0.75rem;
+  }
+  
 .sidePanel{
   width: var( --panel-side-width);
   
@@ -43,7 +49,7 @@ export const cssVarStyle = `
   color : var(--panel-left_fg, black);
 }
 .rightPanel {
-  font-size: 2rem;
+  font-size: 1.25rem;
   background-color: var( --panel-right_bg, white);
   color : var(--panel-right_fg, black);
 }
@@ -58,27 +64,28 @@ export const cssVarStyle = `
 }
 
 .cssContainer {
-  display: block;
+  display: FLEX;
+  FLEX-DIRECTION: ROW;
+  JUSTIFY: CONTENT;
 }
 
 
 table {
-  border-spacing: 5px;
-  border-width: -= 4px;
+  border-spacing: 2px;
+  border-width: -= 2px;
   border-color: white;
-  width: 80%;
+  FONT-SIZE: 0.75REM;
 }
 .colorContainer{
 }
 td {
-  width: 25%;
   border-color: yellow:
- border-width: 5px;
+ border-width: 3px;
  border-style: solid;
- border-spacing: 5px;
+ border-spacing: 3px;
 }
 .nameSpan {
-  width: 25%;
+  width: 35%;
 }
 .inheritValues {
   width: 25%;
@@ -89,14 +96,13 @@ td {
 }
 
 .btnColorPicker {
-  width: 25%;
+  width: 10%;
 }
 
 .radioColumns {
   display: flex;
   flex-direction: column;
   align: right;
-
 }
 
 `

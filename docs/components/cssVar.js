@@ -5,6 +5,7 @@ import {cssVars, isColorVar, newColor   } from "../data/cssVarData.js";
 
 // Object holds reference to Left, content, Right Panels
 const panelList = { "left": null, "content": null, "right": null};
+const statusList = { "left": null, "content": null, "right": null}
 
 function lwCssVar() {
 
@@ -54,17 +55,24 @@ connectedCallback() {
     const sh =this.parentNode.getRootNode({composed: false});
     
     const btn = sh.querySelector("#layoutSkipToContent");;
-    btn.onclick = () => {el.focus() .bind(el);}
 const bCP = this.shadowRoot.querySelectorAll("button[name='btnColorPicker']");
 bCP.forEach((el)  => el.onclick = myColorPicker);
 // Columns radio buttons
 const rc = this.shadowRoot.querySelectorAll("input[name='selectColumns']");
-rc.forEach((el)  => el.onclick =ColumnsClicked );
+rc.forEach((el)  => {
+    el.addEventListener("click",ColumnsClicked); 
+    el.addEventListener("focus", (e) =>{ columnStatus(e);}, false);
+}); // foreach
 
 // panels
 panelList.left = this.shadowRoot.querySelector("#leftPanel");
 panelList.right = this.shadowRoot.querySelector("#rightPanel");
 panelList.content = this.shadowRoot.querySelector("#contentPanel");
+
+// Status List
+statusList.left = this.shadowRoot.querySelector("#statusLeft");
+statusList.right = this.shadowRoot.querySelector("#statusRight");
+statusList.content = this.shadowRoot.querySelector("#statusContent");
 
  } // try
  catch(e) {
@@ -119,7 +127,7 @@ const ul = document.createElement("ul");
 const left = ["JavaScript Rules", "Feel the joy of solving", "Braille tools", "Doctor Who is great", "Star Trek dares to dream"];
 const right= ["Looks Perfect", "Time to pay off", "Need advertisers", "Selling Blood", "Surviving on Fester is hungry! Any light Bulbs around?"];
 const list = (side === 'left' ? left : right);
-ul.innerHTML = list.map((l) => { return ` <li>${l}</li> `;});
+ul.innerHTML = list.map((l) => { return ` <li>${l}</li> `;}).join("");
 sp.appendChild(ul);
 } // try
 catch(e) {
@@ -136,7 +144,7 @@ const sp = document.createElement("p");
 sp.setAttribute("id", id);
 sp.setAttribute("aria-live", "polite");
 sp.setAttribute("class",id + " statusPanel" );
-sp.textContent = "This is help text and descriptive text for items this.ariaSelected. JavaScript will hide 2 statuses and only 1 of them will be visible.  1 column Mode only Content panel will be visible, 2 column mode, only the Left or either status will be visible.  Depends on your selection. Screen readers will automatically read changes in this text as it is updated.";
+sp.textContent = id + " This is help text and descriptive text for items this.ariaSelected. JavaScript will hide 2 statuses and only 1 of them will be visible.  1 column Mode only Content panel will be visible, 2 column mode, only the Left or either status will be visible.  Depends on your selection. Screen readers will automatically read changes in this text as it is updated.";
 return sp;
 }
 
@@ -144,7 +152,7 @@ CssVarsList() {
     // hl("Doing vars list");
 const [ colorVars, otherVars] = myCssValues();
 
-const htm = Object.values(colorVars).map((n) => (this.HTMLCssVarItem(n)  ) );
+const htm = Object.values(colorVars).map((n) => (this.HTMLCssVarItem(n)  ) ).join("");
 const cssGr = document.createElement("div");
 cssGr.setAttribute("class", "cssContainer");
 
@@ -355,7 +363,6 @@ const changeColumn = (nextColumn) => {
     try {
 switch (nextColumn) {
 case 'all':
-    hl( "Changing to all");
     setCssVar("--panel-side-width","24%");
     panelList.left.classList.remove("hidePanel");
     panelList.right.classList.remove("hidePanel");
@@ -364,9 +371,9 @@ case 'all':
     setCssVar("--panel-right-enabled", "1");
     setCssVar("--panel-left-enabled", "1");
     setCssVar("--panel-columns"), "3";
+    hs("Changed to All Columns.");
     break;
     case "cr":
-        hl( "Changing to 2 columns Right");
         setCssVar("--panel-side-width","39%");
     panelList.left.classList.add("hidePanel");
     panelList.right.classList.remove("hidePanel");
@@ -375,9 +382,10 @@ case 'all':
     setCssVar("--panel-right-enabled", "1");
     setCssVar("--panel-left-enabled", "0");
     setCssVar("--panel-columns"), "2";
+    hs( "Changed to 2 columns Right");
+
         break;
         case "lc":
-            hl("changing to 2 columns Left");
             setCssVar("--panel-side-width","38%");
     panelList.left.classList.remove("hidePanel");
     panelList.right.classList.add("hidePanel");
@@ -385,15 +393,17 @@ case 'all':
     setCssVar("--panel-right-enabled", "0");
     setCssVar("--panel-left-enabled", "1");
     setCssVar("--panel-columns"), "2";
+    hs("Changed to 2 columns Left");
+
             break;
             case "c":
-                hl( "Changing to one column");
     panelList.left.classList.add("hidePanel");
     panelList.right.classList.add("hidePanel");
     setCssVar("--panel-content-width", "98%");
     setCssVar("--panel-right-enabled", "0");
     setCssVar("--panel-left-enabled", "0");
     setCssVar("--panel-columns"), "1";
+    hs( "Changed to one column");
                 break;
                 default:
                     hl("Invalid columns "+ nextColumn)
@@ -410,13 +420,47 @@ try {
     const v = e.target.value;
     if (typeof( tmrColumn) !== "undefined") { clearTimeout( tmrColumn); };
     tmrColumn = setTimeout ( changeColumn, 2500, v);
-    hl( "You clicked " + v);
 } // try
 catch(e) {
     hl("clickColumn error: " + e.message);
 } // catch
 
 } // ColumnsClicked 
+
+const columnStatus = (e) => {
+const v = e.target.value;
+var status = "";
+hl("Column status called");
+switch (v) {
+    case "all":
+        status = "When selected all columns/Panels are displayed. Left, Content, and Right Panels are displayed.";
+        break;
+        case "cr":
+            status = "If selected the Content and Right Panel/Column are displayed.";
+        break;
+            case "lc":
+                status = "If selected the Left and Content Panels/Columns are displayed.";
+        break;
+                case "c":
+                    status = "If selected only the main Content is displayed.  No Left or Right Side panels.";
+        break;
+
+} // switch (v)
+if (status !== "" ) { hs(status);};
+}; // ColumnStatus
+
+//  hs the status help status display
+const hs = (ln) => {
+if (getCssVar("--panel-right-enabled").trim() === "1") {
+    statusList.right.textContent  = ln;
+}  else { if (getCssVar( "--panel-left-enabled").trim() === "1") {
+
+statusList.left.textContent = ln;
+} else {
+    statusList.content.textContent = ln;
+}} // if, else, if, else
+} // hs
+
 
 export default lwCssVar;
  
