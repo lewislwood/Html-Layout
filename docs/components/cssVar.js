@@ -5,7 +5,7 @@ import {cssVars, isColorVar, newColor   } from "../data/cssVarData.js";
 
 // Object holds reference to Left, content, Right Panels
 const panelList = { "left": null, "content": null, "right": null};
-const statusList = { "left": null, "content": null, "right": null}
+const statusList = { "left": null, "content": null, "right": null, "timer": null}
 
 function lwCssVar() {
 
@@ -61,7 +61,6 @@ bCP.forEach((el)  => el.onclick = myColorPicker);
 const rc = this.shadowRoot.querySelectorAll("input[name='selectColumns']");
 rc.forEach((el)  => {
     el.addEventListener("click",ColumnsClicked); 
-    el.addEventListener("focus", (e) =>{ columnStatus(e);}, false);
 }); // foreach
 
 // panels
@@ -73,6 +72,8 @@ panelList.content = this.shadowRoot.querySelector("#contentPanel");
 statusList.left = this.shadowRoot.querySelector("#statusLeft");
 statusList.right = this.shadowRoot.querySelector("#statusRight");
 statusList.content = this.shadowRoot.querySelector("#statusContent");
+// Clear all statuses after 30 seconds
+statusList.timer = setTimeout( clearAllStatus, 30000);
 
  } // try
  catch(e) {
@@ -119,6 +120,7 @@ sp.setAttribute("class", id + " sidePanel panel");
 sp.setAttribute("id", id);
 sp.setAttribute("role", "navigation");
 sp.setAttribute("title", side + " panel");
+sp.setAttribute("aria-hidden", "false");
 try {
     sp.appendChild(this.getStatus(side));
 
@@ -371,7 +373,9 @@ case 'all':
     setCssVar("--panel-right-enabled", "1");
     setCssVar("--panel-left-enabled", "1");
     setCssVar("--panel-columns"), "3";
-    hs("Changed to All Columns.");
+    panelList.right.setAttribute("aria-hidden", "false");
+    panelList.left.setAttribute("aria-hidden", "false");
+    hs("Changed to All columns. The Left and Right panels are visible.");;
     break;
     case "cr":
         setCssVar("--panel-side-width","39%");
@@ -382,7 +386,9 @@ case 'all':
     setCssVar("--panel-right-enabled", "1");
     setCssVar("--panel-left-enabled", "0");
     setCssVar("--panel-columns"), "2";
-    hs( "Changed to 2 columns Right");
+    panelList.right.setAttribute("aria-hidden", "false");
+    panelList.left.setAttribute("aria-hidden", "true");
+    hs( "Main content and Right panel are visible, and Left panel is hidden.");
 
         break;
         case "lc":
@@ -393,7 +399,9 @@ case 'all':
     setCssVar("--panel-right-enabled", "0");
     setCssVar("--panel-left-enabled", "1");
     setCssVar("--panel-columns"), "2";
-    hs("Changed to 2 columns Left");
+    panelList.right.setAttribute("aria-hidden", "true");
+    panelList.left.setAttribute("aria-hidden", "false");
+    hs("Left panel and main content are visible. Right panel is now hidden.");
 
             break;
             case "c":
@@ -403,7 +411,9 @@ case 'all':
     setCssVar("--panel-right-enabled", "0");
     setCssVar("--panel-left-enabled", "0");
     setCssVar("--panel-columns"), "1";
-    hs( "Changed to one column");
+    panelList.right.setAttribute("aria-hidden", "true");
+    panelList.left.setAttribute("aria-hidden", "true");
+    hs( "Only main content is visible. Left and Right panel are now hidden.");
                 break;
                 default:
                     hl("Invalid columns "+ nextColumn)
@@ -430,7 +440,6 @@ catch(e) {
 const columnStatus = (e) => {
 const v = e.target.value;
 var status = "";
-hl("Column status called");
 switch (v) {
     case "all":
         status = "When selected all columns/Panels are displayed. Left, Content, and Right Panels are displayed.";
@@ -451,6 +460,7 @@ if (status !== "" ) { hs(status);};
 
 //  hs the status help status display
 const hs = (ln) => {
+    if (statusList.timer !== null) {clearTimeout(statusList.timer);};
 if (getCssVar("--panel-right-enabled").trim() === "1") {
     statusList.right.textContent  = ln;
 }  else { if (getCssVar( "--panel-left-enabled").trim() === "1") {
@@ -459,7 +469,17 @@ statusList.left.textContent = ln;
 } else {
     statusList.content.textContent = ln;
 }} // if, else, if, else
+statusList.timer = setTimeout( clearAllStatus, 2000);
 } // hs
+
+const clearAllStatus = () => {
+    statusList.timer = null;
+    statusList.content.textContent = "";
+    statusList.left.textContent = "";
+    statusList.right.textContent = "";
+
+} // clearAllStatus
+
 
 
 export default lwCssVar;
