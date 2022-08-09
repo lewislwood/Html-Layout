@@ -16,7 +16,7 @@ Only exception is the "docs" folder which is typically named app or src, this wa
 
 
 Tasks to do
-#  Panels, 3, 2, 1 Left or Right or just Content
+*   Thinking of rewriting Table of colors for combo box with detailpanel for editing.
 *  Table of Color Variables Needs color picker button modal dialogue
 * Main non - component page (straight html )
 * Images (this one I deplore, but is neccessary).

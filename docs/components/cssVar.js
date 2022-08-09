@@ -77,8 +77,8 @@ panelList.content = this.shadowRoot.querySelector("#contentPanel");
 statusList.left = this.shadowRoot.querySelector("#statusLeft");
 statusList.right = this.shadowRoot.querySelector("#statusRight");
 statusList.content = this.shadowRoot.querySelector("#statusContent");
-// Clear all statuses after 30 seconds
-statusList.timer = setTimeout( clearAllStatus, 30000);
+// Clear all statuses after 20 seconds
+statusList.timer = setTimeout( clearAllStatus, 20000);
  } // try
  catch(e) {
 hl("cssVars Connected Callback error: " + e.message);
@@ -101,12 +101,9 @@ h.setAttribute("id", "mainContent");
 h.textContent = "Css Variables Settings";
 mC.appendChild(h);
 const p = document.createElement("p");
-p.textContent = "Here the developer or the client can choose color scheme, fonts, and columns.  A button later on will allow you to save to local storage, coly the css variable settings.  These settings can easily be imported in any app that uses css files. ";
+p.textContent = ";Color table below simply press spacebar or click on any row. To hear the color description and see it in the status windows for those with sight."
+;
 mC.appendChild(p);
-const p2 = document.createElement("p");
-p2.textContent = "Also srves as a great reference and training tool.  Shows how files are arranged. Pragramming practices that aid a visually impaired individual person to write code. Blind coders do not see many lines at once, they are line oriented and must develop techniques that help them know where they are.  Also component based programming is smaller reusable type of programming, which is easier to navigate for visually impaired persons programmers.";
-mC.appendChild(p2);
-
 try {
     mC.appendChild(this.CssVarsList());
     mC.appendChild(this.getStatus("content"));
@@ -135,6 +132,12 @@ const right= ["Looks Perfect", "Time to pay off", "Need advertisers", "Selling B
 const list = (side === 'left' ? left : right);
 ul.innerHTML = list.map((l) => { return ` <li>${l}</li> `;}).join("");
 sp.appendChild(ul);
+const lt = "Here the developer or the client can choose color scheme, fonts, and columns.  A button later on will allow you to save to local storage, coly the css variable settings.  These settings can easily be imported in any app that uses css files. ";
+const rt = "Also srves as a great reference and training tool.  Shows how files are arranged. Pragramming practices that aid a visually impaired individual person to write code. Blind coders do not see many lines at once, they are line oriented and must develop techniques that help them know where they are.  Also component based programming is smaller reusable type of programming, which is easier to navigate for visually impaired persons programmers.";
+const st = (side === 'left' ? lt: rt);
+const p = document.createElement("p");
+p.textContent = st;
+sp.appendChild(p);
 } // try
 catch(e) {
 hl(id + " error: " + e.message)
@@ -164,8 +167,8 @@ cssGr.setAttribute("class", "cssContainer");
 
 const color  = document.createElement("div");
 color.innerHTML = `
-<h2>Color Variables</h2>
 <table id=  class="cssContainer" >
+<caption>Color Variables</caption>
 <tr>
 <th scope="col">Color</th>
 <th scope="col">Inherit Bg/Fg</th>
