@@ -57,6 +57,11 @@ connectedCallback() {
     const btn = sh.querySelector("#layoutSkipToContent");;
 const bCP = this.shadowRoot.querySelectorAll("button[name='btnColorPicker']");
 bCP.forEach((el)  => el.onclick = myColorPicker);
+// color rowContainer wire status
+const ctr = this.shadowRoot.querySelectorAll(".rowContainer ");
+ctr.forEach((el) => {  el.setAttribute("tabIndex", "0");
+    el.addEventListener('focus', (e) => { descRowColor (e); })});
+
 // Columns radio buttons
 const rc = this.shadowRoot.querySelectorAll("input[name='selectColumns']");
 rc.forEach((el)  => {
@@ -74,7 +79,6 @@ statusList.right = this.shadowRoot.querySelector("#statusRight");
 statusList.content = this.shadowRoot.querySelector("#statusContent");
 // Clear all statuses after 30 seconds
 statusList.timer = setTimeout( clearAllStatus, 30000);
-
  } // try
  catch(e) {
 hl("cssVars Connected Callback error: " + e.message);
@@ -339,7 +343,7 @@ const myColorPicker = (e) =>  {
  try {
     const sh = e.target.parentNode.getRootNode({composed: false}); 
 const c = e.target.getAttribute("data-color");
-hl("data color is " + c);
+// hl("data color is " + c);
 const di= sh.querySelector("#" + c+ "-color");
 const sObj = di.dataset.colorValues;
 // hl(di.id + " : [" + sObj + "]");
@@ -469,7 +473,7 @@ statusList.left.textContent = ln;
 } else {
     statusList.content.textContent = ln;
 }} // if, else, if, else
-statusList.timer = setTimeout( clearAllStatus, 2000);
+statusList.timer = setTimeout( clearAllStatus, 5000);
 } // hs
 
 const clearAllStatus = () => {
@@ -479,6 +483,17 @@ const clearAllStatus = () => {
     statusList.right.textContent = "";
 
 } // clearAllStatus
+
+
+const descRowColor = (e) => {
+const el = e.target;
+const sObj = el.dataset.colorValues;
+
+const cI = JSON.parse(sObj);
+
+const desc = cI.notes;
+hs(desc );
+} // descRowColor
 
 
 
