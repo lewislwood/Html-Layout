@@ -1,0 +1,894 @@
+[
+  {
+    "name": "Air Force Blue (Raf)",
+    "color": "#5d8aa8"
+  },
+  {
+    "name": "Air Force Blue (Usaf)",
+    "color": "#00308f"
+  },
+  {
+    "name": "Air Superiority Blue",
+    "color": "#72a0c1"
+  },
+  {
+    "name": "Alabama Crimson",
+    "color": "#a32638"
+  },
+  {
+    "name": "Alice Blue",
+    "color": "#f0f8ff"
+  },
+  {
+    "name": "Alizarin Crimson",
+    "color": "#e32636"
+  },
+  {
+    "name": "Alloy Orange",
+    "color": "#c46210"
+  },
+  {
+    "name": "Almond",
+    "color": "#efdecd"
+  },
+  {
+    "name": "Amaranth",
+    "color": "#e52b50"
+  },
+  {
+    "name": "Amber",
+    "color": "#ffbf00"
+  },
+  {
+    "name": "Amber (Sae/Ece)",
+    "color": "#ff7e00"
+  },
+  {
+    "name": "American Rose",
+    "color": "#ff033e"
+  },
+  {
+    "name": "Amethyst",
+    "color": "#96c"
+  },
+  {
+    "name": "Android Green",
+    "color": "#a4c639"
+  },
+  {
+    "name": "Anti-Flash White",
+    "color": "#f2f3f4"
+  },
+  {
+    "name": "Antique Brass",
+    "color": "#cd9575"
+  },
+  {
+    "name": "Antique Fuchsia",
+    "color": "#915c83"
+  },
+  {
+    "name": "Antique Ruby",
+    "color": "#841b2d"
+  },
+  {
+    "name": "Antique White",
+    "color": "#faebd7"
+  },
+  {
+    "name": "Ao (English)",
+    "color": "#008000"
+  },
+  {
+    "name": "Apple Green",
+    "color": "#8db600"
+  },
+  {
+    "name": "Apricot",
+    "color": "#fbceb1"
+  },
+  {
+    "name": "Aqua",
+    "color": "#0ff"
+  },
+  {
+    "name": "Aquamarine",
+    "color": "#7fffd4"
+  },
+  {
+    "name": "Army Green",
+    "color": "#4b5320"
+  },
+  {
+    "name": "Arsenic",
+    "color": "#3b444b"
+  },
+  {
+    "name": "Arylide Yellow",
+    "color": "#e9d66b"
+  },
+  {
+    "name": "Ash Grey",
+    "color": "#b2beb5"
+  },
+  {
+    "name": "Asparagus",
+    "color": "#87a96b"
+  },
+  {
+    "name": "Atomic Tangerine",
+    "color": "#f96"
+  },
+  {
+    "name": "Auburn",
+    "color": "#a52a2a"
+  },
+  {
+    "name": "Aureolin",
+    "color": "#fdee00"
+  },
+  {
+    "name": "Aurometalsaurus",
+    "color": "#6e7f80"
+  },
+  {
+    "name": "Avocado",
+    "color": "#568203"
+  },
+  {
+    "name": "Azure",
+    "color": "#007fff"
+  },
+  {
+    "name": "Azure Mist/Web",
+    "color": "#f0ffff"
+  },
+  {
+    "name": "Baby Blue",
+    "color": "#89cff0"
+  },
+  {
+    "name": "Baby Blue Eyes",
+    "color": "#a1caf1"
+  },
+  {
+    "name": "Baby Pink",
+    "color": "#f4c2c2"
+  },
+  {
+    "name": "Ball Blue",
+    "color": "#21abcd"
+  },
+  {
+    "name": "Banana Mania",
+    "color": "#fae7b5"
+  },
+  {
+    "name": "Banana Yellow",
+    "color": "#ffe135"
+  },
+  {
+    "name": "Barn Red",
+    "color": "#7c0a02"
+  },
+  {
+    "name": "Battleship Grey",
+    "color": "#848482"
+  },
+  {
+    "name": "Bazaar",
+    "color": "#98777b"
+  },
+  {
+    "name": "Beau Blue",
+    "color": "#bcd4e6"
+  },
+  {
+    "name": "Beaver",
+    "color": "#9f8170"
+  },
+  {
+    "name": "Beige",
+    "color": "#f5f5dc"
+  },
+  {
+    "name": "Big Dip O’Ruby",
+    "color": "#9c2542"
+  },
+  {
+    "name": "Bisque",
+    "color": "#ffe4c4"
+  },
+  {
+    "name": "Bistre",
+    "color": "#3d2b1f"
+  },
+  {
+    "name": "Bittersweet",
+    "color": "#fe6f5e"
+  },
+  {
+    "name": "Bittersweet Shimmer",
+    "color": "#bf4f51"
+  },
+  {
+    "name": "Black",
+    "color": "#000"
+  },
+  {
+    "name": "Black Bean",
+    "color": "#3d0c02"
+  },
+  {
+    "name": "Black Leather Jacket",
+    "color": "#253529"
+  },
+  {
+    "name": "Black Olive",
+    "color": "#3b3c36"
+  },
+  {
+    "name": "Blanched Almond",
+    "color": "#ffebcd"
+  },
+  {
+    "name": "Blast-Off Bronze",
+    "color": "#a57164"
+  },
+  {
+    "name": "Bleu De France",
+    "color": "#318ce7"
+  },
+  {
+    "name": "Blizzard Blue",
+    "color": "#ace5ee"
+  },
+  {
+    "name": "Blond",
+    "color": "#faf0be"
+  },
+  {
+    "name": "Blue",
+    "color": "#00f"
+  },
+  {
+    "name": "Blue Bell",
+    "color": "#a2a2d0"
+  },
+  {
+    "name": "Blue (Crayola)",
+    "color": "#1f75fe"
+  },
+  {
+    "name": "Blue Gray",
+    "color": "#69c"
+  },
+  {
+    "name": "Blue-Green",
+    "color": "#0d98ba"
+  },
+  {
+    "name": "Blue (Munsell)",
+    "color": "#0093af"
+  },
+  {
+    "name": "Blue (Ncs)",
+    "color": "#0087bd"
+  },
+  {
+    "name": "Blue (Pigment)",
+    "color": "#339"
+  },
+  {
+    "name": "Blue (Ryb)",
+    "color": "#0247fe"
+  },
+  {
+    "name": "Blue Sapphire",
+    "color": "#126180"
+  },
+  {
+    "name": "Blue-Violet",
+    "color": "#8a2be2"
+  },
+  {
+    "name": "Blush",
+    "color": "#de5d83"
+  },
+  {
+    "name": "Bole",
+    "color": "#79443b"
+  },
+  {
+    "name": "Bondi Blue",
+    "color": "#0095b6"
+  },
+  {
+    "name": "Bone",
+    "color": "#e3dac9"
+  },
+  {
+    "name": "Boston University Red",
+    "color": "#c00"
+  },
+  {
+    "name": "Bottle Green",
+    "color": "#006a4e"
+  },
+  {
+    "name": "Boysenberry",
+    "color": "#873260"
+  },
+  {
+    "name": "Brandeis Blue",
+    "color": "#0070ff"
+  },
+  {
+    "name": "Brass",
+    "color": "#b5a642"
+  },
+  {
+    "name": "Brick Red",
+    "color": "#cb4154"
+  },
+  {
+    "name": "Bright Cerulean",
+    "color": "#1dacd6"
+  },
+  {
+    "name": "Bright Green",
+    "color": "#6f0"
+  },
+  {
+    "name": "Bright Lavender",
+    "color": "#bf94e4"
+  },
+  {
+    "name": "Bright Maroon",
+    "color": "#c32148"
+  },
+  {
+    "name": "Bright Pink",
+    "color": "#ff007f"
+  },
+  {
+    "name": "Bright Turquoise",
+    "color": "#08e8de"
+  },
+  {
+    "name": "Bright Ube",
+    "color": "#d19fe8"
+  },
+  {
+    "name": "Brilliant Lavender",
+    "color": "#f4bbff"
+  },
+  {
+    "name": "Brilliant Rose",
+    "color": "#ff55a3"
+  },
+  {
+    "name": "Brink Pink",
+    "color": "#fb607f"
+  },
+  {
+    "name": "British Racing Green",
+    "color": "#004225"
+  },
+  {
+    "name": "Bronze",
+    "color": "#cd7f32"
+  },
+  {
+    "name": "Brown (Traditional)",
+    "color": "#964b00"
+  },
+  {
+    "name": "Brown (Web)",
+    "color": "#a52a2a"
+  },
+  {
+    "name": "Bubble Gum",
+    "color": "#ffc1cc"
+  },
+  {
+    "name": "Bubbles",
+    "color": "#e7feff"
+  },
+  {
+    "name": "Buff",
+    "color": "#f0dc82"
+  },
+  {
+    "name": "Bulgarian Rose",
+    "color": "#480607"
+  },
+  {
+    "name": "Burgundy",
+    "color": "#800020"
+  },
+  {
+    "name": "Burlywood",
+    "color": "#deb887"
+  },
+  {
+    "name": "Burnt Orange",
+    "color": "#c50"
+  },
+  {
+    "name": "Burnt Sienna",
+    "color": "#e97451"
+  },
+  {
+    "name": "Burnt Umber",
+    "color": "#8a3324"
+  },
+  {
+    "name": "Byzantine",
+    "color": "#bd33a4"
+  },
+  {
+    "name": "Byzantium",
+    "color": "#702963"
+  },
+  {
+    "name": "Cadet",
+    "color": "#536872"
+  },
+  {
+    "name": "Cadet Blue",
+    "color": "#5f9ea0"
+  },
+  {
+    "name": "Cadet Grey",
+    "color": "#91a3b0"
+  },
+  {
+    "name": "Cadmium Green",
+    "color": "#00ff7f"
+  },
+  {
+    "name": "St. Patrick'S Blue",
+    "color": "#23297a"
+  },
+  {
+    "name": "Steel Blue",
+    "color": "#4682b4"
+  },
+  {
+    "name": "Stil De Grain Yellow",
+    "color": "#fada5e"
+  },
+  {
+    "name": "Stizza",
+    "color": "#900"
+  },
+  {
+    "name": "Stormcloud",
+    "color": "#4f666a"
+  },
+  {
+    "name": "Straw",
+    "color": "#e4d96f"
+  },
+  {
+    "name": "Sunglow",
+    "color": "#fc3"
+  },
+  {
+    "name": "Sunset",
+    "color": "#fad6a5"
+  },
+  {
+    "name": "Tan",
+    "color": "#d2b48c"
+  },
+  {
+    "name": "Tangelo",
+    "color": "#f94d00"
+  },
+  {
+    "name": "Tangerine",
+    "color": "#f28500"
+  },
+  {
+    "name": "Tangerine Yellow",
+    "color": "#fc0"
+  },
+  {
+    "name": "Tango Pink",
+    "color": "#e4717a"
+  },
+  {
+    "name": "Taupe",
+    "color": "#483c32"
+  },
+  {
+    "name": "Taupe Gray",
+    "color": "#8b8589"
+  },
+  {
+    "name": "Tea Green",
+    "color": "#d0f0c0"
+  },
+  {
+    "name": "Tea Rose (Orange)",
+    "color": "#f88379"
+  },
+  {
+    "name": "Tea Rose (Rose)",
+    "color": "#f4c2c2"
+  },
+  {
+    "name": "Teal",
+    "color": "#008080"
+  },
+  {
+    "name": "Teal Blue",
+    "color": "#367588"
+  },
+  {
+    "name": "Teal Green",
+    "color": "#00827f"
+  },
+  {
+    "name": "Telemagenta",
+    "color": "#cf3476"
+  },
+  {
+    "name": "Tenné (Tawny)",
+    "color": "#cd5700"
+  },
+  {
+    "name": "Terra Cotta",
+    "color": "#e2725b"
+  },
+  {
+    "name": "Thistle",
+    "color": "#d8bfd8"
+  },
+  {
+    "name": "Thulian Pink",
+    "color": "#de6fa1"
+  },
+  {
+    "name": "Tickle Me Pink",
+    "color": "#fc89ac"
+  },
+  {
+    "name": "Tiffany Blue",
+    "color": "#0abab5"
+  },
+  {
+    "name": "Tiger'S Eye",
+    "color": "#e08d3c"
+  },
+  {
+    "name": "Timberwolf",
+    "color": "#dbd7d2"
+  },
+  {
+    "name": "Titanium Yellow",
+    "color": "#eee600"
+  },
+  {
+    "name": "Tomato",
+    "color": "#ff6347"
+  },
+  {
+    "name": "Toolbox",
+    "color": "#746cc0"
+  },
+  {
+    "name": "Topaz",
+    "color": "#ffc87c"
+  },
+  {
+    "name": "Tractor Red",
+    "color": "#fd0e35"
+  },
+  {
+    "name": "Trolley Grey",
+    "color": "#808080"
+  },
+  {
+    "name": "Tropical Rain Forest",
+    "color": "#00755e"
+  },
+  {
+    "name": "True Blue",
+    "color": "#0073cf"
+  },
+  {
+    "name": "Tufts Blue",
+    "color": "#417dc1"
+  },
+  {
+    "name": "Tumbleweed",
+    "color": "#deaa88"
+  },
+  {
+    "name": "Turkish Rose",
+    "color": "#b57281"
+  },
+  {
+    "name": "Turquoise",
+    "color": "#30d5c8"
+  },
+  {
+    "name": "Turquoise Blue",
+    "color": "#00ffef"
+  },
+  {
+    "name": "Turquoise Green",
+    "color": "#a0d6b4"
+  },
+  {
+    "name": "Tuscan Red",
+    "color": "#7c4848"
+  },
+  {
+    "name": "Twilight Lavender",
+    "color": "#8a496b"
+  },
+  {
+    "name": "Tyrian Purple",
+    "color": "#66023c"
+  },
+  {
+    "name": "Ua Blue",
+    "color": "#03a"
+  },
+  {
+    "name": "Ua Red",
+    "color": "#d9004c"
+  },
+  {
+    "name": "Ube",
+    "color": "#8878c3"
+  },
+  {
+    "name": "Ucla Blue",
+    "color": "#536895"
+  },
+  {
+    "name": "Ucla Gold",
+    "color": "#ffb300"
+  },
+  {
+    "name": "Ufo Green",
+    "color": "#3cd070"
+  },
+  {
+    "name": "Ultra Pink",
+    "color": "#ff6fff"
+  },
+  {
+    "name": "Ultramarine",
+    "color": "#120a8f"
+  },
+  {
+    "name": "Ultramarine Blue",
+    "color": "#4166f5"
+  },
+  {
+    "name": "Umber",
+    "color": "#635147"
+  },
+  {
+    "name": "Unbleached Silk",
+    "color": "#ffddca"
+  },
+  {
+    "name": "United Nations Blue",
+    "color": "#5b92e5"
+  },
+  {
+    "name": "University Of California Gold",
+    "color": "#b78727"
+  },
+  {
+    "name": "Unmellow Yellow",
+    "color": "#ff6"
+  },
+  {
+    "name": "Up Forest Green",
+    "color": "#014421"
+  },
+  {
+    "name": "Up Maroon",
+    "color": "#7b1113"
+  },
+  {
+    "name": "Upsdell Red",
+    "color": "#ae2029"
+  },
+  {
+    "name": "Urobilin",
+    "color": "#e1ad21"
+  },
+  {
+    "name": "Usafa Blue",
+    "color": "#004f98"
+  },
+  {
+    "name": "Usc Cardinal",
+    "color": "#900"
+  },
+  {
+    "name": "Usc Gold",
+    "color": "#fc0"
+  },
+  {
+    "name": "Utah Crimson",
+    "color": "#d3003f"
+  },
+  {
+    "name": "Vanilla",
+    "color": "#f3e5ab"
+  },
+  {
+    "name": "Vegas Gold",
+    "color": "#c5b358"
+  },
+  {
+    "name": "Venetian Red",
+    "color": "#c80815"
+  },
+  {
+    "name": "Verdigris",
+    "color": "#43b3ae"
+  },
+  {
+    "name": "Vermilion (Cinnabar)",
+    "color": "#e34234"
+  },
+  {
+    "name": "Vermilion (Plochere)",
+    "color": "#d9603b"
+  },
+  {
+    "name": "Veronica",
+    "color": "#a020f0"
+  },
+  {
+    "name": "Violet",
+    "color": "#8f00ff"
+  },
+  {
+    "name": "Violet-Blue",
+    "color": "#324ab2"
+  },
+  {
+    "name": "Violet (Color Wheel)",
+    "color": "#7f00ff"
+  },
+  {
+    "name": "Violet (Ryb)",
+    "color": "#8601af"
+  },
+  {
+    "name": "Violet (Web)",
+    "color": "#ee82ee"
+  },
+  {
+    "name": "Viridian",
+    "color": "#40826d"
+  },
+  {
+    "name": "Vivid Auburn",
+    "color": "#922724"
+  },
+  {
+    "name": "Vivid Burgundy",
+    "color": "#9f1d35"
+  },
+  {
+    "name": "Vivid Cerise",
+    "color": "#da1d81"
+  },
+  {
+    "name": "Vivid Tangerine",
+    "color": "#ffa089"
+  },
+  {
+    "name": "Vivid Violet",
+    "color": "#9f00ff"
+  },
+  {
+    "name": "Warm Black",
+    "color": "#004242"
+  },
+  {
+    "name": "Waterspout",
+    "color": "#a4f4f9"
+  },
+  {
+    "name": "Wenge",
+    "color": "#645452"
+  },
+  {
+    "name": "Wheat",
+    "color": "#f5deb3"
+  },
+  {
+    "name": "White",
+    "color": "#fff"
+  },
+  {
+    "name": "White Smoke",
+    "color": "#f5f5f5"
+  },
+  {
+    "name": "Wild Blue Yonder",
+    "color": "#a2add0"
+  },
+  {
+    "name": "Wild Strawberry",
+    "color": "#ff43a4"
+  },
+  {
+    "name": "Wild Watermelon",
+    "color": "#fc6c85"
+  },
+  {
+    "name": "Wine",
+    "color": "#722f37"
+  },
+  {
+    "name": "Wine Dregs",
+    "color": "#673147"
+  },
+  {
+    "name": "Wisteria",
+    "color": "#c9a0dc"
+  },
+  {
+    "name": "Wood Brown",
+    "color": "#c19a6b"
+  },
+  {
+    "name": "Xanadu",
+    "color": "#738678"
+  },
+  {
+    "name": "Yale Blue",
+    "color": "#0f4d92"
+  },
+  {
+    "name": "Yellow",
+    "color": "#ff0"
+  },
+  {
+    "name": "Yellow-Green",
+    "color": "#9acd32"
+  },
+  {
+    "name": "Yellow (Munsell)",
+    "color": "#efcc00"
+  },
+  {
+    "name": "Yellow (Ncs)",
+    "color": "#ffd300"
+  },
+  {
+    "name": "Yellow Orange",
+    "color": "#ffae42"
+  },
+  {
+    "name": "Yellow (Process)",
+    "color": "#ffef00"
+  },
+  {
+    "name": "Yellow (Ryb)",
+    "color": "#fefe33"
+  },
+  {
+    "name": "Zaffre",
+    "color": "#0014a8"
+  },
+  {
+    "name": "Zinnwaldite Brown",
+    "color": "#2c1608"
+  }
+]

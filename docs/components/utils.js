@@ -2,6 +2,16 @@
 
 const hl = document.querySelector("#helpLog");
 
+
+
+export async function getJson(url, displayColors ) {
+  helpLog( "Fetching : " + url );
+      fetch(url)
+  .then((response) => response.text())
+  .then((daa) =>{ helpLog( data);  displayColors( data);});
+     
+    } // getJson
+
 const getSkipToContent = () => {return document.body.querySelector( "#layoutSkipToContent");};
 
 

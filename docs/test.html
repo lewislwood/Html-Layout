@@ -1,0 +1,41 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Document</title>
+</head>
+<body>
+
+<style>
+body {
+background-color : black;
+color: white;
+}
+
+</style>
+
+<h1>Testing some code.</h1>
+<p id="myJson">Waiting for output<</p>
+
+<div class="helpLog" name="helpLog" >
+    <h5>Help Log</h5>
+    <button id="clearHelpLog" type="button">Clear Help Log</button>
+    <p id="helpLog"   aria-live="polite"> Waiting for you</p>
+
+</div helplog>
+<script type="module" >
+import {helpLog as hl,clearHelpLog,helpLogExists} from "./components/utils.js";
+import {renderColors} from "./components/test.js";
+
+clearHelpLog();
+hl( "Starting Up.");
+renderColors();
+
+
+
+
+    </script>
+</script>
+</body>
+</html>
