@@ -55,6 +55,9 @@ connectedCallback() {
     const sh =this.parentNode.getRootNode({composed: false});
     
     const btn = sh.querySelector("#layoutSkipToContent");;
+    btn.onclick = (e) => el.focus();
+
+    //Colors
 const bCP = this.shadowRoot.querySelectorAll("button[name='btnColorPicker']");
 bCP.forEach((el)  => el.onclick = myColorPicker);
 // color rowContainer wire status

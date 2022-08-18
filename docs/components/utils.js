@@ -3,14 +3,22 @@
 const hl = document.querySelector("#helpLog");
 
 
-
-export async function getJson(url, displayColors ) {
+export async function getJSON(url, callBack) {
   helpLog( "Fetching : " + url );
-      fetch(url)
-  .then((response) => response.text())
-  .then((daa) =>{ helpLog( data);  displayColors( data);});
-     
-    } // getJson
+try {
+  fetch(url)
+  .then((response) => response.json())
+
+  .then((data) => callBack(data));
+
+} catch(e) {
+hl("getJSON Error ()" + url + "): " + e.message);
+} //catch
+} // getJSON(url, callback)
+  
+
+
+
 
 const getSkipToContent = () => {return document.body.querySelector( "#layoutSkipToContent");};
 
