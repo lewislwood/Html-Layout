@@ -11,6 +11,7 @@ let colorNames = [];
 let tmr ;
 export async function renderColors(){
 hl( "fetching data");
+hl("Variables has loaded: " + csv.hasLoaded());;
 if (csv.names!== undefined) {
 displayColors( 0);
 } else {
@@ -28,6 +29,7 @@ if (e < 3) {     tmr = setTimeout(displayColors, 300, e + 1);};
     return ;
   } // colorNames = null
   hl("displaying color colorNames.at.apply.");
+  hl("Variables loaded: " + csv.hasLoaded());
   colorNames = csv.names;  
   var val  = csv.names;
   const p = document.getElementById("myJson");
