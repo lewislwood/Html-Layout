@@ -1,6 +1,8 @@
 
 
 const hl = document.querySelector("#helpLog");
+let btnClearLogSet = false;
+
 
 
 export async function getJSON(url, callBack) {
@@ -110,7 +112,9 @@ export const helpLog = (message) => {
     console.log("HelpLog: ", message);
 
     try {
+      
     if (helpLogExists()) {
+      if ( btnClearLogSet !== true)  { setClearLogButton();};
         const cur = hl.innerHTML;
       hl.innerHTML = message + "<br/>" +cur;
     } // if 
@@ -120,6 +124,16 @@ export const helpLog = (message) => {
          alert(e.message);
         }
 } // HelpLog
+
+const setClearLogButton = () => {
+btnClearLogSet = true;
+const btn = document.getElementById("clearHelpLog");
+
+if ( btn !== null) {
+  btn.onclick = clearHelpLog;
+} // if if btn ClearLog found
+
+} // setClearLogButton
 
 
 export const helpLogExists = () =>  {
