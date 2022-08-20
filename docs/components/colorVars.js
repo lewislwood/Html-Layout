@@ -1,9 +1,10 @@
 import {helpLog as hl, getJSON} from "./utils.js";
+import { colorDetails } from "./colorDetails.js";
 
 
 
 
-"use strict"
+"use strict";
 
 /*  
    Color Css Vars Class encapsulation
@@ -14,6 +15,7 @@ names ;
 variables;
 select;
 hs;
+details;
 constructor() {
 try {
     this.hs = hl;
@@ -21,6 +23,8 @@ try {
     const lv = (data) => {        this.variables = data;};
     getJSON("../data/colorNames.json", ln)
     getJSON("../data/ColorDefaults.json", lv)
+
+    this.details = new colorDetails();
 } catch(e) {
     hl("cssColorVar constructor error: "+ e.message)
 }
@@ -81,7 +85,9 @@ hl("Color Vars failed to load, Connected is aborting..");
         // hl("Redy to connect");
 this.select = root.querySelector("#colorVariableSelect");
 if (this.select === undefined) { hl("color var listbox not found.");};
+this.details.connected(root);
 this.LoadColorVars();
+this.details.names = this.names;
 
 
 
@@ -107,7 +113,6 @@ this.hs("Color Variables Loaded by Lewis");
 const det = (e) => {this.setDetails(e);};
 
 document.addEventListener( "input", det)
-hl("selct id: " + s.id);
 
 } catch(e) {
 hl("colorVArs LoadColorVars error: " + e.message);
