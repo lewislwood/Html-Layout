@@ -19,7 +19,9 @@ export const footerStyle = `
   margin-bottom: 10px;
 }
 .poweredLink {
-  font-size : smaller;
-  font-weight: 600;
+  font-weight: 700;
+  padding-right : 10px;
+  text-decoration-line: underline;
+  color: var( --footer_fg);
 }
 `
