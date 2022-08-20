@@ -3,6 +3,8 @@ import { footerStyle} from "./styles/footerStyle.js";
 import lwNavBar from "./navbar.js";
 import lwAddress from "./address.js";
 
+"use strict";
+
 function lwFooter () {
   lwNavBar();
 lwAddress()  
@@ -37,7 +39,7 @@ if( fOptions.address !== "false") {
 const lwAddress = document.createElement('lw-address');
 footer.appendChild(lwAddress);
 } // if address
-
+footer.appendChild( this.poweredBy());
 
 shadow.appendChild(footer);
 
@@ -59,6 +61,21 @@ hl( "Footer creation error: " + e.message);
           a = a.toLowerCase();
           return a; 
           } // defaultAttribute
+
+          poweredBy() {
+const c= document.createElement("span");
+c.setAttribute("class", "poeredContainter")
+c.setAttribute("id", "poweredContainter")
+const l = document.createElement("a");
+l.setAttribute("class", "poweredLink");
+l.setAttribute("href", "https://blindheroes.org/about-me/");
+l.setAttribute("tooltip", "Opens BlindHeroes.org in a new tab.")
+l.setAttribute("target", "_blank");
+c.appendChild(l);
+l.textContent = "Powered by Lewis Wood";
+return c;
+          } // PoweredBy
+
           
   }); // class lw-Footer
 }; // lwFooter
