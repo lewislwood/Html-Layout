@@ -69,10 +69,22 @@ c.setAttribute("id", "poweredContainter")
 const l = document.createElement("a");
 l.setAttribute("class", "poweredLink");
 l.setAttribute("href", "https://blindheroes.org/about-me/");
-l.setAttribute("tooltip", "Opens BlindHeroes.org in a new tab.")
+l.setAttribute("title", "Opens BlindHeroes.org in a new tab.")
+l.setAttribute("aria-label", "Powered by Lewis Wood  Opens BlindHeroes.org in a new tab.")
 l.setAttribute("target", "_blank");
 c.appendChild(l);
 l.textContent = "Powered by Lewis Wood";
+
+const r = document.createElement("a");
+r.setAttribute("class", "poweredLink");
+r.setAttribute("href", "https://github.com/lewislwood/Html-Layout");
+r.setAttribute("title", "Opens site repository")
+r.setAttribute("aria-label", "Opens site GitHub Repository in new window or tab.")
+r.setAttribute("target", "_blank");
+c.appendChild(r);
+l.textContent = "Powered by Lewis Wood";
+
+
 return c;
           } // PoweredBy
 

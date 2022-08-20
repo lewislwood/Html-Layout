@@ -3,6 +3,7 @@ import {helpLog as hl, getCssVar, setCssVar , getAllCSSVariableNames} from "./ut
 import {cssVars, isColorVar, newColor   } from "../data/cssVarData.js";
 
 
+"use strict";
 // Object holds reference to Left, content, Right Panels
 const panelList = { "left": null, "content": null, "right": null};
 const statusList = { "left": null, "content": null, "right": null, "timer": null}
