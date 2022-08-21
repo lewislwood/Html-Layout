@@ -13,12 +13,18 @@ let colorNames = [];
 
 let tmr ;
 export async function renderColors(){
+try {
+// testContainer.appendChild( GetFetchTest());
+testContainer.appendChild( csv.getListBox());
+testContainer.appendChild( csv.getDetailsContainer());
+ // Add the status update
+ testContainer.appendChild(getStatusObject() );
 
-  // testContainer.appendChild( GetFetchTest());
-  testContainer.appendChild( csv.getListBox());
-  testContainer.appendChild( getStatusObject ());
+document.addEventListener('DOMContentLoaded', (event) => { connectEveryThing(event);});
 
-  document.addEventListener('DOMContentLoaded', (event) => { connectEveryThing(event);});
+} catch(e) {
+  hl("RenderColors error: " + e.message);
+} // catch
   
 } // renderColors
 let helpStatus = null;
@@ -53,6 +59,7 @@ initStatus ();
 csv.hs = hs;
 
 csv.connected(testContainer);
+
 } // connectEveryThing
 
 

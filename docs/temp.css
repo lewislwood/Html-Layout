@@ -1,0 +1,51 @@
+:root {
+    background-color: black;
+    color: white;
+}
+.itemC1 {
+background-color: lime;
+COLOR:black;
+}
+#ITEMc2 {
+    background-color: SILVER;
+COLOR: BLACK;
+}
+.listContainer {
+    display: block;
+    width: 100%;
+}
+
+.gridContainer {
+    display: grid;
+    grid-gap: 10px;;
+    grid-template-columns: repeat(2, 3Ifr);
+    grid-template-rows: 1.1em;
+  }
+  .gridItem{
+    width: 30%;
+  }
+#grid {
+    display: grid;
+    grid-gap: 20px;;
+    height: 100%;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: 100%;
+  }
+  
+  #item1 {
+    background-color: purple;
+  }
+  
+  #item2 {
+    background-color: #000080;
+    color: sunshine;
+    font-size: 1em;
+    font-weight: 750;
+    grid-column: 2 / 5;
+  }
+  
+  #item3 {
+    background-color: purple;
+    grid-column: span 2 / 7;
+  }
+  

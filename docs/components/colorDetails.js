@@ -23,13 +23,20 @@ this.varsList = "xyz";
 hl("colorDetails constructor error: " + e.message);
 } // catch
 }; // constructor
+
+// getContainerObjects returns the div with all radios & comboboxes
+getContainerObjects() {
+hl("Getting details container");
+const div = document.createElement("div");
+
+return div;
+}; // getContainerObjects
 // Load up the combo boxes
 LoadColorVars() {
 hl("Loading Color Details");
 };  // loadColorVars
 connected(root) {
 hl("Connected Details.");
-this.LoadColorVars();
 this.LoadColorVars();
 } // connected
 

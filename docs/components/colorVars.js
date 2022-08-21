@@ -15,16 +15,24 @@ names ;
 variables;
 select;
 hs;
+tmrDetails = null;
+keyDetail = "";//  Key value to fill details
+timeDetail = 0; // Used to to delay details refresh
 details;
+
 constructor() {
 try {
+    this.tmrDetails = null; 
+
     this.hs = hl;
+    
+    this.details = new colorDetails();
     const ln = (data) => {        this.names = data;};
     const lv = (data) => {        this.variables = data;};
     getJSON("../data/colorNames.json", ln)
     getJSON("../data/ColorDefaults.json", lv)
 
-    this.details = new colorDetails();
+    
 } catch(e) {
     hl("cssColorVar constructor error: "+ e.message)
 }
@@ -56,6 +64,14 @@ hl( "ColorVars getListBox Error: " + e.message);
 return div;
 } // getListBox
 
+// GetDetails container objects
+getDetailsContainer() {
+    const d = this.details;
+    const o = d.getContainerObjects();
+    hl("Details object: " + o);
+
+return o;
+}; // getDetailsContainer
 makeOption( text, value) {
     const o = document.createElement("option")
     o.setAttribute("value", value);
@@ -110,9 +126,9 @@ const s = this.select ;
     const vs = this.variables;
 vs.forEach( cv => { s.appendChild(this.makeOption(cv.name, cv.name));});
 this.hs("Color Variables Loaded by Lewis");
-const det = (e) => {this.setDetails(e);};
+const det = (e) => {this.eventDetails(e);};
 
-document.addEventListener( "input", det)
+document.addEventListener( "click", det)
 
 } catch(e) {
 hl("colorVArs LoadColorVars error: " + e.message);
@@ -120,9 +136,41 @@ hl("colorVArs LoadColorVars error: " + e.message);
 
 } // loadColorVars
 
+// trying this
+async eventDetails(e) {
+try {
+    this.keyDetail  = e.target.value;    
+    const today = new Date();
+    this.timeDetail = today.getMilliseconds(); 
+    const el = 450;  // Timer elapse
+    const det = (tm, key) => { this.setDetails( tm, key);};
+    this.tmrDetails = setTimeout(det, el, el,  this.keyDetail); // timeout elapse and as a parameter
+} catch(err) {
+hl("eventDetails error: " + err.message);
+} // catch
+
+    
+} // eventDetails
+
 // Event setDetails
-setDetails (e) {
-this.hs( "You selected: " + e.target.value);
-} // setDetails
+async setDetails (tm, key  ) {
+    try {
+        // Only if this timeout is for this key
+        if (this.keyDetail === key) {
+        const today = new Date(); 
+        // Try to find out if this timeout is within the tm set
+        const el = Math.abs( Math.abs( today.getMilliseconds() - this.timeDetail) - tm); 
+        // check if within reason for timeout....
+        if (el < 50) {
+
+            const m = "You selected " + key ;
+        //  this.hs( m);
+         hl(m);
+        }; // if elapsed diff is reasonable
+    }; // if timeout is for the current keyDetail
+    } catch (err) {
+        hl("colorvars setDetails error: " + err.message);
+    } // catch
+    } // setDetails
 
 } // class colorCssVars  
