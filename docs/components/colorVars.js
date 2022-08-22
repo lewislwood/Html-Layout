@@ -128,7 +128,10 @@ vs.forEach( cv => { s.appendChild(this.makeOption(cv.name, cv.name));});
 this.hs("Color Variables Loaded by Lewis");
 const det = (e) => {this.eventDetails(e);};
 
-document.addEventListener( "click", det)
+s.addEventListener( "input", det)
+//change it  to click and Jaws stops working.
+// NVDA does no handle aria-label
+// Thus abandoning...
 
 } catch(e) {
 hl("colorVArs LoadColorVars error: " + e.message);
