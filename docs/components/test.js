@@ -1,4 +1,4 @@
-import {helpLog as hl, getJSON} from "./utils.js";
+import {helpLog as hl, getJSON, rootElement } from "./utils.js";
 import {colorCssVars  } from "./colorVars.js";
 
 
@@ -8,13 +8,13 @@ import {colorCssVars  } from "./colorVars.js";
 
 const testContainer = document.getElementById("testContainer");
 
-const csv = new colorCssVars  ;
+ const csv = new colorCssVars  ;
 let colorNames = [];
 
 let tmr ;
 export async function renderColors(){
 try {
-// testContainer.appendChild( GetFetchTest());
+  // testContainer.appendChild( GetFetchTest());
 testContainer.appendChild( csv.getListBox());
 testContainer.appendChild( csv.getDetailsContainer());
  // Add the status update

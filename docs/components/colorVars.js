@@ -1,4 +1,4 @@
-import {helpLog as hl, getJSON} from "./utils.js";
+import {helpLog as hl, getJSON, getCssVar  as getRootVar} from "./utils.js";
 import { colorDetails } from "./colorDetails.js";
 
 
@@ -13,7 +13,7 @@ import { colorDetails } from "./colorDetails.js";
 export class colorCssVars   {
 names ;
 variables;
-select;
+listBox;
 hs;
 tmrDetails = null;
 keyDetail = "";//  Key value to fill details
@@ -24,20 +24,53 @@ constructor() {
 try {
     this.tmrDetails = null; 
 
+    // Set it to HelpLog until caller decides otherwise.
     this.hs = hl;
     
     this.details = new colorDetails();
     const ln = (data) => {        this.names = data;};
-    const lv = (data) => {        this.variables = data;};
+    const lv = (data) => {        this.cleanUpColorVars(data);};
     getJSON("../data/colorNames.json", ln)
     getJSON("../data/ColorDefaults.json", lv)
 
     
 } catch(e) {
     hl("cssColorVar constructor error: "+ e.message)
-}
-
+}; // catch
 } // constructor
+
+cleanUpColorVars( data) {
+const vars = data;
+const parents = [];
+const pn = [];
+vars.forEach((e) => {
+    if ((e.parent_fg.trim() === "") || (e.parent_bg.trim() === "")) {
+        parents.push(e);
+    };
+}); // foreach
+parents.forEach((c) => {
+if (c.parent_fg.trim() === "") { c.fg =  this.getRootValue( c, "fg");};
+if (c.parent_bg.trim() === "") {c.bg = this.getRootValue( c,  "bg");};
+}); //foreach parents
+    this.variables = vars;
+}; //  cleanUpColorVars
+
+
+getRootValue(  cssVar, suffix) {
+    let value = (( suffix === "fg" ? cssVar.fg : cssVar.bg))
+
+    try {
+        const cv = "--" + cssVar.name + "_" + suffix;
+        if (value.trim() === "") {
+            value = getRootVar(cv);
+            
+    };//  value empty
+
+    } catch (e) {
+hl("colorVars getRootVar error: " + e.message); 
+    } // catch
+    return value;
+}; // getRootValues
 
 getListBox() {
     const div = document.createElement("div");
@@ -50,11 +83,10 @@ getListBox() {
         div.appendChild(h);
         
         const s = document.createElement("select");        
-        s.setAttribute("id", "colorVariableSelect");
+        s.setAttribute("id", "lbColorVariable");
         s.setAttribute("aria-labeledby", "colorVarsHeader");
-        s.setAttribute("class","colorVrSelect");
+        s.setAttribute("class","colorVarListBox");
         s.setAttribute("size", "6");
-        s.appendChild( this.makeOption("Placeholder", "place"));
         div.appendChild(s);
         
         
@@ -72,13 +104,27 @@ getDetailsContainer() {
 
 return o;
 }; // getDetailsContainer
-makeOption( text, value) {
-    const o = document.createElement("option")
-    o.setAttribute("value", value);
-    o.setAttribute("aria-label", text)
-    o.textContent = text;
-    return o;
-} //makeOption
+
+makeListItem( text, value) {
+    const li  = document.createElement("li")
+    try {
+
+        const sp = document.createElement("span");
+        sp.setAttribute("class", "colorVarSpan")
+        const a = document.createElement("a");
+        a.setAttribute("name", "colorVar");
+        a.setAttribute("value", value);
+        a.textContent = text;
+        const det = (e) => { this.setDetails(e,  value);}
+    
+        sp.appendChild(a);
+        li.appendChild(sp);;
+    } catch(e) {
+        hl("colorVars makeListItem error: " + e.message);
+    } // catch
+
+    return li;
+} // makeListItem
 
 // Loaded Color Names and Color Defaults/variables
 hasLoaded() {
@@ -90,17 +136,17 @@ connected(root, tries = 0) {
 // hl("Color Vars Connected called.");
 try {
      if ( ! this.hasLoaded()) {
-        if ( tries < 5 ) {
+        if ( tries < 10 ) {
 const tryAgain = (r, t) =>  { this.connected(r, t);};
 // hl("Connected waiting for load of colorVars trying again.. " + tries)
-setTimeout(tryAgain, 100, root, ++tries );
+setTimeout(tryAgain, 200, root, ++tries );
         } else { 
 hl("Color Vars failed to load, Connected is aborting..");
      } // tries
     } else {
         // hl("Redy to connect");
-this.select = root.querySelector("#colorVariableSelect");
-if (this.select === undefined) { hl("color var listbox not found.");};
+this.listbox = root.querySelector("#lbColorVariable");
+if (this.listbox === undefined) { hl("color var listbox not found.");};
 this.details.connected(root);
 this.LoadColorVars();
 this.details.names = this.names;
@@ -115,23 +161,11 @@ hl( "connected colorVars error: " + e.message);
 
 LoadColorVars() {
     try {
-// hl("Loading color Vars");
-const s = this.select ;
-        const options = Array.from(s.options);
-        // Remove any placeholder options
-        options.forEach(option => { 
-            option.remove();
-            option.selected = false;
-    }); // forEach
+hl("Loading color Vars");
+const lb = this.listbox;
     const vs = this.variables;
-vs.forEach( cv => { s.appendChild(this.makeOption(cv.name, cv.name));});
+vs.forEach( cv => {    lb.appendChild(this.makeListItem(cv.name, cv.name));}); 
 this.hs("Color Variables Loaded by Lewis");
-const det = (e) => {this.eventDetails(e);};
-
-s.addEventListener( "input", det)
-//change it  to click and Jaws stops working.
-// NVDA does no handle aria-label
-// Thus abandoning...
 
 } catch(e) {
 hl("colorVArs LoadColorVars error: " + e.message);
