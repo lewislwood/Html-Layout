@@ -21,12 +21,43 @@ testContainer.appendChild( csv.getDetailsContainer());
  testContainer.appendChild(getStatusObject() );
 
 document.addEventListener('DOMContentLoaded', (event) => { connectEveryThing(event);});
+// window.addEventListener('load', (event) => {
+  // hl('page is fully loaded');
+  // myTest();
+// });
 
 } catch(e) {
   hl("RenderColors error: " + e.message);
 } // catch
   
 } // renderColors
+const myTest = () => {
+  const [n, s]  = myparse ("--header_fg:);")
+  hl("Lewis parse test: " + n + "  >" + s);
+}
+
+
+
+const myparse = ( cvar) => {
+const cn = cvar.trim().replace(/^--/, "");
+const iSuffix = cn.search(/(?<=_)[f|b]g/);
+const  ll = (name.length - 3 );
+try {
+if (iSuffix != -1) {
+const suffix = cn.substr(iSuffix);
+const n = cn.substr(0,  iSuffix - 1)
+return [n, suffix];
+} else {
+  return [cn, ""];
+}; // if has suffix else
+
+}   catch(e) {
+  hl("colorVar.parseColorVar error: " + e.message);
+}; // catch
+}    ; // parseColorVar
+
+
+
 let helpStatus = null;
 const initStatus = () => { 
   helpStatus = document.getElementById("helpStatus"); 

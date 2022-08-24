@@ -210,4 +210,63 @@ async setDetails (tm, key  ) {
     } // catch
     } // setDetails
 
+
+    // Will find the value for the color specified. Searches parents until found.
+    getNewCssValue( name, suffix, tries = 0) {
+try {const vars = this.variables;
+  const val = vars.find( e =>  e.name === name );
+if (val !== undefined) {
+    let parent, color;
+if (suffix === "fg") {
+color = val.fg;
+parent = val.parent_fg;
+} else {
+    color = val.bg;
+    parent = val.parent_bg;
+} // suffix if fg  or bg
+// Now test if color is set or parent is set
+if (color.trim() === "") {
+    // No color found now check recursion via tries
+    if (tries > 12) {
+        hl("Circular references abortingAborting color get: " + name);
+        return "";
+    } else {
+        // Keep looking down the parent for the color
+        const [ n, s] = this.parseColorVar( parent);
+        return this.getNewCssValue( n, s, ++tries);
+    }; // tries test for abort or keep looking
+} else { 
+    // Found the color
+    return color;
+} ;  
+} else {  
+    // invalid Css Color varialbe not found in list
+hl( name + "_" + suffix + "  was not found...");
+    return "";
+}; // if color found in list
+} catch(e) {
+hl("colorVar.ewCssValue error: " + e.message);
+}; // catch
+    }; //getNewCssValue
+
+// parseColorVar returns [ name, suffix]
+    parseColorVar( cVar) {
+        const cn = cVar.trim().replace(/^--/, "");
+const iSuffix = cn.search(/(?<=_)[f|b]g/);
+const  ll = (name.length - 3 );
+try {
+if (iSuffix != -1) {
+const suffix = cn.substr(iSuffix);
+const n = cn.substr(0,  iSuffix - 1)
+return [n, suffix];
+} else {
+  return [cn, ""];
+}; // if has suffix else
+
+}   catch(e) {
+  hl("colorVar.parseColorVar error: " + e.message);
+}; // catch
+    }    ; // parseColorVar
+
+
 } // class colorCssVars  
