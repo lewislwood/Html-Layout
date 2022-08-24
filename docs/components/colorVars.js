@@ -13,6 +13,7 @@ import { colorDetails } from "./colorDetails.js";
 export class colorCssVars   {
 names ;
 variables;
+computedVariables = [];
 listBox;
 hs;
 tmrDetails = null;
@@ -127,7 +128,7 @@ makeListItem( text, value) {
 } // makeListItem
 
 // Loaded Color Names and Color Defaults/variables
-hasLoaded() {
+hasLoaded() {   
 return ( (this.names !== undefined) && ( this.variables !== undefined));
 } // hasLoaded
 
@@ -148,17 +149,22 @@ hl("Color Vars failed to load, Connected is aborting..");
 this.listbox = root.querySelector("#lbColorVariable");
 if (this.listbox === undefined) { hl("color var listbox not found.");};
 this.details.connected(root);
+// compute all variables..
+this.setComputedAllVariables();
 this.LoadColorVars();
 this.details.names = this.names;
 
 
 
     } // if ! hasLoaded
-} catch(e) {
+} catch(e) 
+{
 hl( "connected colorVars error: " + e.message);
 } // catch
+
 } // connected
 
+// Loading ListbBox Color Variables
 LoadColorVars() {
     try {
 hl("Loading color Vars");
@@ -209,6 +215,42 @@ async setDetails (tm, key  ) {
         hl("colorvars setDetails error: " + err.message);
     } // catch
     } // setDetails
+
+
+// Will help set and populate computedVariables array
+setComputedAllVariables() {
+    try {
+        // Force recalc of all computedVarables
+this.computedVariables.length = 0;        
+        const cvars = this.variables;
+        cvars.foreach((cv) => {
+             this.getNewCssValue(cv.name, "fg")
+             this.getNewCssValue(cv.name, "bg")
+        }); foreach
+    } catch(e) {
+        hl("colorVars.setComputedAllVariables error: " + e.message);
+    }; // catch
+}; // setComputedAllVariables
+
+
+// Sets the computed variable to the specified value
+ setComputedVariable( colorName, suffix, value) {
+try {
+    const cn = colorName.toUpperCase();
+    const cVars = this.computedVariables;
+    let cv = cVars .find((v) => { return ( v.name === cn);}) ;
+
+
+    if (cv === undefined) {
+        cv = { "name": cn, "fg": "", "bg": ""};
+        this.computedVariables.push(cv);
+    };
+if (suffix === "fg") { cv.fg = value;}
+else { cv.bg = value; };
+} catch(e) {
+hl("colorVar.setComputedVariable error: " + e.message);
+}; // catch
+ }; // setComputedVariable
 
 
     // Will find the value for the color specified. Searches parents until found.
