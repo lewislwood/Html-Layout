@@ -15,6 +15,7 @@ names ;
 variables;
 computedVariables = [];
 listBox;
+lbItems = []; // Actual Items in listBox, used for styling
 hs;
 tmrDetails = null;
 keyDetail = "";//  Key value to fill details
@@ -83,11 +84,11 @@ getListBox() {
         h.setAttribute("id","colorVarsHeader");
         div.appendChild(h);
         
-        const s = document.createElement("select");        
+        const s = document.createElement("ul");        
         s.setAttribute("id", "lbColorVariable");
-        s.setAttribute("aria-labeledby", "colorVarsHeader");
+        // s.setAttribute("aria-labeledby", "colorVarsHeader");
         s.setAttribute("class","colorVarListBox");
-        s.setAttribute("size", "6");
+        // s.setAttribute("size", "6");
         div.appendChild(s);
         
         
@@ -109,6 +110,7 @@ return o;
 makeListItem( text, value) {
     const li  = document.createElement("li")
     try {
+        // hl("Making item : " +text )
 
         const sp = document.createElement("span");
         sp.setAttribute("class", "colorVarSpan")
@@ -127,6 +129,70 @@ makeListItem( text, value) {
     return li;
 } // makeListItem
 
+// setAllListStyles with class name=colorVar
+// Should only need to reload when initially connected. Calls setStyle for eacth listItem
+setAllListStyles( reLoad = true) {
+try {
+    const lbI = this.lbItems;
+    if ((reLoad === true) || ( lbI.length === 0 )){ 
+        lbI.slice(0);
+    } // Reload
+const lb = this.listBox;
+const qs = lb.querySelectorAll('.colorVarSpan  a');  //.colorVarSpan //[name*="colorVa"r]
+
+const els = Array.from( qs); 
+els.forEach( (v) => {
+const value = v.getAttribute("value");
+const item = { "name": value, "item": v};
+lbI.push( item);
+this.setListStyle(value, item);
+
+}); // forEach
+
+} catch(e) {
+hl("colorVars.setAllListStyles error: " + e.message); 
+}; //catch
+
+}; // setAllListStyles
+
+
+// getListItem
+getListItem( colorName) {
+    try {
+const lbi = this.lbItems;
+return lbi.forEach( v => { (v.name === colorVar)});
+    } catch(e) {
+hl( "colorVar.getListItem error: " + e.message);
+    }; //catch
+
+}; // getListItem
+
+// setListStyle Sets for a listItem
+// for optimizationthe lbItem object can be provided
+setListStyle( colorName, lbItem = null) {
+    try {
+        const lbi = (( lbItem !== null) ? lbItem : this.getListItem(colorName) );
+if (lbi !== undefined) {
+    const el = lbi.item;
+const cv = this.getComputedVariable(colorName);
+const style = `
+background-color: ${cv.bg};
+color: ${cv.fg};
+`;
+el.setAttribute("style", style);
+
+} else {
+hl( "colorVar.setListStyle not found for " + colorName)
+};
+
+
+    } catch(e) {
+hl("colorVar.setListStyle error: " + e.message);
+    }; // catch
+
+}; // setListStyle
+
+
 // Loaded Color Names and Color Defaults/variables
 hasLoaded() {   
 return ( (this.names !== undefined) && ( this.variables !== undefined));
@@ -134,7 +200,7 @@ return ( (this.names !== undefined) && ( this.variables !== undefined));
 
 // Connectedd... Should call after DOM has loaded
 connected(root, tries = 0) {
-// hl("Color Vars Connected called.");
+hl("Color Vars Connected called.");
 try {
      if ( ! this.hasLoaded()) {
         if ( tries < 10 ) {
@@ -146,8 +212,8 @@ hl("Color Vars failed to load, Connected is aborting..");
      } // tries
     } else {
         // hl("Redy to connect");
-this.listbox = root.querySelector("#lbColorVariable");
-if (this.listbox === undefined) { hl("color var listbox not found.");};
+this.listBox = root.querySelector("#lbColorVariable");
+if (this.listBox === undefined) { hl("color var listbox not found.");};
 this.details.connected(root);
 // compute all variables..
 this.setComputedAllVariables();
@@ -168,9 +234,11 @@ hl( "connected colorVars error: " + e.message);
 LoadColorVars() {
     try {
 hl("Loading color Vars");
-const lb = this.listbox;
+const lb = this.listBox;
     const vs = this.variables;
 vs.forEach( cv => {    lb.appendChild(this.makeListItem(cv.name, cv.name));}); 
+const sls = () => { this.setAllListStyles(true);}
+setTimeout( sls, 700);
 this.hs("Color Variables Loaded by Lewis");
 
 } catch(e) {
@@ -220,13 +288,12 @@ async setDetails (tm, key  ) {
 // Will help set and populate computedVariables array
 setComputedAllVariables() {
     try {
-        // Force recalc of all computedVarables
-this.computedVariables.length = 0;        
         const cvars = this.variables;
-        cvars.foreach((cv) => {
+
+        cvars.forEach((cv) => {
              this.getNewCssValue(cv.name, "fg")
              this.getNewCssValue(cv.name, "bg")
-        }); foreach
+        }); //foreach
     } catch(e) {
         hl("colorVars.setComputedAllVariables error: " + e.message);
     }; // catch
@@ -236,15 +303,7 @@ this.computedVariables.length = 0;
 // Sets the computed variable to the specified value
  setComputedVariable( colorName, suffix, value) {
 try {
-    const cn = colorName.toUpperCase();
-    const cVars = this.computedVariables;
-    let cv = cVars .find((v) => { return ( v.name === cn);}) ;
-
-
-    if (cv === undefined) {
-        cv = { "name": cn, "fg": "", "bg": ""};
-        this.computedVariables.push(cv);
-    };
+    const cv = this.getComputedVariable(colorName);
 if (suffix === "fg") { cv.fg = value;}
 else { cv.bg = value; };
 } catch(e) {
@@ -253,9 +312,46 @@ hl("colorVar.setComputedVariable error: " + e.message);
  }; // setComputedVariable
 
 
+ //  getComputedVariable, returns objec or makes new one
+ getComputedVariable( cName) {
+try {
+    const cn = cName.toUpperCase();
+    const cVars = this.computedVariables;
+    let cv = cVars .find((v) => { return ( v.name === cn);}) ;
+
+    if (cv === undefined) {
+        cv = { "name": cn, "fg": "", "bg": ""};
+        this.computedVariables.push(cv);
+    };
+    return cv;
+} catch(e) {
+hl( "colorVars.getComputedVariable error: " + e.message);
+}; // catch
+ }; // getComputedVariable
+
+ // Gets the computed value returns empty string if not defined
+ getComputedValue( colorName, suffix) {
+    try {
+        // hl("getting computed value for : " + colorName);
+const cv = this.getComputedVariable(colorName);
+const value = ((suffix === "fg")? cv.fg : cv.bg) ;
+return value;
+    } catch(e) {
+hl( " colorVars.getComputedValue error: " + e.message);
+    }; // catch
+ }; // getComputedValue
+
+
     // Will find the value for the color specified. Searches parents until found.
     getNewCssValue( name, suffix, tries = 0) {
-try {const vars = this.variables;
+try {
+    const pv = this.getComputedValue(name, suffix);
+    if (pv !== "")  {
+// Already has a computed value return it.
+return pv;
+    };; 
+
+    const vars = this.variables;
   const val = vars.find( e =>  e.name === name );
 if (val !== undefined) {
     let parent, color;
@@ -279,15 +375,17 @@ if (color.trim() === "") {
     }; // tries test for abort or keep looking
 } else { 
     // Found the color
+    this.setComputedVariable(name,suffix, color);
     return color;
 } ;  
 } else {  
     // invalid Css Color varialbe not found in list
-hl( name + "_" + suffix + "  was not found...");
+hl("colorVars.getNewCssValue: " +  name + "_" + suffix + "  was not found... Outputting stack trace to console." );
+console.trace();
     return "";
 }; // if color found in list
 } catch(e) {
-hl("colorVar.ewCssValue error: " + e.message);
+hl("colorVar.newCssValue error: " + e.message);
 }; // catch
     }; //getNewCssValue
 
