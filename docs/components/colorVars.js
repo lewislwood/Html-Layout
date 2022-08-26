@@ -1,4 +1,5 @@
 import {helpLog as hl, getJSON, getCssVar  as getRootVar} from "./utils.js";
+import {colorVarStyle } from "./styles/colorVarStyles.js";
 import { colorDetails } from "./colorDetails.js";
 
 
@@ -40,6 +41,16 @@ try {
     hl("cssColorVar constructor error: "+ e.message)
 }; // catch
 } // constructor
+getStyleObject() {
+try {
+const st = document.createElement("style"); 
+st.textContent = colorVarStyle ;
+return st;
+} catch(e) {
+    hl("colorvar.getStyleObject error: " + e.message);
+}; // catch
+}; // getStyleObject
+
 
 cleanUpColorVars( data) {
 const vars = data;
@@ -178,7 +189,6 @@ const cv = this.getComputedVariable(colorName);
 const style = `
 background-color: ${cv.bg};
 color: ${cv.fg};
-width: 20em;
 `;
 const p = el.parentElement.parentElement;
 p.setAttribute("style", style);

@@ -14,6 +14,7 @@ let colorNames = [];
 let tmr ;
 export async function renderColors(){
 try {
+  testContainer.appendChild( csv.getStyleObject());
   // testContainer.appendChild( GetFetchTest());
 testContainer.appendChild( csv.getListBox());
 testContainer.appendChild( csv.getDetailsContainer());
