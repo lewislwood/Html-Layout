@@ -178,8 +178,10 @@ const cv = this.getComputedVariable(colorName);
 const style = `
 background-color: ${cv.bg};
 color: ${cv.fg};
+width: 20em;
 `;
-el.setAttribute("style", style);
+const p = el.parentElement.parentElement;
+p.setAttribute("style", style);
 
 } else {
 hl( "colorVar.setListStyle not found for " + colorName)
@@ -371,7 +373,9 @@ if (color.trim() === "") {
     } else {
         // Keep looking down the parent for the color
         const [ n, s] = this.parseColorVar( parent);
-        return this.getNewCssValue( n, s, ++tries);
+        const nc = this.getNewCssValue( n, s, ++tries);
+        this.setComputedVariable(name,suffix, nc);
+        return nc;
     }; // tries test for abort or keep looking
 } else { 
     // Found the color
