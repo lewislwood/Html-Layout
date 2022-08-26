@@ -12,7 +12,7 @@ Demonstrates a file structure similar to what is used by many developers on many
 Only exception is the "docs" folder which is typically named app or src, this was done to accomadate gitHub pages. GitHub Pages allows simple websites to be hosted. Just as this repositor is hosted. (see link below).
 #####  Page url 
 
-[HTML Layout Designer](https://lewislwood.github.io/Html-Layout/ )
+[HTML Layout Designer](E )
 
 
 Tasks to do
