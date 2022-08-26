@@ -32,8 +32,8 @@ try {
     this.details = new colorDetails();
     const ln = (data) => {        this.names = data;};
     const lv = (data) => {        this.cleanUpColorVars(data);};
-    getJSON("/data/colorNames.json", ln)
-    getJSON("/data/ColorDefaults.json", lv)
+    getJSON("data/colorNames.json", ln)
+    getJSON("data/ColorDefaults.json", lv)
 
     
 } catch(e) {
