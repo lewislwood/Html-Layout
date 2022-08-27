@@ -60,6 +60,7 @@ setHeading(text = "Edit color") {
     try {
 if (this.heading !== null) {
 this.heading.textContent = text;
+this.hs(text);
 };
     } catch(e) {
 hl("colorDetals.setHeading: " + e.message)

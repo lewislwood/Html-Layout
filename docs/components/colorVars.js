@@ -122,6 +122,7 @@ makeListItem( text, value) {
     const li  = document.createElement("li")
     try {
         // hl("Making item : " +text )
+        li.setAttribute("tabindex", "1");
 
         const sp = document.createElement("span");
         sp.setAttribute("class", "colorVarSpan")
@@ -171,7 +172,7 @@ hl("colorVars.setAllListStyles error: " + e.message);
 getListItem( colorName) {
     try {
 const lbi = this.lbItems;
-return lbi.forEach( v => { (v.name === colorVar)});
+return lbi.find( v => { (v.name === colorVar)});
     } catch(e) {
 hl( "colorVar.getListItem error: " + e.message);
     }; //catch
@@ -190,7 +191,7 @@ const style = `
 background-color: ${cv.bg};
 color: ${cv.fg};
 `;
-const p = el.parentElement.parentElement;
+const p = el.parentElement.parentElement; // anchor -> span -> li
 p.setAttribute("style", style);
 
 } else {
@@ -251,6 +252,8 @@ const lb = this.listBox;
 vs.forEach( cv => {    lb.appendChild(this.makeListItem(cv.name, cv.name));}); 
 const sls = () => { this.setAllListStyles(true);}
 setTimeout( sls, 700);
+const evl = (e) => { this.loadEvents(e);};
+setTimeout( evl, 1200);// Give styles time to create the list items
 this.hs("Color Variables Loaded by Lewis");
 
 } catch(e) {
@@ -258,6 +261,30 @@ hl("colorVArs LoadColorVars error: " + e.message);
     } // catch
 
 } // loadColorVars
+
+// Wires up the list of colors for event handling
+loadEvents() {
+try {
+    hl("Loading Event Handling..");
+const lbi = this.lbItems;
+lbi.forEach( (v) => { 
+const n = v.name;
+const h = "Edit " + n + " color";
+const d = this.details; // details object
+const dh = (e) => { hl(h);};
+const a = v.item;
+a.addEventListener( "focusin", dh);
+const li  = a.parentElement.parentElement; // anchor ->span->li
+li.addEventListener( "focusin", dh);
+
+
+}); // forEach
+} catch(e) {
+hl("colorVar.loadEvents error: " + e.message);
+}; // catch
+}; // LoadEvents
+
+
 
 // trying this
 async eventDetails(e) {
