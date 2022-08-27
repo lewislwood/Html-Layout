@@ -5,7 +5,7 @@ const menuList =
   { "name": "Web Components", "href": "index.html", "img": "", "title": "Component based Home"},
   { "name": "About", "href": "about.html", "img": "", "title": "About Company Page"},
   { "name": "Gallery", "href": "#Gallery", "img": "", "title": "Gallery Images"},
-  { "name": "DevOps", "href": "DevOps.html", "img": "", "title": "My Testing/ Staging page"}
+  { "name": "DevOps", "href": "index.html", "img": "", "title": "My Testing/ Staging page"}
 ]
 
 export default menuList
