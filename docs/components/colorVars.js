@@ -30,7 +30,7 @@ try {
     // Set it to HelpLog until caller decides otherwise.
     this.hs = hl;
     
-    this.details = new colorDetails();
+    this.details = new colorDetails(this);
     const ln = (data) => {        this.names = data;};
     const lv = (data) => {        this.cleanUpColorVars(data);};
     getJSON("data/colorNames.json", ln)
@@ -122,7 +122,7 @@ makeListItem( text, value) {
     const li  = document.createElement("li")
     try {
         // hl("Making item : " +text )
-        li.setAttribute("tabindex", "1");
+        // li.setAttribute("tabindex", "1");
 
         const sp = document.createElement("span");
         sp.setAttribute("class", "colorVarSpan")
@@ -227,11 +227,12 @@ hl("Color Vars failed to load, Connected is aborting..");
         // hl("Redy to connect");
 this.listBox = root.querySelector("#lbColorVariable");
 if (this.listBox === undefined) { hl("color var listbox not found.");};
-this.details.connected(root);
 // compute all variables..
 this.setComputedAllVariables();
 this.LoadColorVars();
 this.details.names = this.names;
+this.details.connected(root);
+
 
 
 
@@ -269,13 +270,11 @@ try {
 const lbi = this.lbItems;
 lbi.forEach( (v) => { 
 const n = v.name;
-const h = "Edit " + n + " color";
-const d = this.details; // details object
-const dh = (e) => { hl(h);};
+const de = (e) => { this.setDetails(n);  };
 const a = v.item;
-a.addEventListener( "focusin", dh);
-const li  = a.parentElement.parentElement; // anchor ->span->li
-li.addEventListener( "focusin", dh);
+a.addEventListener( "click", de);
+// const li  = a.parentElement.parentElement; // anchor ->span->li
+// li.addEventListener( "focusin", dh);
 
 
 }); // forEach
@@ -285,40 +284,10 @@ hl("colorVar.loadEvents error: " + e.message);
 }; // LoadEvents
 
 
-
-// trying this
-async eventDetails(e) {
+setDetails (colorName ) {
 try {
-    this.keyDetail  = e.target.value;    
-    const today = new Date();
-    this.timeDetail = today.getMilliseconds(); 
-    const el = 450;  // Timer elapse
-    const det = (tm, key) => { this.setDetails( tm, key);};
-    this.tmrDetails = setTimeout(det, el, el,  this.keyDetail); // timeout elapse and as a parameter
-} catch(err) {
-hl("eventDetails error: " + err.message);
-} // catch
-
-    
-} // eventDetails
-
-// Event setDetails
-async setDetails (tm, key  ) {
-    try {
-        // Only if this timeout is for this key
-        if (this.keyDetail === key) {
-        const today = new Date(); 
-        // Try to find out if this timeout is within the tm set
-        const el = Math.abs( Math.abs( today.getMilliseconds() - this.timeDetail) - tm); 
-        // check if within reason for timeout....
-        if (el < 50) {
-
-            const m = "You selected " + key ;
-        //  this.hs( m);
-         hl(m);
-        }; // if elapsed diff is reasonable
-    }; // if timeout is for the current keyDetail
-    } catch (err) {
+this.details.editColorDetail( colorName);
+}     catch(e) {
         hl("colorvars setDetails error: " + err.message);
     } // catch
     } // setDetails
