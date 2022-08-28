@@ -1,4 +1,5 @@
 import {helpLog as hl} from "./utils.js";
+import {colorDetailStyle } from "./styles/colorDetailStyles.js";
 
 
 "use strict";
@@ -47,7 +48,6 @@ hl("colorDetail.editColorDetail error: " + e.message);
 
 // getContainerObjects returns the div with all radios & comboboxes
 getContainerObjects() {
-hl("Getting details container");
 const div = document.createElement("div");
 div.setAttribute("class", "detailsContainer");
 div.setAttribute("id","detailContainter")
@@ -93,6 +93,18 @@ this.hs(text );
 hl("colorDetals.setHeading: " + e.message)
     }; // catch
 }; // setHeading
+
+getStyleObject() {
+    try {
+    const st = document.createElement("style"); 
+    st.textContent = colorDetailStyle ;
+    return st;
+    } catch(e){
+        hl("colorDetail.getStyleObjecterror: " + e.message); 
+    }; //catch
+    }; // getStyleObject
+
+
 
 
 }; // class colorDetails

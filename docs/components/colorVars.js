@@ -41,15 +41,28 @@ try {
     hl("cssColorVar constructor error: "+ e.message)
 }; // catch
 } // constructor
-getStyleObject() {
+
+// Will combine detail styles as well, your choice. Thus 2 different shadow roots if not combined.
+getStyleObject( DetailCombined = true) {
 try {
 const st = document.createElement("style"); 
-st.textContent = colorVarStyle ;
+let  styleText = colorVarStyle ;
+if (DetailCombined  === true) {
+    const ds = this.getDetailStyleObject();
+    styleText  = styleText  + ds.textContent;
+};
+st.textContent = styleText ; 
 return st;
 } catch(e) {
     hl("colorvar.getStyleObject error: " + e.message);
 }; // catch
 }; // getStyleObject
+
+getDetailStyleObject() {
+    const d = this.details;
+    hl("Detail object is " + d);
+    return d.getStyleObject();
+}; // getDetailStyleObject
 
 
 cleanUpColorVars( data) {
