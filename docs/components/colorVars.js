@@ -14,6 +14,7 @@ import { colorDetails } from "./colorDetails.js";
 export class colorCssVars   {
 names ;
 variables;
+
 computedVariables = [];
 listBox;
 lbItems = []; // Actual Items in listBox, used for styling
