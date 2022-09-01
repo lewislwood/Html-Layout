@@ -18,6 +18,7 @@ parent;
 current;
 container;
 heading;
+lbSuffix;  // ListBox fg/bg
 loading= true; // Disables auto event handling wile loading
 computedColor = { "fg": null, "bg": null  }; // quick access to computed values.
 Parents = { "fgName": "",  "fg": null,"bgName": "",  "bg": null };  // used to reset to default if they do not change color.
@@ -172,8 +173,66 @@ h.setAttribute("id", "detailHeading");
 h.setAttribute("tabindex", "0");
 h.textContent = "Edit the Details for Lewis ";
 div.appendChild(h);
+
+div.appendChild(this.makeSuffixRadios());
+
 return div;
 }; // getContainerObjects
+
+ makeSuffixRadios(    ) {
+try {
+// Radio Suffix fg_bg
+const div = document.createElement("div");
+div.setAttribute("class", "rdSuffixContainer");
+div.setAttribute("id","rdSuffixContainer");
+
+// FG Radio
+const spFG = document.createElement("span");
+spFG.setAttribute("class","spanSuffix");
+const lFG = document.createElement("label");
+lFG.setAttribute("class","labelRadios");
+lFG.setAttribute("id","lblFG");
+lFG.textContent  = "foreground";
+lFG.setAttribute("for","rdFG");
+const fg = document.createElement("input");
+fg.setAttribute("type","radio");
+
+fg.setAttribute("name","fg_bg");
+fg.setAttribute("id","rdFG");
+fg.setAttribute("aria-labeledby","lblFG");
+
+spFG.appendChild(lFG);
+spFG.appendChild(fg);
+
+
+// bG Radio
+const spBG = document.createElement("span");
+spBG.setAttribute("class","spanSuffix");
+const lBG = document.createElement("label");
+lBG.setAttribute("class","labelRadios");
+lBG.setAttribute("id","lblBG");
+lBG.textContent = "background";
+lBG.setAttribute("for","rdBG");
+const bg = document.createElement("input");
+bg.setAttribute("type","radio");
+bg.setAttribute("id","rdBG ");
+bg.setAttribute("name","fg_bg");
+        bg.setAttribute("value","bg");
+bg.setAttribute("aria-labeledby","lblBG");
+spBG.appendChild( lBG);
+spBG.appendChild(bg);
+fg.setAttribute("checked", "true");
+
+div.appendChild(spFG);
+div.appendChild(spBG);
+return div;
+} catch(e) {
+hl('colorDetails.makeSuffixRadios error: '+ e.message);
+}; //  catch
+}; // makeSuffixRadios 
+
+
+
 // Load up the combo boxes
 LoadColorVar() {
 try {
