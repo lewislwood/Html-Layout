@@ -8,7 +8,7 @@
     { "name": "address", "parent_fg":"footer_fg", "parent_bg":"footer_bg", "fg": "", "bg": "", "notes": "Address bar is the company address and resides in the footer. Typically inherits footer colors."},
 { "name": "about", "parent_fg":"main_fg", "parent_bg":"main_bg", "fg": "", "bg": "", "notes": "About page colors. Typically inherits from main colors."},
 { "name": "panel-side", "parent_fg":"", "parent_bg":"", "fg": "#00FF00", "bg": "#800080", "notes": "Side Panel color. Typically inHeritsfrom Header."},
-{ "name": "panel-left", "parent_fg":"panel-side_fg ", "parent_bg":"panel-side_bg ", "fg": "", "bg": "", "notes": "Lweft side Panel color. Typically inHeritsfrom side panel."},
-{ "name": "panel-right", "parent_fg":"panel-side_fg ", "parent_bg":"panel-side_bg ", "fg": "", "bg": "", "notes": "Right side Panel color. Typically inHeritsfrom side panel."},
+{ "name": "panel-left", "parent_fg":"panel-side_fg", "parent_bg":"panel-side_bg", "fg": "", "bg": "", "notes": "Lweft side Panel color. Typically inHeritsfrom side panel."},
+{ "name": "panel-right", "parent_fg":"panel-side_fg", "parent_bg":"panel-side_bg", "fg": "", "bg": "", "notes": "Right side Panel color. Typically inHeritsfrom side panel."},
 { "name": "panel-content", "parent_fg":"main_fg", "parent_bg":"main_bg", "fg": "", "bg": "", "notes": "Content panel may inHerit from main or custom, depending on you preferences."}
 ]

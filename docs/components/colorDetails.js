@@ -22,7 +22,7 @@ loading= true; // Disables auto event handling wile loading
 computedColor = { "fg": null, "bg": null  }; // quick access to computed values.
 Parents = { "fgName": "",  "fg": null,"bgName": "",  "bg": null };  // used to reset to default if they do not change color.
 fgChildren = []; // Current descendants of currentVar
-bgChildren = []; // Current descendants of currentVar
+bgChildren = []; // Current format: { 'name', "suffix"}
 listStylesUpdate = [];// List of variables to update list style. Reset just after update.
 // parent must be colorVar
 constructor(pColorVar) {
@@ -51,7 +51,7 @@ hl("colorDetail.editColorDetail error: " + e.message);
 
 }; // editColorDetail
 
- setCurrentVariable(  colorName ) {
+async  setCurrentVariable(  colorName ) {
 try {
 const vs = this.parent.variables;
 this.loading = true;
@@ -59,7 +59,10 @@ const cv = vs.find((v) => { return (v.name === colorName);});
 this.currentVar = cv;
 this.setHeading("editing " + cv.name);
 this.setParents();
-
+const fg = this.setChildren("fg");
+const bg = this.setChildren("bg");
+// Debugging...
+hl("Children: " + [JSON.stringify(this.fgChildren), JSON.stringify(this.bgChildren)].join(" | "))
 
 this.loading = false;
 } catch(e) {
@@ -67,7 +70,55 @@ hl('colorDetails.setCurrentVariable error: '+ e.message);
 }; //  catch
 }; // setCurrentVariable 
 
+ setChildren(  fg_bg="fg" ) {
+try {
+const colorName = this.currentVar.name + "_" + fg_bg;
+const children = this.getChildren(colorName);
+// Help debug the JSON file. spaces are common.
+// hl(fg_bg + " childeren found: " + children.length + " " + children.join(", "));
+const sfx = (( fg_bg === "fg") ? this.fgChildren : this.bgChildren); 
+sfx.slice(0);
+//Now parse children to name, suffix parts for quick setting color value
+const p = this.parent;
+children .forEach( ( cn) => {
+const [n, suffix] = p.parseColorVar(cn);
+sfx.push({ 'name': n, "suffix": suffix});
+}); // forEach
+// Debugging purposes...
+// if (sfx.length > 0 ) { hl( JSON.stringify( sfx));}
 
+
+
+} catch(e) {
+hl('colorDetails.setChildren error: '+ e.message);
+}; //  catch
+}; // setChildren 
+
+ getChildren(  colorName ) {
+try {
+const cvs = this.parent.variables;
+let children = [];
+cvs.forEach((v) => {
+    // hl( [colorName, v.parent_fg, v.parent_bg].join(","));
+    if (v.parent_fg === colorName) { children.push(v.name + "_fg");};
+    if (v.parent_bg === colorName) { children.push(v.name + "_bg");};
+}); // forEach
+if (children.length > 0) {
+  let rv = [];  
+children.forEach((p) => {
+const ch = this.getChildren (p);      
+children = [... children, ... ch]
+}); // forEach children
+}; // if children
+return children;
+
+
+
+} catch(e) {
+
+hl('colorDetails.getChildren error: '+ e.message);
+}; //  catch
+}; // getChildren 
 
 
 
