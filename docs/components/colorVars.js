@@ -61,7 +61,7 @@ return st;
 
 getDetailStyleObject() {
     const d = this.details;
-    hl("Detail object is " + d);
+    // hl("Detail object is " + d);
     return d.getStyleObject();
 }; // getDetailStyleObject
 
@@ -127,7 +127,7 @@ return div;
 getDetailsContainer() {
     const d = this.details;
     const o = d.getContainerObjects();
-    hl("Details object: " + o);
+    // hl("Details object: " + o);
 
 return o;
 }; // getDetailsContainer

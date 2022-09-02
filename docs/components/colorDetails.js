@@ -317,6 +317,8 @@ try {
     const c = this.container;
 this.heading = c.querySelector("#detailHeading"); // detailHeading
 this.hs = this.parent.hs;
+this.makeParentOPtions();
+
 } catch(e) {
 hl("colorDetail.lodColorVar error: " + e.message);
 }; // catch
@@ -366,7 +368,18 @@ hl('colorDetails.hasParent error: '+ e.message);
 }; //  catch
 }; // hasParent 
 
-    
+ makeParentOPtions(    ) {
+try {
+const p = this.parent.computedVariables ;
+p.sort( (a,b) => { return ((a.name > b.name)? 0 : -1); });
+hl("Sorted: " + [p[0].name, p[1].name, p[2].name].join(", "))
+
+} catch(e) {
+hl('colorDetails.makeParentOPtions error: '+ e.message);
+}; //  catch
+}; // makeParentOPtions 
+
+
 
 
 
