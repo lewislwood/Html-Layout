@@ -175,18 +175,92 @@ h.textContent = "Edit the Details for Lewis ";
 div.appendChild(h);
 
 div.appendChild(this.makeSuffixRadios());
+div.appendChild( this.makeColorRadios());
 
 return div;
 }; // getContainerObjects
 
- makeSuffixRadios(    ) {
+ makeColorRadios(    ) {
 try {
 // Radio Suffix fg_bg
+const div = document.createElement("div");
+div.setAttribute("class", "rdColorContainter");
+div.setAttribute("id","rdColorContainter");
+
+// custom Radio
+const spCU = document.createElement("span");
+spCU.setAttribute("class","spanColorRadio");
+const lCU = document.createElement("label");
+lCU.setAttribute("class","labelRadios");
+lCU.setAttribute("id","lblCU");
+lCU.textContent  = "Custom Color";
+lCU.setAttribute("for","rdCustom");
+const cu= document.createElement("input");
+cu.setAttribute("type","radio");
+
+cu.setAttribute("name","editColor");
+cu.setAttribute("id","rdCustom");
+cu.setAttribute("aria-labeledby","lblCU");
+
+spCU.appendChild(lCU);
+spCU.appendChild(cu);
+
+// parentRadioRadio
+const spPA= document.createElement("span");
+spPA.setAttribute("class","spanColorRadio");
+const lPA= document.createElement("label");
+lPA.setAttribute("class","labelRadios");
+lPA.setAttribute("id","lbspPAlPA");
+lPA.textContent  = "Parent Color";
+lPA.setAttribute("for","rdParent");
+const pa= document.createElement("input");
+pa.setAttribute("type","radio");
+
+pa.setAttribute("name","editColor");
+pa.setAttribute("id","rdParent");
+pa.setAttribute("aria-labeledby","lblPA");
+
+spPA.appendChild(lPA);
+spPA.appendChild(pa);
+
+// Named radio
+const spNA = document.createElement("span");
+spNA.setAttribute("class","spanColorRadio");
+const lNA= document.createElement("label");
+lNA.setAttribute("class","labelRadios");
+lNA.setAttribute("id","lblNamed");
+lNA.textContent  = "Named Color";
+lNA.setAttribute("for","rdNamed");
+const na = document.createElement("input");
+na.setAttribute("type","radio");
+
+na.setAttribute("name","editColor");
+na.setAttribute("id","rdNamed");
+na.setAttribute("aria-labeledby","lblNamed");
+
+spNA.appendChild(lNA);
+spNA.appendChild(na);
+
+
+div.appendChild(spCU);
+div.appendChild(spPA);
+div.appendChild(spNA);
+return div;
+} catch(e) {
+        
+hl('colorDetails.makeColorRadios error: '+ e.message);
+}; //  catch
+}; // makeColorRadios 
+
+
+ makeSuffixRadios(    ) {
+try {
+// Radio Suffix cu_bg
 const div = document.createElement("div");
 div.setAttribute("class", "rdSuffixContainer");
 div.setAttribute("id","rdSuffixContainer");
 
-// FG Radio
+//custom Radio
 const spFG = document.createElement("span");
 spFG.setAttribute("class","spanSuffix");
 const lFG = document.createElement("label");
@@ -201,28 +275,31 @@ fg.setAttribute("name","fg_bg");
 fg.setAttribute("id","rdFG");
 fg.setAttribute("aria-labeledby","lblFG");
 
-spFG.appendChild(lFG);
+    spFG.appendChild(lFG);
 spFG.appendChild(fg);
 
 
-// bG Radio
+
+// BG Radio
 const spBG = document.createElement("span");
 spBG.setAttribute("class","spanSuffix");
 const lBG = document.createElement("label");
 lBG.setAttribute("class","labelRadios");
 lBG.setAttribute("id","lblBG");
-lBG.textContent = "background";
+lBG.textContent  = "background";
 lBG.setAttribute("for","rdBG");
 const bg = document.createElement("input");
 bg.setAttribute("type","radio");
-bg.setAttribute("id","rdBG ");
-bg.setAttribute("name","fg_bg");
-        bg.setAttribute("value","bg");
-bg.setAttribute("aria-labeledby","lblBG");
-spBG.appendChild( lBG);
-spBG.appendChild(bg);
-fg.setAttribute("checked", "true");
 
+bg.setAttribute("name","fg_bg");
+bg.setAttribute("id","rdBG");
+bg.setAttribute("aria-labeledby","lblBG");
+
+spBG.appendChild(lBG);
+spBG.appendChild(bg);
+
+
+fg.setAttribute("checked", "true");
 div.appendChild(spFG);
 div.appendChild(spBG);
 return div;
@@ -279,7 +356,7 @@ getStyleObject() {
     }; //catch
     }; // getStyleObject
 
- hasParent(  fg_bg = 'fg' ) {
+ hasParent(  bgbgbg_bg = 'fg' ) {
 try {
     const cv = this.currentVar;
 const p = ((fg_bg === "fg") ? cv.parent_fg : cv.parent_bg);
