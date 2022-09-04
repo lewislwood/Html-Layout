@@ -16,9 +16,16 @@ hs;
 varsList = 0;
 parent;
 current;
-container;
-heading;
-lbSuffix;  // ListBox fg/bg
+container; // Main Color Detail Containter
+heading; // Heading for the container
+rdFG; // Foreground Radio 
+rdBG;// background radio
+rdCustom; // Custom Color Radio
+rdParent; // Parent Color radio
+rdNamed;  // Named Color radio
+cbColorLabel; // Label for Parent or Named Color comboboxes
+cbColorParent; // Parent color combobox
+cbColorNamed; // Named Colors combobox
 loading= true; // Disables auto event handling wile loading
 computedColor = { "fg": null, "bg": null  }; // quick access to computed values.
 Parents = { "fgName": "",  "fg": null,"bgName": "",  "bg": null };  // used to reset to default if they do not change color.
@@ -177,8 +184,43 @@ div.appendChild(h);
 div.appendChild(this.makeSuffixRadios());
 div.appendChild( this.makeColorRadios());
 
+div.appendChild( this.makeColorComboBoxes());
 return div;
 }; // getContainerObjects
+
+
+ makeColorComboBoxes(    ) {
+try {
+const div = document.createElement("div");
+div.setAttribute( "class", "cbColorContainer");
+div.setAttribute( "id", "cbColorContainer");
+
+// Label describe either or parent or Named or custom
+const lbl  = document.createElement("label");
+lbl.setAttribute( "class", "lblRadio");
+lbl.setAttribute( "id", "cbColorLabel");
+lbl.textContent = "Parent";
+div.appendChild(lbl);
+
+// cbParent color combobox
+const cbP = document.createElement("select");
+cbP.setAttribute( "class", "cbColorParent");
+cbP.setAttribute( "id", "cbColorParent");
+cbP.setAttribute( "aria-labeledby", "cbColorLabel");
+div.appendChild(cbP);
+
+// cbNamed color combobox
+const cbN = document.createElement("select");
+cbN.setAttribute( "class", "cbColorNamed");
+cbN.setAttribute( "id", "cbColorNamed");
+cbN.setAttribute( "aria-labeledby", "cbColorLabel");
+div.appendChild(cbN);
+
+return div;
+} catch(e) {
+hl('colorDetails.makeColorComboBoxes error: '+ e.message);
+}; //  catch
+}; // makeColorComboBoxes 
 
  makeColorRadios(    ) {
 try {
@@ -314,15 +356,45 @@ hl('colorDetails.makeSuffixRadios error: '+ e.message);
 LoadColorVar() {
 try {
     hl("Loading Color Details");
-    const c = this.container;
-this.heading = c.querySelector("#detailHeading"); // detailHeading
+this.queryControls();
+
 this.hs = this.parent.hs;
 this.makeParentOPtions();
-
 } catch(e) {
 hl("colorDetail.lodColorVar error: " + e.message);
 }; // catch
 };  // loadColorVar
+
+ queryControls(    ) {
+try {
+const c = this.container    ;
+this.heading = c.querySelector("#detailHeading"); // detailHeading
+if (this.heading  === null) { throw new Error("detailHeading not found."); };
+    this. rdFG = c.querySelector("#rdFG");
+    if (this.rdFG === null) { throw new Error("rdFG not found."); };
+
+    this. rdBG = c.querySelector("#rdBG");
+    if (this.rdBG === null) { throw new Error("rdBG not found."); };
+
+    this. rdCustom = c.querySelector("#rdCustom");
+    if (this.rdCustom === null) { throw new Error("rdCustom not found."); };
+
+    this. rdParent = c.querySelector("#rdParent");
+    if (this.rdParent === null) { throw new Error("rdParent not found."); };
+    this. rdNamed = c.querySelector("#rdNamed");
+    if (this.rdNamed === null) { throw new Error("rdNamed not found."); };
+
+    this. cbColorLabel = c.querySelector("#cbColorLabel");
+    if (this.cbColorLabel === null) { throw new Error("cbColorLabel not found."); };
+    this. cbColorParent = c.querySelector("#cbColorParent");
+    if (this.cbColorParent === null) { throw new Error("cbColorParent not found."); };
+    this. cbColorNamed = c.querySelector("#cbColorNamed");
+    if (this.cbColorNamed === null) { throw new Error("cbColorNamed found."); };
+    
+} catch(e) {
+hl('colorDetails.queryControls error: '+ e.message);
+}; //  catch
+}; // queryControls 
 
 
 connected(root) {
@@ -371,9 +443,28 @@ hl('colorDetails.hasParent error: '+ e.message);
  makeParentOPtions(    ) {
 try {
 const p = this.parent.computedVariables ;
+const cb = this.cbColorParent;
 p.sort( (a,b) => { return ((a.name > b.name)? 0 : -1); });
-hl("Sorted: " + [p[0].name, p[1].name, p[2].name].join(", "))
+//  hl("Sorted: " + [p[0].name, p[1].name, p[2].name].join(", "))
+const makeOption = (name, text, value) => {
+    const o = document.createElement("option");
+    o.setAttribute("value", value);
+    o.textContent = text;
+    return o;
 
+}; // makeOption
+const proper = (name) => { return (name.substr(0,1).toUpperCase() + name.substr(1)) ;}
+// make description with proper names
+const makeDesc = (name) => {
+const an = name.split("-");
+return an.map((n)=> { return proper(n)  } ).join(" ");
+}; // makeDesc
+
+cb.appendChild( makeOption("custom", " Custom", "custom") );
+   p.forEach((c) => { 
+    cb.appendChild(makeOption(c.name + "_fg", makeDesc(c.name) + " FG", c.fg)); 
+    cb.appendChild(makeOption(c.name + "_bg", makeDesc(c.name) + " BG", c.bg)); 
+   } ); // forEach
 } catch(e) {
 hl('colorDetails.makeParentOPtions error: '+ e.message);
 }; //  catch
