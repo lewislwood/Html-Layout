@@ -10,7 +10,6 @@ import {colorDetailStyle } from "./styles/colorDetailStyles.js";
  * *********/
 
 export class colorDetails {
-    names;
     currentVar;
 hs;
 varsList = 0;
@@ -360,6 +359,7 @@ this.queryControls();
 
 this.hs = this.parent.hs;
 this.makeParentOPtions();
+this.makeNamedOptions();
 } catch(e) {
 hl("colorDetail.lodColorVar error: " + e.message);
 }; // catch
@@ -449,9 +449,9 @@ p.sort( (a,b) => { return ((a.name > b.name)? 0 : -1); });
 const makeOption = (name, text, value) => {
     const o = document.createElement("option");
     o.setAttribute("value", value);
+    o.setAttribute("name", name);
     o.textContent = text;
     return o;
-
 }; // makeOption
 const proper = (name) => { return (name.substr(0,1).toUpperCase() + name.substr(1)) ;}
 // make description with proper names
@@ -470,7 +470,26 @@ hl('colorDetails.makeParentOPtions error: '+ e.message);
 }; //  catch
 }; // makeParentOPtions 
 
+// loads up the Named Colors combobox
+ makeNamedOptions(    ) {
+try {
+    const makeOption = (text, value) => {
+        const o = document.createElement("option");
+        o.setAttribute("value", value);
+        o.textContent = text;
+        return o;
+    }; // makeOption
+const cb = this.cbColorNamed;
+const names = this.parent.names;
+names.sort( (a,b) => { return ((a.name > b.name)? 0 : -1); });
+cb.appendChild( makeOption(" ", "custom"));
+names.forEach((nc) => { cb.appendChild( makeOption(nc.name,nc.color));});
 
+
+} catch(e) {
+hl('colorDetails.makeNamedOptions error: '+ e.message);
+}; //  catch
+}; // makeNamedOptions 
 
 
 

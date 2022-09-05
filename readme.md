@@ -17,9 +17,13 @@ Only exception is the "docs" folder which is typically named app or src, this wa
 [HTML Layout Designer](E )
 * DevOps creating  a new listBox.  Non-table and I was able to style the list items.  This makes sighted more comfortable. 
 * Finished data work flow. Now will go much faster unde DevOps
-* Finesed wiring listbox to detail container. 
-* Implement the color Detail edit container.  Mostly plugging in and logic.  Hard parts are done in parent container.
 
+ *  Have Radios in detail up
+ * 2 combo Boxes (Parents and Named Colors)
+      **** Named current shares label with parent, need to implement laeble change)
+* Pull current color choices (custome, parent, named)
+* Add Color Swatch for sighted users
+* Need to style the controls...
 Tasks to do
 *   Thinking of rewritin
 * Images (this one I deplore, but is neccessary).

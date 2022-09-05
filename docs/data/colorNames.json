@@ -1,4 +1,11 @@
 [
+  { "name": "Rust", "color": "#b7410e"},
+  { "name": "Google Chrome Blue", "color": "#4c8bf5"},
+  { "name": "Orange", "color": "#FFA500"},
+  { "name": "Ruby Red", "color": "#9b111e "},
+  { "name": "Red", "color": "#ff0000"},
+  { "name": "Silver", "color": "#C0C0C0"},
+  { "name": "Green", "color":"#00ff00" },
   {
     "name": "Air Force Blue (Raf)",
     "color": "#5d8aa8"
