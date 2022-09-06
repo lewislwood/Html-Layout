@@ -2,9 +2,9 @@
 
 
 export const colorVarStyle = `
-.containerColorVarsList {
+#colorlistcontainter {
     display: block;
-    width: 40em;
+    width : 300px;
 }
 ul.colorVarListBox  {
     list-style-type:none ;

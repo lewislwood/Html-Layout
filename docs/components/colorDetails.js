@@ -31,6 +31,8 @@ Parents = { "fgName": "",  "fg": null,"bgName": "",  "bg": null };  // used to r
 fgChildren = []; // Current descendants of currentVar
 bgChildren = []; // Current format: { 'name', "suffix"}
 listStylesUpdate = [];// List of variables to update list style. Reset just after update.
+parentOptions;  // Array of Options, easy searches
+namedOptions;
 // parent must be colorVar
 constructor(pColorVar) {
 try {
@@ -45,12 +47,11 @@ hl("colorDetails constructor error: " + e.message);
 }; // constructor
 
 
-editColorDetail( colorName) {
+editColorDetail( colorName, moveTo = true) {
     try {
-const p = this.parent;
 this.setCurrentVariable(colorName);
 
-this.heading.focus();
+if (moveTo === true) {this.heading.focus();};
     } catch(e) {
 hl("colorDetail.editColorDetail error: " + e.message);
     };
@@ -198,21 +199,21 @@ div.setAttribute( "id", "cbColorContainer");
 const lbl  = document.createElement("label");
 lbl.setAttribute( "class", "lblRadio");
 lbl.setAttribute( "id", "cbColorLabel");
-lbl.textContent = "Parent";
+lbl.textContent = "Customize";
 div.appendChild(lbl);
 
 // cbParent color combobox
 const cbP = document.createElement("select");
 cbP.setAttribute( "class", "cbColorParent");
 cbP.setAttribute( "id", "cbColorParent");
-cbP.setAttribute( "aria-labeledby", "cbColorLabel");
+cbP.setAttribute( "aria-label", "Select Parent Color");
 div.appendChild(cbP);
 
 // cbNamed color combobox
 const cbN = document.createElement("select");
 cbN.setAttribute( "class", "cbColorNamed");
 cbN.setAttribute( "id", "cbColorNamed");
-cbN.setAttribute( "aria-labeledby", "cbColorLabel");
+cbN.setAttribute( "aria-label", "Select Named Color");
 div.appendChild(cbN);
 
 return div;
@@ -352,14 +353,26 @@ hl('colorDetails.makeSuffixRadios error: '+ e.message);
 
 
 // Load up the combo boxes
-LoadColorVar() {
+async LoadColorVar() {
 try {
     hl("Loading Color Details");
-this.queryControls();
+    this.hs = this.parent.hs;
+    await this.queryControls();
+await this.makeParentOPtions(); 
+await  setTimeout( () => {
+    let cb = this.cbColorParent;
+this.parentOptions =   Array.from( cb.options);
+cb = this.cbColorNamed;
+this.namedOptions = Array.from( cb.options);
+})
 
-this.hs = this.parent.hs;
-this.makeParentOPtions();
-this.makeNamedOptions();
+const p = this.parent;
+// edit 1st color after array , do not set focus
+const name = p.variables[0].name;
+const editColor = () => { this.editColorDetail(name, true);};
+await setTimeout( editColor , 1000);
+
+
 } catch(e) {
 hl("colorDetail.lodColorVar error: " + e.message);
 }; // catch
@@ -430,7 +443,7 @@ getStyleObject() {
     }; //catch
     }; // getStyleObject
 
- hasParent(  bgbgbg_bg = 'fg' ) {
+ hasParent(  fg_bg = 'fg' ) {
 try {
     const cv = this.currentVar;
 const p = ((fg_bg === "fg") ? cv.parent_fg : cv.parent_bg);

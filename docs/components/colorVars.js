@@ -103,8 +103,8 @@ getListBox() {
     const div = document.createElement("div");
 
     try {
-        div.setAttribute("class", "containerColorVarsList");
         const h = document.createElement("h3");
+        div.setAttribute("id", "colorlistcontainter");
         h.textContent = "Select a color Variable to view or edit?";
         h.setAttribute("id","colorVarsHeader");
         div.appendChild(h);
