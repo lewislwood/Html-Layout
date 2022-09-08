@@ -30,6 +30,7 @@ computedColor = { "fg": null, "bg": null  }; // quick access to computed values.
 Parents = { "fgName": "",  "fg": null,"bgName": "",  "bg": null };  // used to reset to default if they do not change color.
 fgChildren = []; // Current descendants of currentVar
 bgChildren = []; // Current format: { 'name', "suffix"}
+childrenString = { "fg": "", "bg": "" };   // Quick search for isChild
 listStylesUpdate = [];// List of variables to update list style. Reset just after update.
 parentOptions;  // Array of Options, easy searches
 namedOptions;
@@ -66,11 +67,10 @@ this.loading = true;
 const cv = vs.find((v) => { return (v.name === colorName);});
 this.currentVar = cv;
 this.setHeading("editing " + cv.name);
-this.setParents();
 const fg = this.setChildren("fg");
 const bg = this.setChildren("bg");
 // Debugging...
-hl("Children: " + [JSON.stringify(this.fgChildren), JSON.stringify(this.bgChildren)].join(" | "))
+this.setSuffix("fg");
 
 this.loading = false;
 } catch(e) {
@@ -83,9 +83,11 @@ try {
 const colorName = this.currentVar.name + "_" + fg_bg;
 const children = this.getChildren(colorName);
 // Help debug the JSON file. spaces are common.
-// hl(fg_bg + " childeren found: " + children.length + " " + children.join(", "));
 const sfx = (( fg_bg === "fg") ? this.fgChildren : this.bgChildren); 
 sfx.slice(0);
+const str = ((children.length > 0) ? children.join(" ") : "") + " " + colorName;
+if (fg_bg === 'fg') {    this.childrenString.fg = str;
+} else {    this.childrenString.bg = str;    };// setting search string
 //Now parse children to name, suffix parts for quick setting color value
 const p = this.parent;
 children .forEach( ( cn) => {
@@ -132,7 +134,8 @@ hl('colorDetails.getChildren error: '+ e.message);
 
 
 
- setParents(    ) {
+ se
+ tParents(    ) {
 try {
     const ps = this.Parents; 
     const cv = this.currentVar;
@@ -364,6 +367,7 @@ await  setTimeout( () => {
 this.parentOptions =   Array.from( cb.options);
 cb = this.cbColorNamed;
 this.namedOptions = Array.from( cb.options);
+
 })
 
 const p = this.parent;
@@ -462,7 +466,7 @@ p.sort( (a,b) => { return ((a.name > b.name)? 0 : -1); });
 const makeOption = (name, text, value) => {
     const o = document.createElement("option");
     o.setAttribute("value", value);
-    o.setAttribute("name", name);
+    o.setAttribute("data-name", name.toLowerCase());
     o.textContent = text;
     return o;
 }; // makeOption
@@ -502,8 +506,41 @@ names.forEach((nc) => { cb.appendChild( makeOption(nc.name,nc.color));});
 } catch(e) {
 hl('colorDetails.makeNamedOptions error: '+ e.message);
 }; //  catch
-}; // makeNamedOptions 
+}; // makeNamedOptions
 
+ setSuffix(  fg_bg="fg" ) {
+try {
+this.loading = true;
+const rd = ((fg_bg === 'fg') ? this.rdFG : this.rdBG);
+rd.checked = true;
+const ch = ((fg_bg=== "fg") ? this.fgChildren : this.bgChildren);
+const isChild = (n) => { return this.isChild(fg_bg, n) } ;
+
+
+const options = this.parentOptions;
+
+
+options.forEach(e=> {e.disabled = isChild(e.getAttribute("data-name"));});
+    
+
+
+} catch(e) {
+hl('colorDetails.setSuffix error: '+ e.message);
+} finally {
+this.loading = false;
+} ; // finally
+
+}; // setSuffix 
+
+ isChild(  fg_bg, parentColor ) {
+try {
+const str = ((fg_bg === "fg") ? this.childrenString.fg : this.childrenString.bg);
+if (str === "") { return false;};
+return (str.indexOf(parentColor ) > -1);
+} catch(e) {
+hl('colorDetail.isChild error: '+ e.message);
+}; //  catch
+}; // isChild 
 
 
 
