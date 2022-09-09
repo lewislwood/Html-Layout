@@ -59,6 +59,12 @@ connectedCallback() {
     btn.onclick = (e) => el.focus();
 
     //Colors
+const bCP = this.shadowRoot.querySelectorAll("button[name='btnColorPicker']");
+bCP.forEach((el)  => el.onclick = myColorPicker);
+// color rowContainer wire status
+const ctr = this.shadowRoot.querySelectorAll(".rowContainer ");
+ctr.forEach((el) => {  el.setAttribute("tabIndex", "0");
+    el.addEventListener('focus', (e) => { descRowColor (e); })});
 
 // Columns radio buttons
 const rc = this.shadowRoot.querySelectorAll("input[name='selectColumns']");
@@ -103,7 +109,6 @@ p.textContent = ";Color table below simply press spacebar or click on any row. T
 ;
 mC.appendChild(p);
 try {
-    mC.appendChild(this.getColumnRadio());
     mC.appendChild(this.getStatus("content"));
 } // try
 catch(e) {
@@ -157,6 +162,27 @@ return sp;
 
 
 
+// Pulls out all the Color css Vars
+getColorVars( aCssVars){
+const  aVars = Object.entries(cssVars);
+
+
+} //getColorVars
+
+
+
+
+ 
+
+getColorSwatch(name,  fg, bg) {
+    name = "--" + name;
+    const  style = "background-color :  VAR("+ name + "_bg); color : VAR("+ name + "_fg);";
+// if (fg === "")fg = ""default"{ }
+return `
+<td class="colorSwatch"style="${style}">${bg}/<br/>${fg}</td> 
+`
+}; // getColorSwatch
+
 getColumnRadio() {
 const fs = document.createElement("fieldset");
 fs.setAttribute("class", "radioColumns");
@@ -207,6 +233,27 @@ return fs;
 
 //
 
+
+
+const myColorPicker = (e) =>  {
+ try {
+    const sh = e.target.parentNode.getRootNode({composed: false}); 
+const c = e.target.getAttribute("data-color");
+// hl("data color is " + c);
+const di= sh.querySelector("#" + c+ "-color");
+const sObj = di.dataset.colorValues;
+// hl(di.id + " : [" + sObj + "]");
+
+const cI = JSON.parse(sObj);
+
+ 
+const sMsg = `name: ${cI.name}, Colors: ${cI.fg}/${cI.bg};  <br/> ${cI.notes}<br/>  Coming Soon be Patient!`
+alert(sMsg);
+ } // try
+ catch(err) {
+    hl("ColorPicker Error: " + err.message);
+ } // catch
+} // myColorPicker
 
 
 let tmrColumn;
@@ -334,6 +381,17 @@ const clearAllStatus = () => {
 } // clearAllStatus
 
 
+const descRowColor = (e) => {
+const el = e.target;
+const sObj = el.dataset.colorValues;
+
+const cI = JSON.parse(sObj);
+
+const desc = cI.notes;
+hs(desc );
+} // descRowColor
+
 
 
 export default lwCssVar;
+ 

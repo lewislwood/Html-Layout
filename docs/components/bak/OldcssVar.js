@@ -59,6 +59,12 @@ connectedCallback() {
     btn.onclick = (e) => el.focus();
 
     //Colors
+const bCP = this.shadowRoot.querySelectorAll("button[name='btnColorPicker']");
+bCP.forEach((el)  => el.onclick = myColorPicker);
+// color rowContainer wire status
+const ctr = this.shadowRoot.querySelectorAll(".rowContainer ");
+ctr.forEach((el) => {  el.setAttribute("tabIndex", "0");
+    el.addEventListener('focus', (e) => { descRowColor (e); })});
 
 // Columns radio buttons
 const rc = this.shadowRoot.querySelectorAll("input[name='selectColumns']");
@@ -103,7 +109,7 @@ p.textContent = ";Color table below simply press spacebar or click on any row. T
 ;
 mC.appendChild(p);
 try {
-    mC.appendChild(this.getColumnRadio());
+    mC.appendChild(this.CssVarsList());
     mC.appendChild(this.getStatus("content"));
 } // try
 catch(e) {
@@ -153,9 +159,75 @@ sp.setAttribute("aria-live", "polite");
 sp.setAttribute("class",id + " statusPanel" );
 sp.textContent = id + " This is help text and descriptive text for items this.ariaSelected. JavaScript will hide 2 statuses and only 1 of them will be visible.  1 column Mode only Content panel will be visible, 2 column mode, only the Left or either status will be visible.  Depends on your selection. Screen readers will automatically read changes in this text as it is updated.";
 return sp;
-} // getStatus
+}
+
+CssVarsList() {
+    // hl("Doing vars list");
+const [ colorVars, otherVars] = myCssValues();
+
+const htm = Object.values(colorVars).map((n) => (this.HTMLCssVarItem(n)  ) ).join("");
+const cssGr = document.createElement("div");
+cssGr.setAttribute("class", "cssContainer");
+
+const color  = document.createElement("div");
+color.innerHTML = `
+<table id=  class="cssContainer" >
+<caption>Color Variables</caption>
+<tr>
+<th scope="col">Color</th>
+<th scope="col">Inherit Bg/Fg</th>
+<th scope="col">Values Bg/Fg</th>
+<th scope="col">Picker</th>
+</tr>
+ ${htm}
+ </table>
+ `
+
+ cssGr.appendChild( color);
+ cssGr.appendChild(this.getColumnRadio());
+return cssGr;
+}; // cssVarsList
+
+// Pulls out all the Color css Vars
+getColorVars( aCssVars){
+const  aVars = Object.entries(cssVars);
 
 
+} //getColorVars
+
+
+
+
+HTMLCssVarItem( cI) {
+    
+
+    try {
+        const sObj = JSON.stringify(cI);
+const htm  = `
+<tr id="${cI.name}-color"   class="rowContainer" data-color-values='${sObj}'  >
+<td class="nameSpan">${cI.name}</td>
+<td class="inheritValues">${cI.inHerit_bg}<br/>${cI.inHerit_fg}
+${this.getColorSwatch(cI.name, cI.fg, cI.bg)}
+<td class="btnColorPicker"><button  type="button" name='btnColorPicker'  data-color="${cI.name}" >Change</br>Color</button></td>
+</tr>
+`
+return htm  ;
+
+} // HTMLCssVarItem// try
+catch(e) {
+    hl("HTMLItem Error(" + cI.name +") : " + e.message );
+} // catch
+return "ERROR: " + cI
+} // HTMLCssVarItem
+
+getColorSwatch(name,  fg, bg) {
+    name = "--" + name;
+    const  style = "background-color :  VAR("+ name + "_bg); color : VAR("+ name + "_fg);";
+// if (fg === "")fg = ""default"{ }
+return `
+<td class="colorSwatch"style="${style}">${bg}/<br/>${fg}</td> 
+`
+}; // getColorSwatch
 
 getColumnRadio() {
 const fs = document.createElement("fieldset");
@@ -202,11 +274,97 @@ return fs;
 }; // lwCssVar
 //****/
 // Testing
- 
+function myCssValues() {
+    const [cssColors, cssOthers] = parseCssVars();
+    const cssVarsTemplate = Object.entries( cssVars);
+    const colorVars = {};
+// Make a clone of data Template version as starter point
+cssVarsTemplate.forEach( entry => {
+         const [key, value] = entry;
+         colorVars[key] = {...value} ;
+}); //foreach
+
+// Add any missing cssColor Variables not in template
+// cssColors.push("testing");
+// hl("Colors in css " + cssColors.length);
+cssColors.forEach((e) => {
+    
+
+if ( colorVars[e] === undefined) {
+const vn= newColor(e);
+colorVars[e] = vn;
+} // if new value
+}) // forEach cssColors
+
+// Get current css color values
+Object.values(colorVars).forEach(( v) => {
+const css = "--" + v.name; 
+
+v.fg =getCssVar(css +   "_fg");  
+v.bg =getCssVar(css + "_bg");  
+
+}) // Get Color values);
 
 
+
+//    Object.values( colorVars).forEach((value)  => hl(JSON.stringify(value)));
+return[colorVars, cssOthers];
+
+
+
+} // myCssValues
+
+
+function parseCssVars() {
+    const CssVarsList = getAllCSSVariableNames();
+    const [ colorVars, otherVars] = [[],[]];
+
+    // hl( "Parsing cssVars " );
+    CssVarsList .forEach( (value) => {
+if (typeof(value) === "string") {
+    // hl( "Proccessing " + value);
+        if ( isColorVar(value)) {
+            // Strip Color Vars, thus no _fg or _bg, or --
+    const n = stripColorVar( value); 
+    // unique values only
+    if ( ! colorVars.find((v) => (v === n))) { colorVars.push(n); };
+            } // if isColor
+            else { otherVars.push(value); };
+        } // if string
+        else {
+hl("Skipped value: " + value);
+        } //else
+            } ); // forEach
+            // hl(" Parse colorVars have " +colorVars.length );
+return [colorVars, otherVars];
+} // parseCssVars
 //
+const stripColorVar = (cVar) => {
+    if ( cVar.startsWith("--")) {cVar = cVar.substr(2); };
+    if ( cVar.endsWith("_fg") || cVar.endsWith("_bg") ) { cVar = cVar.substr(0, cVar.length - 3); };
+    return cVar;
+} // stripColor
 
+
+const myColorPicker = (e) =>  {
+ try {
+    const sh = e.target.parentNode.getRootNode({composed: false}); 
+const c = e.target.getAttribute("data-color");
+// hl("data color is " + c);
+const di= sh.querySelector("#" + c+ "-color");
+const sObj = di.dataset.colorValues;
+// hl(di.id + " : [" + sObj + "]");
+
+const cI = JSON.parse(sObj);
+
+ 
+const sMsg = `name: ${cI.name}, Colors: ${cI.fg}/${cI.bg};  <br/> ${cI.notes}<br/>  Coming Soon be Patient!`
+alert(sMsg);
+ } // try
+ catch(err) {
+    hl("ColorPicker Error: " + err.message);
+ } // catch
+} // myColorPicker
 
 
 let tmrColumn;
@@ -334,6 +492,17 @@ const clearAllStatus = () => {
 } // clearAllStatus
 
 
+const descRowColor = (e) => {
+const el = e.target;
+const sObj = el.dataset.colorValues;
+
+const cI = JSON.parse(sObj);
+
+const desc = cI.notes;
+hs(desc );
+} // descRowColor
+
 
 
 export default lwCssVar;
+ 
