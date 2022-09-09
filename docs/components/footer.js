@@ -64,7 +64,7 @@ hl( "Footer creation error: " + e.message);
 
           poweredBy() {
 const c= document.createElement("span");
-c.setAttribute("class", "poeredContainter")
+c.setAttribute("class", "poweredContainter")
 c.setAttribute("id", "poweredContainter")
 const l = document.createElement("a");
 l.setAttribute("class", "poweredLink");

@@ -137,6 +137,7 @@ makeListItem( text, value) {
     try {
         // hl("Making item : " +text )
         // li.setAttribute("tabindex", "1");
+        
 
         const sp = document.createElement("span");
         sp.setAttribute("class", "colorVarSpan")
@@ -144,6 +145,7 @@ makeListItem( text, value) {
         a.setAttribute("name", "colorVar");
         a.setAttribute("value", value);
         a.textContent = text;
+        a.setAttribute("title", text + " press enter to view/edit color");        
         const det = (e) => { this.setDetails(e,  value);}
     
         sp.appendChild(a);
@@ -264,7 +266,13 @@ LoadColorVars() {
 hl("Loading color Vars");
 const lb = this.listBox;
     const vs = this.variables;
-vs.forEach( cv => {    lb.appendChild(this.makeListItem(cv.name, cv.name));}); 
+    const proper = (name) => { return (name.substr(0,1).toUpperCase() + name.substr(1).toLowerCase()) ;}
+    // make description with proper names
+const makeDesc = (name) => {
+    const an = name.split("-");
+    return an.map((n)=> { return proper(n)  } ).join(" ");
+    }; // makeDesc
+vs.forEach( cv => {    lb.appendChild(this.makeListItem(makeDesc (cv.name), cv.name));}); 
 const sls = () => { this.setAllListStyles(true);}
 setTimeout( sls, 700);
 const evl = (e) => { this.loadEvents(e);};

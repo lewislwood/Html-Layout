@@ -69,7 +69,6 @@ this.currentVar = cv;
 this.setHeading("editing " + cv.name);
 const fg = this.setChildren("fg");
 const bg = this.setChildren("bg");
-// Debugging...
 this.setSuffix("fg");
 
 this.loading = false;
@@ -85,7 +84,8 @@ const children = this.getChildren(colorName);
 // Help debug the JSON file. spaces are common.
 const sfx = (( fg_bg === "fg") ? this.fgChildren : this.bgChildren); 
 sfx.slice(0);
-const str = ((children.length > 0) ? children.join(" ") : "") + " " + colorName;
+const nBase = this.currentVar.name ;
+const str = ((children.length > 0) ? children.join(" ") : "") + " " +nBase + "_fg " + nBase + "_bg" ;
 if (fg_bg === 'fg') {    this.childrenString.fg = str;
 } else {    this.childrenString.bg = str;    };// setting search string
 //Now parse children to name, suffix parts for quick setting color value
@@ -367,8 +367,8 @@ await  setTimeout( () => {
 this.parentOptions =   Array.from( cb.options);
 cb = this.cbColorNamed;
 this.namedOptions = Array.from( cb.options);
+},300) // setTimeOut
 
-})
 
 const p = this.parent;
 // edit 1st color after array , do not set focus
@@ -376,11 +376,26 @@ const name = p.variables[0].name;
 const editColor = () => { this.editColorDetail(name, true);};
 await setTimeout( editColor , 1000);
 
-
+await this.addListeners();
 } catch(e) {
 hl("colorDetail.lodColorVar error: " + e.message);
 }; // catch
 };  // loadColorVar
+
+ addListeners(    ) {
+try {
+    hl("Adding Listeners...");
+const setSuffix  = (sfx) => {
+    this.setSuffix(sfx);
+}; //setSuffix("sfg")
+this.rdFG.onchange = (e) => { setSuffix("fg");} ;
+this.rdBG.onchange = (e) => { setSuffix("bg");} ;;
+
+
+} catch(e) {
+hl('colorDetails.addListeners error: '+ e.message);
+}; //  catch
+}; // addListeners 
 
  queryControls(    ) {
 try {
@@ -470,7 +485,7 @@ const makeOption = (name, text, value) => {
     o.textContent = text;
     return o;
 }; // makeOption
-const proper = (name) => { return (name.substr(0,1).toUpperCase() + name.substr(1)) ;}
+const proper = (name) => { return (name.substr(0,1).toUpperCase() + name.substr(1).toLowerCase()) ;}
 // make description with proper names
 const makeDesc = (name) => {
 const an = name.split("-");
@@ -508,22 +523,16 @@ hl('colorDetails.makeNamedOptions error: '+ e.message);
 }; //  catch
 }; // makeNamedOptions
 
- setSuffix(  fg_bg="fg" ) {
+ async setSuffix(  fg_bg="fg" ) {
 try {
 this.loading = true;
 const rd = ((fg_bg === 'fg') ? this.rdFG : this.rdBG);
 rd.checked = true;
-const ch = ((fg_bg=== "fg") ? this.fgChildren : this.bgChildren);
-const isChild = (n) => { return this.isChild(fg_bg, n) } ;
-
-
-const options = this.parentOptions;
-
-
-options.forEach(e=> {e.disabled = isChild(e.getAttribute("data-name"));});
-    
-
-
+const cv = this.currentVar;
+const parent = ((fg_bg === "fg") ? cv.parent_fg : cv.parent_bg) ;
+this.clearParentOptions(fg_bg, parent);
+if (this.hasParent(fg_bg) === true) { this.rdParent.checked = true; }
+else { this.rdCustom.checked = true;} ;
 } catch(e) {
 hl('colorDetails.setSuffix error: '+ e.message);
 } finally {
@@ -532,15 +541,46 @@ this.loading = false;
 
 }; // setSuffix 
 
+ async clearParentOptions(     fg_bg = "fg", selectParent = "") {
+try {
+    const excludeStrList = this.excludeStringList(fg_bg);
+    const isExcluded= (n) => { return ( excludeStrList  .indexOf(n) > -1) ;};
+const options = this.parentOptions;
+const cb = this.cbColorParent;
+const opts = Array.from( cb.options);
+opts.forEach( (o) => {
+    o.remove();
+    o.selected = false;
+});
+options.forEach((o) => { 
+const n = o.getAttribute("data-name");
+if (! isExcluded(n)) {
+    cb.appendChild(o);  
+    if (n === selectParent) { o.selected = true;};
+}; //  if not Excluded
+}); // forEach
+} catch(e) {
+hl('colorDetails.clearParentOptions error: '+ e.message);
+}; //  catch
+}; // clearParentOptions 
+
  isChild(  fg_bg, parentColor ) {
 try {
-const str = ((fg_bg === "fg") ? this.childrenString.fg : this.childrenString.bg);
-if (str === "") { return false;};
-return (str.indexOf(parentColor ) > -1);
+const str = this.excludeStringList(fg_bg); 
+return (excludeStrList.indexOf(parentColor ) > -1);
 } catch(e) {
-hl('colorDetail.isChild error: '+ e.message);
+    hl("colordetails.isChild error: " + e.message);
 }; //  catch
 }; // isChild 
+
+ excludeStringList(  fg_bg = "fg" ) {
+try {
+    const ch = this.childrenString;
+    return ((fg_bg === "fg") ? ch.fg : ch.bg);
+} catch(e) {
+hl('colorDetails.excludeStringList error: '+ e.message);
+}; //  catch
+}; // excludeStringList 
 
 
 
