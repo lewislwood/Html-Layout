@@ -26,7 +26,7 @@ cbColorLabel; // Label for Parent or Named Color comboboxes
 cbColorParent; // Parent color combobox
 cbColorNamed; // Named Colors combobox
 loading= true; // Disables auto event handling wile loading
-computedColor = { "fg": null, "bg": null  }; // quick access to computed values.
+computedColor; // Computed Variable from parent fg, bg, name 
 Parents = { "fgName": "",  "fg": null,"bgName": "",  "bg": null };  // used to reset to default if they do not change color.
 fgChildren = []; // Current descendants of currentVar
 bgChildren = []; // Current format: { 'name', "suffix"}
@@ -66,6 +66,8 @@ const vs = this.parent.variables;
 this.loading = true;
 const cv = vs.find((v) => { return (v.name === colorName);});
 this.currentVar = cv;
+const p = this.parent;
+this.computedColor  = p.getComputedVariable(cv.name);
 this.setHeading("editing " + cv.name);
 const fg = this.setChildren("fg");
 const bg = this.setChildren("bg");
@@ -361,6 +363,7 @@ try {
     hl("Loading Color Details");
     this.hs = this.parent.hs;
     await this.queryControls();
+await     this.makeNamedOptions();
 await this.makeParentOPtions(); 
 await  setTimeout( () => {
     let cb = this.cbColorParent;
@@ -533,6 +536,8 @@ const parent = ((fg_bg === "fg") ? cv.parent_fg : cv.parent_bg) ;
 this.clearParentOptions(fg_bg, parent);
 if (this.hasParent(fg_bg) === true) { this.rdParent.checked = true; }
 else { this.rdCustom.checked = true;} ;
+
+this.findNamedColor(fg_bg);
 } catch(e) {
 hl('colorDetails.setSuffix error: '+ e.message);
 } finally {
@@ -540,6 +545,34 @@ this.loading = false;
 } ; // finally
 
 }; // setSuffix 
+
+ findNamedColor(  fg_bg = 'fg' ) {
+try {
+    const cv = this.computedColor;
+const color = ((fg_bg === "fg") ? cv.fg : cv.bg );
+let index = -1;
+const options = this.namedOptions;
+const reg = new RegExp(color,"i");
+this.cbColorNamed.re
+
+if (color.substr(0,1) === "#") {
+    index = options.findIndex((o) => { return reg.test(o.value); });
+} else {
+    index = options.findIndex((o) => { return reg.test(o.text); });
+}; // if hex color or name
+
+this.cbColorNamed.selectedIndex = index;
+// depends on parent being determined first
+if ((index > 0)  && (this.rdCustom.checked === true)) {
+this.rdNamed.checked = true;
+}; // Not a parent color and matches a named color
+
+
+} catch(e) {
+hl('colorDetails.findNamedColor error: '+ e.message);
+}; //  catch
+}; // findNamedColor 
+
 
  async clearParentOptions(     fg_bg = "fg", selectParent = "") {
 try {

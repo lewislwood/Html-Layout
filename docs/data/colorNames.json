@@ -1,4 +1,6 @@
 [
+  { "name" : "Bright Red", "color": "#e10600"},
+  {"name": "Royal Blue","color": "#000080" },
   { "name": "Rust", "color": "#b7410e"},
   { "name": "Google Chrome Blue", "color": "#4c8bf5"},
   { "name": "Orange", "color": "#FFA500"},

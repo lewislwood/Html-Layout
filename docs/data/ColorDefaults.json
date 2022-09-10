@@ -1,6 +1,6 @@
 [
     { "name": "main", "parent_fg":"", "parent_bg":"", "fg": "", "bg": "", "notes": "Default color used throughout the web"},
-{ "name": "header",   "parent_fg":"", "parent_bg":"", "fg": "", "bg": "", "notes": "Default colors used by objects in the header area."},
+{ "name": "header",   "parent_fg":"", "parent_bg":"", "fg": "#e10600", "bg": "#000080", "notes": "Default colors used by objects in the header area."},
     { "name": "footer", "parent_fg":"header_fg", "parent_bg":"header_bg", "fg": "", "bg": "", "notes": "Default colors used by the objects placed in the footer area."},
 { "name": "banner", "parent_fg":"header_fg", "parent_bg":"header_bg", "fg": "", "bg": "", "notes": "Colors used in the banner area. Typically inherits header colors."},
     { "name": "menu", "parent_fg":"header_fg", "parent_bg":"header_bg", "fg": "", "bg": "", "notes": "Menu bar colors in the header area. Typically inherits from header."},
