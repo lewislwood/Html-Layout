@@ -1,6 +1,7 @@
 import {helpLog as hl, getCssVar, setCssVar , getAllCSSVariableNames} from "./utils.js";
  import { cssVarStyle } from "./styles/cssVarStyle.js";
 import {cssVars, isColorVar, newColor   } from "../data/cssVarData.js";
+import {colorCssVars  } from "./colorVars.js";
 
 
 "use strict";
@@ -16,6 +17,7 @@ hl("ginerating  cssVar ");
 
 customElements.define("lw-cssvar", 
 class extends HTMLElement {
+    colorVars = new colorCssVars  ;;
     constructor() {
     super();
     
@@ -24,6 +26,8 @@ class extends HTMLElement {
         const style = document.createElement("style");
         style.textContent = cssVarStyle;
         shadow.appendChild(style);
+        shadow.appendChild( this.colorVars .getStyleObject());
+
 const bC = document.createElement("div");
 bC.setAttribute("class", "bodyContainer");
 
@@ -59,6 +63,7 @@ connectedCallback() {
     btn.onclick = (e) => el.focus();
 
     //Colors
+    this.colorVars.connected(this.shadowRoot        );
 
 // Columns radio buttons
 const rc = this.shadowRoot.querySelectorAll("input[name='selectColumns']");
@@ -103,6 +108,9 @@ p.textContent = ";Color table below simply press spacebar or click on any row. T
 ;
 mC.appendChild(p);
 try {
+    const cv =      this.colorVars ;
+    mC.appendChild( cv.getListBox());
+    mC.appendChild( cv.getDetailsContainer());    
     mC.appendChild(this.getColumnRadio());
     mC.appendChild(this.getStatus("content"));
 } // try
