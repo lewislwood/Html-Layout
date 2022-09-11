@@ -22,9 +22,10 @@ rdBG;// background radio
 rdCustom; // Custom Color Radio
 rdParent; // Parent Color radio
 rdNamed;  // Named Color radio
-cbColorLabel; // Label for Parent or Named Color comboboxes
 cbColorParent; // Parent color combobox
 cbColorNamed; // Named Colors combobox
+lblEdit; // label for input color picker
+inputColorEdit; // input Color Picker
 loading= true; // Disables auto event handling wile loading
 computedColor; // Computed Variable from parent fg, bg, name 
 Parents = { "fgName": "",  "fg": null,"bgName": "",  "bg": null };  // used to reset to default if they do not change color.
@@ -199,27 +200,43 @@ try {
 const div = document.createElement("div");
 div.setAttribute( "class", "cbColorContainer");
 div.setAttribute( "id", "cbColorContainer");
+// span to contain label and color input
+const spn = document.createElement("span");
+spn.setAttribute("class", "spanEditColor")
 
-// Label describe either or parent or Named or custom
+// Label  Edit Color edit disabled
 const lbl  = document.createElement("label");
-lbl.setAttribute( "class", "lblRadio");
-lbl.setAttribute( "id", "cbColorLabel");
-lbl.textContent = "Customize";
-div.appendChild(lbl);
+lbl.setAttribute( "class", "lblEdit");
+lbl.setAttribute( "id", "lblEdit");
+lbl.textContent = "Edit Color";
+lbl.setAttribute("for", "inputColorEdit");
+
+const inp = document.createElement("input");
+inp.setAttribute("type","color");
+inp.setAttribute("id","inputColorEdit");
+inp.setAttribute("class","inputColorEdit");
+inp.setAttribute("aria-labeledby","lblEdit");
+
+spn.appendChild(lbl);
+spn.appendChild(inp);
+
 
 // cbParent color combobox
 const cbP = document.createElement("select");
 cbP.setAttribute( "class", "cbColorParent");
 cbP.setAttribute( "id", "cbColorParent");
 cbP.setAttribute( "aria-label", "Select Parent Color");
-div.appendChild(cbP);
+
 
 // cbNamed color combobox
 const cbN = document.createElement("select");
 cbN.setAttribute( "class", "cbColorNamed");
 cbN.setAttribute( "id", "cbColorNamed");
 cbN.setAttribute( "aria-label", "Select Named Color");
+
 div.appendChild(cbN);
+div.appendChild(cbP);
+div.appendChild(spn);
 
 return div;
 } catch(e) {
@@ -229,10 +246,26 @@ hl('colorDetails.makeColorComboBoxes error: '+ e.message);
 
  makeColorRadios(    ) {
 try {
-// Radio Suffix fg_bg
+// Radio Custom, parent, named
 const div = document.createElement("div");
 div.setAttribute("class", "rdColorContainter");
 div.setAttribute("id","rdColorContainter");
+
+// Named radio
+const spNA = document.createElement("span");
+spNA.setAttribute("class","spanColorRadio");
+const lNA= document.createElement("label");
+lNA.setAttribute("class","labelRadios");
+lNA.setAttribute("id","lblNamed");
+lNA.textContent  = "Named Color";
+lNA.setAttribute("for","rdNamed");
+const na = document.createElement("input");
+na.setAttribute("type","radio");
+na.setAttribute("name","editColor");
+na.setAttribute("id","rdNamed");
+na.setAttribute("aria-labeledby","lblNamed");
+spNA.appendChild(lNA);
+spNA.appendChild(na);
 
 // custom Radio
 const spCU = document.createElement("span");
@@ -270,28 +303,13 @@ pa.setAttribute("aria-labeledby","lblPA");
 spPA.appendChild(lPA);
 spPA.appendChild(pa);
 
-// Named radio
-const spNA = document.createElement("span");
-spNA.setAttribute("class","spanColorRadio");
-const lNA= document.createElement("label");
-lNA.setAttribute("class","labelRadios");
-lNA.setAttribute("id","lblNamed");
-lNA.textContent  = "Named Color";
-lNA.setAttribute("for","rdNamed");
-const na = document.createElement("input");
-na.setAttribute("type","radio");
-
-na.setAttribute("name","editColor");
-na.setAttribute("id","rdNamed");
-na.setAttribute("aria-labeledby","lblNamed");
-
-spNA.appendChild(lNA);
-spNA.appendChild(na);
 
 
-div.appendChild(spCU);
-div.appendChild(spPA);
+
 div.appendChild(spNA);
+div.appendChild(spPA);
+div.appendChild(spCU);
+
 return div;
 } catch(e) {
         
@@ -376,6 +394,18 @@ this.namedOptions = Array.from( cb.options);
 const p = this.parent;
 // edit 1st color after array , do not set focus
 const name = p.variables[0].name;
+// Change tab order
+
+this.rdFG.setAttribute("tabIndex", 1);
+this.rdBG.setAttribute("tabIndex", 2);
+this.rdNamed.setAttribute("tabIndex", 3);
+this.cbColorNamed.setAttribute("tabIndex", 4);
+this.rdParent.setAttribute("tabIndex", 5);
+// this.cbColorParent.setAttribute("tabIndex", 6);
+// this.rdCustom.setAttribute("tabIndex", 7);
+
+
+
 const editColor = () => { this.editColorDetail(name, true);};
 await setTimeout( editColor , 1000);
 
@@ -393,12 +423,29 @@ const setSuffix  = (sfx) => {
 }; //setSuffix("sfg")
 this.rdFG.onchange = (e) => { setSuffix("fg");} ;
 this.rdBG.onchange = (e) => { setSuffix("bg");} ;;
-
+const evColor = (e) => { this.changeColorRadio(e); };
+this.rdNamed.onchange = (e) => {  evColor(e);};
+this.rdParent.onchange = (e) => {  evColor(e);};
+this.inputColorEdit.onchange = (e) => {  evColor(e);};
 
 } catch(e) {
 hl('colorDetails.addListeners error: '+ e.message);
 }; //  catch
 }; // addListeners 
+
+ changeColorRadio(  event ) {
+try {
+this.cbColorNamed.disabled = (  this.rdNamed.checked === false);
+this.cbColorParent.disabled = (  this.rdParent.checked === false);
+this.inputColorEdit.disabled = (  this.rdCustom.checked === false);
+const lbl = ((this.inputColorEdit.disabled === true) ? "Editing Disabled": "Edit Color");
+this.lblEdit.textContent = lbl;
+
+} catch(e) {
+hl('colorDetails.changeColorRadio error: '+ e.message);
+}; //  catch
+}; // changeColorRadio 
+
 
  queryControls(    ) {
 try {
@@ -418,13 +465,15 @@ if (this.heading  === null) { throw new Error("detailHeading not found."); };
     if (this.rdParent === null) { throw new Error("rdParent not found."); };
     this. rdNamed = c.querySelector("#rdNamed");
     if (this.rdNamed === null) { throw new Error("rdNamed not found."); };
-
-    this. cbColorLabel = c.querySelector("#cbColorLabel");
-    if (this.cbColorLabel === null) { throw new Error("cbColorLabel not found."); };
     this. cbColorParent = c.querySelector("#cbColorParent");
     if (this.cbColorParent === null) { throw new Error("cbColorParent not found."); };
     this. cbColorNamed = c.querySelector("#cbColorNamed");
-    if (this.cbColorNamed === null) { throw new Error("cbColorNamed found."); };
+    if (this.cbColorNamed === null) { throw new Error("cbColorNamed not found."); };
+ 
+    this. inputColorEdit = c.querySelector("#inputColorEdit");
+    if (this.inputColorEdit === null) { throw new Error("inputColorEdit not found."); };
+    this. lblEdit= c.querySelector("#lblEdit");
+    if (this.lblEdit=== null) { throw new Error("lblEdit not found."); };
     
 } catch(e) {
 hl('colorDetails.queryControls error: '+ e.message);
@@ -538,6 +587,9 @@ if (this.hasParent(fg_bg) === true) { this.rdParent.checked = true; }
 else { this.rdCustom.checked = true;} ;
 
 this.findNamedColor(fg_bg);
+if ((this.cbColorNamed.selectedIndex > 0)  && (this.rdCustom.checked === true)) { this.rdNamed.checked = true;};
+
+this.changeColorRadio();
 } catch(e) {
 hl('colorDetails.setSuffix error: '+ e.message);
 } finally {
@@ -559,13 +611,25 @@ if (color.substr(0,1) === "#") {
     index = options.findIndex((o) => { return reg.test(o.value); });
 } else {
     index = options.findIndex((o) => { return reg.test(o.text); });
+    if (index <= 0) {
+    const reg2 = new RegExp("#000000","i");
+    index = options.findIndex((o) => { return reg2.test(o.value); });
+}; // force to use default value
 }; // if hex color or name
 
 this.cbColorNamed.selectedIndex = index;
+
 // depends on parent being determined first
-if ((index > 0)  && (this.rdCustom.checked === true)) {
-this.rdNamed.checked = true;
-}; // Not a parent color and matches a named color
+// if ((index > 0)  && (this.rdCustom.checked === true)) {
+// this.rdNamed.checked = true;
+// }; // Not a parent color and matches a named color
+
+// Now set the edit color variable.
+
+const findColor = ((index> 0)? this.namedOptions[index].value : color);
+const iC = this.inputColorEdit;
+// Do not want to trigger change events, unless actual change
+if (iC.value !== findColor )  { iC.value = findColor ;};
 
 
 } catch(e) {
