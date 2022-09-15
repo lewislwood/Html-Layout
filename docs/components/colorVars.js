@@ -15,7 +15,6 @@ export class colorCssVars   {
 names ;
 variables;
 
-computedVariables = [];
 listBox;
 lbItems = []; // Actual Items in listBox, used for styling
 hs;
@@ -205,10 +204,11 @@ setListStyle( colorName, lbItem = null) {
         const lbi = (( lbItem !== null) ? lbItem : this.getListItem(colorName) );
 if (lbi !== undefined) {
     const el = lbi.item;
-const cv = this.getComputedVariable(colorName);
+    const fg = this.getColorValue(colorName, "fg");
+    const bg = this.getColorValue(colorName, "bg");
 const style = `
-background-color: ${cv.bg};
-color: ${cv.fg};
+background-color: ${bg};
+color: ${fg};
 `;
 const p = el.parentElement.parentElement; // anchor -> span -> li
 p.setAttribute("style", style);
@@ -246,8 +246,6 @@ hl("Color Vars failed to load, Connected is aborting..");
         // hl("Redy to connect");
 this.listBox = root.querySelector("#lbColorVariable");
 if (this.listBox === undefined) { hl("color var listbox not found.");};
-// compute all variables..
-this.setComputedAllVariables();
 this.LoadColorVars();
 this.details.names = this.names;
 this.details.connected(root);
@@ -317,127 +315,84 @@ this.details.editColorDetail( colorName);
     } // catch
     } // setDetails
 
-
-// Will help set and populate computedVariables array
-setComputedAllVariables() {
-    try {
-        const cvars = this.variables;
-
-        cvars.forEach((cv) => {
-             this.getNewCssValue(cv.name, "fg")
-             this.getNewCssValue(cv.name, "bg")
-        }); //foreach
-    } catch(e) {
-        hl("colorVars.setComputedAllVariables error: " + e.message);
-    }; // catch
-}; // setComputedAllVariables
-
-
-// Sets the computed variable to the specified value
- setComputedVariable( colorName, suffix, value) {
-try {
-    const cv = this.getComputedVariable(colorName);
-if (suffix === "fg") { cv.fg = value;}
-else { cv.bg = value; };
-} catch(e) {
-hl("colorVar.setComputedVariable error: " + e.message);
-}; // catch
- }; // setComputedVariable
-
-
- //  getComputedVariable, returns objec or makes new one
- getComputedVariable( cName) {
-try {
-    const cn = cName.toUpperCase();
-    const cVars = this.computedVariables;
-    let cv = cVars .find((v) => { return ( v.name === cn);}) ;
-
-    if (cv === undefined) {
-        cv = { "name": cn, "fg": "", "bg": ""};
-        this.computedVariables.push(cv);
-    };
-    return cv;
-} catch(e) {
-hl( "colorVars.getComputedVariable error: " + e.message);
-}; // catch
- }; // getComputedVariable
-
- // Gets the computed value returns empty string if not defined
- getComputedValue( colorName, suffix) {
-    try {
-
-const cv = this.getComputedVariable(colorName);
-const value = ((suffix === "fg")? cv.fg : cv.bg) ;
-return value;
-    } catch(e) {
-hl( " colorVars.getComputedValue error: " + e.message);
-    }; // catch
- }; // getComputedValue
-
-
-    // Will find the value for the color specified. Searches parents until found.
-    getNewCssValue( name, suffix, tries = 0) {
-try {
-    const pv = this.getComputedValue(name, suffix);
-    if (pv !== "")  {
-// Already has a computed value return it.
-return pv;
-    };; 
-
-    const vars = this.variables;
-
-  const reg = new  RegExp(name, "i");
-  const val = vars.find( e => reg.test(e.name) );
-if (val !== undefined) {
-    let parent, color;
-if (suffix === "fg") {
-color = val.fg;
-parent = val.parent_fg;
-} else {
-    color = val.bg;
-    parent = val.parent_bg;
-} // suffix if fg  or bg
-// Now test if color is set or parent is set
-if (color.trim() === "") {
-    // No color found now check recursion via tries
-    if (tries > 12) {
-        hl("Circular references abortingAborting color get: " + name);
-        return "";
-    } else {
-        // Keep looking down the parent for the color
-        const [ n, s] = this.parseColorVar( parent);
-        const nc = this.getNewCssValue( n, s, ++tries);
-        this.setComputedVariable(name,suffix, nc);
-        return nc;
-    }; // tries test for abort or keep looking
-} else { 
-    // Found the color
-    this.setComputedVariable(name,suffix, color);
-    return color;
-} ;  
-} else {  
-    // invalid Css Color varialbe not found in list
-hl("colorVars.getNewCssValue: " +  name + "_" + suffix + "  was not found... Outputting stack trace to console." );
-console.trace();
-    return "";
-}; // if color found in list
-} catch(e) {
-hl("colorVar.newCssValue error: " + e.message);
-}; // catch
-    }; //getNewCssValue
-
 // parseColorVar returns [ name, suffix]
     parseColorVar( colorVar) {
 try {
 const parsed = colorVar.replace("--", "").trim().toLowerCase().split("_");
-hl("Parsed: " + JSON.stringify(parsed));
+// hl("Parsed: " + JSON.stringify(parsed));
 if (parsed.length === 2)  return [parsed[0], parsed[1]]
-else return parsed[0];
+else return [parsed[0], null];
 
 }   catch(e) {
   hl("colorVar.parseColorVar error: " + e.message);
 }; // catch
     }    ; // parseColorVar
 
+     getColorValue(  colorName, suffix = null ) {
+    try {
+    if (suffix === null) {
+const [c, s] = this.parseColorVar( colorName);
+if (s === null) { throw new Error("Invalid Color value " + c);}
+else { return this.getColorValue( c, s);};
+    }; // If no suffix
+    const cvs = this.variables;
+    const reg = new RegExp(colorName, "i");
+
+const cv = cvs.find( v => reg.test(v.name));
+if ( cv === undefined) { throw new Error("Color " + colorName + " not found.");};
+const parent = ((suffix === "fg") ? cv.parent_fg : cv.parent_bg);
+if (parent !== "") {return this.getColorValue(parent);}
+const value = ((suffix === "fg") ? cv.fg : cv.bg);
+return value;
+
+    } catch(e) {
+    hl('colorVars.getColorValue error: '+ e.message);
+    }; //  catch
+    }; // getColorValue 
+
+
+     setColorValue(  colorName, suffix = null , value = null) {
+    try {
+        if (suffix === null) {
+            const [c, s] = this.parseColorVar( colorName);
+            if (s === null) { throw new Error("Invalid Color Name" + c);}
+            else { return this.setColorValue( c, s, value);};
+                }; // If no suffix
+                if ( value === null) { throw new Error("No color value specified.");};
+                if (value.startsWith("#") !== true) {                    return this.setColorParent( colorName, suffix, value);                 }; // Value may be a parent value
+                const cvs = this.variables;
+                const reg = new RegExp(colorName, "i");
+
+const cv = cvs.find( v => reg.test(v.name));
+if ( cv === undefined) { throw new Error("Color " + colorName + " not found.");};
+if (suffix === "fg") {cv.fg = value; cv.parent_fg = "";}
+else {cv.bg = value; cv.parent_bg = ""; };
+return value;
+
+
+    } catch(e) {
+    hl('colorVars.setColorValue error: '+ e.message);
+    }; //  catch
+    }; // setColorValue 
+
+     setColorParent(  colorName, suffix = null, value = "") {
+    try {
+        if (suffix === null) {
+            const [c, s] = this.parseColorVar( colorName);
+            if (s === null) { throw new Error("Invalid Color Name" + c);}
+            else { return this.setColorParent( c, s, value);};
+                }; // If no suffix
+const newValue =                ((value === null)? "" : value );
+const cvs = this.variables;
+                const reg = new RegExp(colorName, "i");
+const cv = cvs.find( v => reg.test(v.name));
+if ( cv === undefined) { throw new Error("Color " + colorName + " not found.");};
+if (suffix === "fg") cv.parent_fg = newValue
+ else cv.parent_bg = newValue
+return newValue;
+    } catch(e) {
+    hl('colorVars.setColorParent error: '+ e.message);
+    }; //  catch
+    }; // setColorParent 
 
 } // class colorCssVars  

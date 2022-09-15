@@ -27,8 +27,6 @@ cbColorNamed; // Named Colors combobox
 lblEdit; // label for input color picker
 inputColorEdit; // input Color Picker
 loading= true; // Disables auto event handling wile loading
-computedColor; // Computed Variable from parent fg, bg, name 
-Parents = { "fgName": "",  "fg": null,"bgName": "",  "bg": null };  // used to reset to default if they do not change color.
 fgChildren = []; // Current descendants of currentVar
 bgChildren = []; // Current format: { 'name', "suffix"}
 childrenString = { "fg": "", "bg": "" };   // Quick search for isChild
@@ -64,11 +62,11 @@ hl("colorDetail.editColorDetail error: " + e.message);
 async  setCurrentVariable(  colorName ) {
 try {
 const vs = this.parent.variables;
+const reg = new RegExp(colorName, "i");
 this.loading = true;
-const cv = vs.find((v) => { return (v.name === colorName);});
+const cv = vs.find(v => reg.test(v.name) );
 this.currentVar = cv;
 const p = this.parent;
-this.computedColor  = p.getComputedVariable(cv.name);
 const proper = (name) => { return (name.substr(0,1).toUpperCase() + name.substr(1).toLowerCase()) ;}
 // make description with proper names
 const makeDesc = (name) => {
@@ -142,43 +140,6 @@ hl('colorDetails.getChildren error: '+ e.message);
 
 
 
-
-
- se
- tParents(    ) {
-try {
-    const ps = this.Parents; 
-    const cv = this.currentVar;
-// Clear parents first
-ps.fg = null; ps.bg = null;
-ps.fgName = ""; ps.bgName = "";
-const p = this.parent;
-
-if ( this.hasParent("fg") === true) {
-ps.fgName = cv.parent_fg;
-ps.fg = this.getParentComputedValue(ps.fgName);
-}; // if hasParent fg
-
-if ( this.hasParent("bg") === true) {
-    ps.bgName = cv.parent_bg;
-    ps.bg = this.getParentComputedValue(ps.bgName);
-    }; // if hasParent fg
-
-} catch(e) {
-hl('colorDetails.setParents error: '+ e.message);
-}; //  catch
-}; // setParents 
-
- getParentComputedValue(  theParent ) {
-try {
-const p = this.parent;
-const [n, suffix] = p.parseColorVar(theParent);
-const color = p.getComputedValue(n, suffix);
-return color;
-} catch(e) {
-hl('colorDetails.getParentComputedValue error: '+ e.message);
-}; //  catch
-}; // getParentComputedValue 
 
 
 
@@ -456,59 +417,36 @@ hl('colorDetails.addListeners error: '+ e.message);
  changeColorValue(  mode = "c" , event) {
 try {
 const cur = this.currentVar;
-const com = this.computedColor;
+const colorName = cur.name;
 const p = this.parent;
+const suffix = ((this.rdFG.checked === true) ? "fg" : "bg");
 
 
 switch(mode) {
     case 'n':
 hl("Named color changed.: " + this.cbColorNamed.value);
 this.inputColorEdit.value = this.cbColorNamed.value;
+p.setColorValue(colorName, suffix, this.inputColorEdit.value);
+
 
 break   ;
 case 'p':
 hl("Parent color changed");
 const i  = this.cbColorParent.selectedIndex;
 const o =  ((i >= 0) ?    this.cbColorParent.options[i ] : null);
-if (this.rdFG.checked === true) {
 if (i > 0) {
-    // Parent set
-    cur.parent_fg = o.getAttribute("data-name");
-    cur.fg = "";
-    this.inputColorEdit.value = this.getComputedValue(cur.parent_fg );
-} else {
-        // Parent cleared
-        cur.parent_fg  = "";
-        cur.fg  = this.inputColorEdit.value;
-}; // if Parent set or cleared
-} else {
-    // BG proccessing
-    if (i > 0) {
-        // Parent set
-        cur.parent_bg = o.getAttribute("data-name");
-        cur.bg = "";
-        this.inputColorEdit.value = this.getComputedValue(cur.parent_bg );
-    } else {
-            // Parent cleared
-            cur.parent_bg  = "";
-            cur.bg  = this.inputColorEdit.value;
-    }; // if Parent set or cleared
-}
-
+p.setColorParent(colorName, suffix, o.getAttribute("data-name") );
+}  else {
+    p.setColorValue( colorName, suffix, this.inputColorEdit.value);
+};
     break;
     case "c":
         hl("Color Picker changed.");
+        p.setColorValue(colorName, suffix, this.inputColorEdit.value);
         break;
 }; // switch
-hl("New Color is: " + this.inputColorEdit.value);
-if (this.rdFG.checked === true) {
-    this.computedColor.fg = this.inputColorEdit.value;
-if (mode !== 'n') { this.findNamedColor('fg');};
-
-} else {
-    this.computedColor.bg = this.inputColorEdit.value;
-    if (mode !== 'n') { this.findNamedColor('bg');};
-}; // Who gets the update...  FG or BG
+// hl("New Color is: " + this.inputColorEdit.value);
+if (mode !== 'n') { this.findNamedColor(suffix);};
 this.styleColor();
 
 } catch(e) {
@@ -519,17 +457,18 @@ hl('colorDetails.changeColorValue error: '+ e.message);
 // Style Color for details and children if any
  styleColor(  skipChildren = false ) {
 try {
-    const cv = this.computedColor;
+const p = this.parent;
+const cv = this.currentVar;
+const fg = p.getColorValue( cv.name, "fg");
+const bg = p.getColorValue( cv.name, "bg");
+
 this.inputColorEdit.setAttribute("style", `backgroud-color: $${this.inputColorEdit.value};`);
-this.heading.setAttribute("style", `color: ${cv.fg};background-color:${cv.bg};`)
-hl("Styled color");
+this.heading.setAttribute("style", `color: ${fg};background-color:${bg};`)
+// hl("Styled color");
 if (skipChildren === false) {
     // const parsed = color.replace("--","").toLowerCase().split("_");
-hl("Styling Children");
-const p = this.parent;
 const ch = ((this.rdFG.checked === true)? this.fgChildren : this.bgChildren );
 ch.forEach((c) => {
-p.setComputedVariable(c.name, c.suffix, this.inputColorEdit.value);
 p.setListStyle(c.name);
 }); // forEach child
 // Now update this colorslist item style
@@ -637,10 +576,14 @@ hl('colorDetails.hasParent error: '+ e.message);
 
  makeParentOPtions(    ) {
 try {
-const p = this.parent.computedVariables ;
+    const cvs = this.parent.variables;
+const ps = [];
+cvs.forEach( (c) => {
+    ps.push( c.name + "_bg");
+    ps.push( c.name + "_fg");
+}); // forEach
 const cb = this.cbColorParent;
-p.sort( (a,b) => { return ((a.name > b.name)? 0 : -1); });
-//  hl("Sorted: " + [p[0].name, p[1].name, p[2].name].join(", "))
+ps.sort();
 const makeOption = (name, text, value) => {
     const o = document.createElement("option");
     o.setAttribute("value", value);
@@ -651,15 +594,15 @@ const makeOption = (name, text, value) => {
 const proper = (name) => { return (name.substr(0,1).toUpperCase() + name.substr(1).toLowerCase()) ;}
 // make description with proper names
 const makeDesc = (name) => {
-const an = name.split("-");
-return an.map((n)=> { return proper(n)  } ).join(" ");
+    const vs = name.split("_");
+const an = vs[0].split("-");
+return( an.map((n)=> { return proper(n)  } ).join(" ")+ " "  + vs[1])
 }; // makeDesc
 
 cb.appendChild( makeOption("custom", " Custom", "custom") );
-   p.forEach((c) => { 
-    cb.appendChild(makeOption(c.name + "_fg", makeDesc(c.name) + " FG", c.fg)); 
-    cb.appendChild(makeOption(c.name + "_bg", makeDesc(c.name) + " BG", c.bg)); 
-   } ); // forEach
+   ps.forEach((c) => { 
+    cb.appendChild(makeOption(c, makeDesc(c) , c)); 
+       } ); // forEach
 } catch(e) {
 hl('colorDetails.makeParentOPtions error: '+ e.message);
 }; //  catch
@@ -712,12 +655,12 @@ this.loading = false;
 
  findNamedColor(  fg_bg = 'fg' ) {
 try {
-    const cv = this.computedColor;
-const color = ((fg_bg === "fg") ? cv.fg : cv.bg );
+    const p = this.parent;
+    const cur  = this.currentVar;
+const color = p.getColorValue(cur.name, fg_bg);
 let index = -1;
 const options = this.namedOptions;
 const reg = new RegExp(color,"i");
-this.cbColorNamed.re
 
 if (color.substr(0,1) === "#") {
     index = options.findIndex((o) => { return reg.test(o.value); });
@@ -730,13 +673,6 @@ if (color.substr(0,1) === "#") {
 }; // if hex color or name
 
 this.cbColorNamed.selectedIndex = index;
-
-// depends on parent being determined first
-// if ((index > 0)  && (this.rdCustom.checked === true)) {
-// this.rdNamed.checked = true;
-// }; // Not a parent color and matches a named color
-
-// Now set the edit color variable.
 
 const findColor = ((index> 0)? this.namedOptions[index].value : color);
 const iC = this.inputColorEdit;
@@ -790,22 +726,6 @@ try {
 hl('colorDetails.excludeStringList error: '+ e.message);
 }; //  catch
 }; // excludeStringList 
-
- getComputedValue(  color, sfx = null ) {
-try {
-    const p = this.parent;
-if (sfx === null) {
-    const parsed = color.replace("--","").toLowerCase().split("_");
-    return  p.getComputedValue(parsed[0], parsed[1]);
-} else {
-return p.getComputedValue(color, sfx);
-}    ; // if suffix not passed
-
-} catch(e) {
-hl('colorDetails.getComputedValue error: '+ e.message);
-}; //  catch
-}; // getComputedValue 
-
 
 
 }; // class colorDetails
