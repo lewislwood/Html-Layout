@@ -188,9 +188,12 @@ hl("colorVars.setAllListStyles error: " + e.message);
 getListItem( colorName) {
     try {
 const lbi = this.lbItems;
-return lbi.find( v => { (v.name === colorVar)});
+const reg = new RegExp(colorName,"i");
+// const look = lbi.find( v => reg.test(v.name)) ;
+// if (look === undefined) { hl( JSON.stringify(lbi ));};;
+return lbi.find( v => reg.test(v.name)) ;
     } catch(e) {
-hl( "colorVar.getListItem error: " + e.message);
+hl( "colorVar.getListItem error: " + e.message)+ " for " + colorName;
     }; //catch
 
 }; // getListItem
@@ -362,7 +365,7 @@ hl( "colorVars.getComputedVariable error: " + e.message);
  // Gets the computed value returns empty string if not defined
  getComputedValue( colorName, suffix) {
     try {
-        // hl("getting computed value for : " + colorName);
+
 const cv = this.getComputedVariable(colorName);
 const value = ((suffix === "fg")? cv.fg : cv.bg) ;
 return value;
@@ -382,7 +385,9 @@ return pv;
     };; 
 
     const vars = this.variables;
-  const val = vars.find( e =>  e.name === name );
+
+  const reg = new  RegExp(name, "i");
+  const val = vars.find( e => reg.test(e.name) );
 if (val !== undefined) {
     let parent, color;
 if (suffix === "fg") {
@@ -422,18 +427,12 @@ hl("colorVar.newCssValue error: " + e.message);
     }; //getNewCssValue
 
 // parseColorVar returns [ name, suffix]
-    parseColorVar( cVar) {
-        const cn = cVar.trim().replace(/^--/, "");
-const iSuffix = cn.search(/(?<=_)[f|b]g/);
-const  ll = (name.length - 3 );
+    parseColorVar( colorVar) {
 try {
-if (iSuffix != -1) {
-const suffix = cn.substr(iSuffix);
-const n = cn.substr(0,  iSuffix - 1)
-return [n, suffix];
-} else {
-  return [cn, ""];
-}; // if has suffix else
+const parsed = colorVar.replace("--", "").trim().toLowerCase().split("_");
+hl("Parsed: " + JSON.stringify(parsed));
+if (parsed.length === 2)  return [parsed[0], parsed[1]]
+else return parsed[0];
 
 }   catch(e) {
   hl("colorVar.parseColorVar error: " + e.message);

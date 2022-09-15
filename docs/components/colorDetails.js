@@ -69,7 +69,14 @@ const cv = vs.find((v) => { return (v.name === colorName);});
 this.currentVar = cv;
 const p = this.parent;
 this.computedColor  = p.getComputedVariable(cv.name);
-this.setHeading("editing " + cv.name);
+const proper = (name) => { return (name.substr(0,1).toUpperCase() + name.substr(1).toLowerCase()) ;}
+// make description with proper names
+const makeDesc = (name) => {
+const an = name.split("-");
+return an.map((n)=> { return proper(n)  } ).join(" ");
+}; // makeDesc
+
+this.setHeading("Editing " + makeDesc (cv.name));
 const fg = this.setChildren("fg");
 const bg = this.setChildren("bg");
 this.setSuffix("fg");
@@ -181,13 +188,14 @@ getContainerObjects() {
 const div = document.createElement("div");
 div.setAttribute("class", "detailsContainer");
 div.setAttribute("id","detailContainter")
-const h = document.createElement("h3");
-h.setAttribute("id", "detailHeading");
-h.setAttribute("tabindex", "0");
-h.textContent = "Edit the Details for Lewis ";
-div.appendChild(h);
+// const h = document.createElement("h3");
+// h.setAttribute("id", "detailHeading");
+// h.setAttribute("tabindex", "0");
+// h.textContent = "Editing Color";
+// div.appendChild(h);
 
-div.appendChild(this.makeSuffixRadios());
+div.appendChild(this.makeSuffixRadios(div));
+// this.makeSuffixRadios(div)
 div.appendChild( this.makeColorRadios());
 
 div.appendChild( this.makeColorComboBoxes());
@@ -257,7 +265,7 @@ spNA.setAttribute("class","spanColorRadio");
 const lNA= document.createElement("label");
 lNA.setAttribute("class","labelRadios");
 lNA.setAttribute("id","lblNamed");
-lNA.textContent  = "Named Color";
+lNA.textContent  = "Named Color.";
 lNA.setAttribute("for","rdNamed");
 const na = document.createElement("input");
 na.setAttribute("type","radio");
@@ -291,7 +299,7 @@ spPA.setAttribute("class","spanColorRadio");
 const lPA= document.createElement("label");
 lPA.setAttribute("class","labelRadios");
 lPA.setAttribute("id","lbspPAlPA");
-lPA.textContent  = "Parent Color";
+lPA.textContent  = "Parent Color..";
 lPA.setAttribute("for","rdParent");
 const pa= document.createElement("input");
 pa.setAttribute("type","radio");
@@ -318,24 +326,31 @@ hl('colorDetails.makeColorRadios error: '+ e.message);
 }; // makeColorRadios 
 
 
- makeSuffixRadios(    ) {
+ makeSuffixRadios() {
 try {
 // Radio Suffix cu_bg
 const div = document.createElement("div");
 div.setAttribute("class", "rdSuffixContainer");
 div.setAttribute("id","rdSuffixContainer");
 
-//custom Radio
+const h = document.createElement("h3");
+h.setAttribute("id", "detailHeading");
+h.setAttribute("tabindex", "0");
+h.textContent = "Editing Color";
+div.appendChild(h);
+
+
+//FG
 const spFG = document.createElement("span");
 spFG.setAttribute("class","spanSuffix");
 const lFG = document.createElement("label");
 lFG.setAttribute("class","labelRadios");
 lFG.setAttribute("id","lblFG");
-lFG.textContent  = "foreground";
+lFG.textContent  = "Fore Ground ";
 lFG.setAttribute("for","rdFG");
 const fg = document.createElement("input");
 fg.setAttribute("type","radio");
-
+fg.setAttribute("class", "ColorRadio");
 fg.setAttribute("name","fg_bg");
 fg.setAttribute("id","rdFG");
 fg.setAttribute("aria-labeledby","lblFG");
@@ -351,11 +366,11 @@ spBG.setAttribute("class","spanSuffix");
 const lBG = document.createElement("label");
 lBG.setAttribute("class","labelRadios");
 lBG.setAttribute("id","lblBG");
-lBG.textContent  = "background";
+lBG.textContent  = "Back Ground";
 lBG.setAttribute("for","rdBG");
 const bg = document.createElement("input");
 bg.setAttribute("type","radio");
-
+bg.setAttribute("class", "ColorRadio");
 bg.setAttribute("name","fg_bg");
 bg.setAttribute("id","rdBG");
 bg.setAttribute("aria-labeledby","lblBG");
@@ -426,12 +441,108 @@ this.rdBG.onchange = (e) => { setSuffix("bg");} ;;
 const evColor = (e) => { this.changeColorRadio(e); };
 this.rdNamed.onchange = (e) => {  evColor(e);};
 this.rdParent.onchange = (e) => {  evColor(e);};
-this.inputColorEdit.onchange = (e) => {  evColor(e);};
+this.rdCustom.onchange = (e) => {  evColor(e);};
+
+const evColorValue = ( m, e) => { this.changeColorValue(m, e); };
+this.cbColorNamed.onchange = (e) => {evColorValue("n", e);};
+this.cbColorParent.onchange = (e) => {evColorValue("p", e);};
+this.inputColorEdit.onchange = (e) => {evColorValue("c", e);};
 
 } catch(e) {
 hl('colorDetails.addListeners error: '+ e.message);
 }; //  catch
 }; // addListeners 
+
+ changeColorValue(  mode = "c" , event) {
+try {
+const cur = this.currentVar;
+const com = this.computedColor;
+const p = this.parent;
+
+
+switch(mode) {
+    case 'n':
+hl("Named color changed.: " + this.cbColorNamed.value);
+this.inputColorEdit.value = this.cbColorNamed.value;
+
+break   ;
+case 'p':
+hl("Parent color changed");
+const i  = this.cbColorParent.selectedIndex;
+const o =  ((i >= 0) ?    this.cbColorParent.options[i ] : null);
+if (this.rdFG.checked === true) {
+if (i > 0) {
+    // Parent set
+    cur.parent_fg = o.getAttribute("data-name");
+    cur.fg = "";
+    this.inputColorEdit.value = this.getComputedValue(cur.parent_fg );
+} else {
+        // Parent cleared
+        cur.parent_fg  = "";
+        cur.fg  = this.inputColorEdit.value;
+}; // if Parent set or cleared
+} else {
+    // BG proccessing
+    if (i > 0) {
+        // Parent set
+        cur.parent_bg = o.getAttribute("data-name");
+        cur.bg = "";
+        this.inputColorEdit.value = this.getComputedValue(cur.parent_bg );
+    } else {
+            // Parent cleared
+            cur.parent_bg  = "";
+            cur.bg  = this.inputColorEdit.value;
+    }; // if Parent set or cleared
+}
+
+    break;
+    case "c":
+        hl("Color Picker changed.");
+        break;
+}; // switch
+hl("New Color is: " + this.inputColorEdit.value);
+if (this.rdFG.checked === true) {
+    this.computedColor.fg = this.inputColorEdit.value;
+if (mode !== 'n') { this.findNamedColor('fg');};
+
+} else {
+    this.computedColor.bg = this.inputColorEdit.value;
+    if (mode !== 'n') { this.findNamedColor('bg');};
+}; // Who gets the update...  FG or BG
+this.styleColor();
+
+} catch(e) {
+hl('colorDetails.changeColorValue error: '+ e.message);
+}; //  catch
+}; // changeColorValue 
+
+// Style Color for details and children if any
+ styleColor(  skipChildren = false ) {
+try {
+    const cv = this.computedColor;
+this.inputColorEdit.setAttribute("style", `backgroud-color: $${this.inputColorEdit.value};`);
+this.heading.setAttribute("style", `color: ${cv.fg};background-color:${cv.bg};`)
+hl("Styled color");
+if (skipChildren === false) {
+    // const parsed = color.replace("--","").toLowerCase().split("_");
+hl("Styling Children");
+const p = this.parent;
+const ch = ((this.rdFG.checked === true)? this.fgChildren : this.bgChildren );
+ch.forEach((c) => {
+p.setComputedVariable(c.name, c.suffix, this.inputColorEdit.value);
+p.setListStyle(c.name);
+}); // forEach child
+// Now update this colorslist item style
+p.setListStyle(cv.name);
+};  // skip Children ? 
+} catch(e) {
+hl('colorDetails.styleColor error: '+ e.message);
+}; //  catch
+}; // styleColor 
+
+
+
+
 
  changeColorRadio(  event ) {
 try {
@@ -590,6 +701,7 @@ this.findNamedColor(fg_bg);
 if ((this.cbColorNamed.selectedIndex > 0)  && (this.rdCustom.checked === true)) { this.rdNamed.checked = true;};
 
 this.changeColorRadio();
+this.styleColor(true);
 } catch(e) {
 hl('colorDetails.setSuffix error: '+ e.message);
 } finally {
@@ -678,6 +790,21 @@ try {
 hl('colorDetails.excludeStringList error: '+ e.message);
 }; //  catch
 }; // excludeStringList 
+
+ getComputedValue(  color, sfx = null ) {
+try {
+    const p = this.parent;
+if (sfx === null) {
+    const parsed = color.replace("--","").toLowerCase().split("_");
+    return  p.getComputedValue(parsed[0], parsed[1]);
+} else {
+return p.getComputedValue(color, sfx);
+}    ; // if suffix not passed
+
+} catch(e) {
+hl('colorDetails.getComputedValue error: '+ e.message);
+}; //  catch
+}; // getComputedValue 
 
 
 

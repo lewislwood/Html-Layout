@@ -7,12 +7,25 @@ export const colorDetailStyle = `
     border-width: 3px;
 display: flex;
 justify: left;
+text-align: left;
 }
 #rdSuffixContainer, #rdColorContainter, #cbColorContainer     {
        display: flex;
+       border: none;
        flex-direction: column;
 }
-
+#rdSuffixContainer h3 {
+   border: none;
+   margin-top: 2px;
+   margin-bottom: 2px;
+}
+bg.setAttribute("class", "ColorRadio");
+. {
+   justify: right;
+}
+.spanSuffix {
+   width: 100%;
+}
 
 `
 /*  Media selectors available
