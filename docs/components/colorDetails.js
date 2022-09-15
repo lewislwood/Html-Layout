@@ -645,6 +645,7 @@ if ((this.cbColorNamed.selectedIndex > 0)  && (this.rdCustom.checked === true)) 
 
 this.changeColorRadio();
 this.styleColor(true);
+this.showColorDesc();
 } catch(e) {
 hl('colorDetails.setSuffix error: '+ e.message);
 } finally {
@@ -726,6 +727,33 @@ try {
 hl('colorDetails.excludeStringList error: '+ e.message);
 }; //  catch
 }; // excludeStringList 
+
+ showColorDesc(    ) {
+try {
+const desc = [];
+desc.push(this.heading.textContent);
+desc.push( ((this.rdFG.checked === true) ? "Fore Ground" : "Back Ground")  );
+if (this.cbColorNamed.selectedIndex > 0)   desc.push( this.namedOptions[this.cbColorNamed.selectedIndex].getAttribute("text")  );
+desc.push("value of");
+desc.push(this.inputColorEdit.value  );
+if (this.rdParent.checked === true) {
+desc.push("inherited from");
+desc.push( this.parentOptions[ this.cbColorParent.selectedIndex].getAttribute("value"));
+}; // has Parent
+const ch = ((this.rdFG.checked === true) ? this.fgChildren : this.bgChildren);
+if (ch.length > 0) {
+    desc.push(": Has the following child(ren):");
+    desc.push(ch.map( c => { return (c.name+ "_" + c.suffix); } ).join(" ")  );
+;
+}; // has children
+this.hs( desc.join(" ") );
+
+
+} catch(e) {
+hl('colorDetails.showColorDesc error: '+ e.message);
+}; //  catch
+}; // showColorDesc 
+
 
 
 }; // class colorDetails

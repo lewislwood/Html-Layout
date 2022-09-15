@@ -395,4 +395,10 @@ return newValue;
     }; //  catch
     }; // setColorParent 
 
+    setHS( parentHS ) {
+this.hs = parentHS;
+this.colorDetails.hs = parentHS;
+    }; // setHS
+    
+
 } // class colorCssVars  

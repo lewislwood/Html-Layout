@@ -15,17 +15,35 @@ Only exception is the "docs" folder which is typically named app or src, this wa
 #####  Page url 
 
 [HTML Layout Designer](E )
-* DevOps creating  a new listBox.  Non-table and I was able to style the list items.  This makes sighted more comfortable. 
-* Finished data work flow. Now will go much faster unde DevOps
 
- *  Have Radios in detail up
- * 2 combo Boxes (Parents and Named Colors)
-      **** Named current shares label with parent, need to implement laeble change)
-* Pull current color choices (custome, parent, named)
-* Add Color Swatch for sighted users
-* Need to style the controls...
-Tasks to do
-*   Thinking of rewritin
+Color schema variables editing/setting them has been completed.
+I simplified the interface to use a List of items (colors variables).  
+You can choose one, and it immediately shoots you off to Details Heading 3.
+You will hear the color read off, what name if any, color value, parent if it inherits. Also all children spoken and displayed.
+ The status message times out and disappears.
+ In the color details you can select foreground or background colors to edit in a radio buttons.
+ Next is the colr editing mode radio buttons (Named Color, Parent to inherit from, Custome color you enter).
+ Depending on the mode you will be able to access one of the following edit options:
+ *  Named Color combobox. Select on some colors by their name. Displays the name that currently matches the color value.
+* Parent Color to inherit from. Displays the current color it inherits from or custom if none. 
+*  Custom color Picker. Color picker allows   you to enter color values your favorite way (HSL, RGB, Hex), and sliders as well. 
+
+You will note that when a color is changed, all the children are updated and are clearly shown on the list of Color Vars their color.
+
+Screen Reader Users:
+* NVDA - Press NVDA key and "f" twice to get a dialogue of font with color value.
+*  Jaws - Press Jaws + number 5 to hear the color attribute.   Twice quickly to hear rgb values. Use Jaws history to review in detail.
+
+Currently NVDA and Jaws do not update color attributes until the text changes. I will ask around and try to see if an aria attribute exists to force screen readers to get color values refreshed, on items where text did not change.
+  
+  Otherwise I will do brute force method:
+   (textContent + ".").replace("..", "")
+   I think the above will be enough to do it.
+
+
+*  Tasks to do nex:
+*  Theme component (Allow apply theme, save, share)
+*  DevOps debug log hotkeys make it appear and go away. Thinking of rewritin
 * Images (this one I deplore, but is neccessary).
 * image gallery sample.
 

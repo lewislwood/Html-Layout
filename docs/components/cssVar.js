@@ -64,6 +64,7 @@ connectedCallback() {
 
     //Colors
     this.colorVars.connected(this.shadowRoot        );
+    this.colorVars.hs = this.hs;
 
 // Columns radio buttons
 const rc = this.shadowRoot.querySelectorAll("input[name='selectColumns']");
@@ -82,6 +83,7 @@ statusList.right = this.shadowRoot.querySelector("#statusRight");
 statusList.content = this.shadowRoot.querySelector("#statusContent");
 // Clear all statuses after 20 seconds
 statusList.timer = setTimeout( clearAllStatus, 20000);
+this.colorVars.setHS( hs);
  } // try
  catch(e) {
 hl("cssVars Connected Callback error: " + e.message);
