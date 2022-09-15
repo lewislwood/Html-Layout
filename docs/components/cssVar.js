@@ -64,7 +64,7 @@ connectedCallback() {
 
     //Colors
     this.colorVars.connected(this.shadowRoot        );
-    this.colorVars.hs = this.hs;
+    // this.colorVars.setHS( hs);
 
 // Columns radio buttons
 const rc = this.shadowRoot.querySelectorAll("input[name='selectColumns']");

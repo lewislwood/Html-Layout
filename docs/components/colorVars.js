@@ -395,10 +395,12 @@ return newValue;
     }; //  catch
     }; // setColorParent 
 
-    setHS( parentHS ) {
-this.hs = parentHS;
-this.colorDetails.hs = parentHS;
-    }; // setHS
-    
+     setHS(  parentHS ) {
+    try {
+    this.hs = parentHS;
+    } catch(e) {
+    hl('colorVars.setHS error: '+ e.message);
+    }; //  catch
+    }; // setHS 
 
 } // class colorCssVars  
