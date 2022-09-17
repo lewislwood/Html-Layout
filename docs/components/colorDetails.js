@@ -26,6 +26,7 @@ cbColorParent; // Parent color combobox
 cbColorNamed; // Named Colors combobox
 lblEdit; // label for input color picker
 inputColorEdit; // input Color Picker
+detailNavButton;  // Navigation button to move to suffix radio
 loading= true; // Disables auto event handling wile loading
 fgChildren = []; // Current descendants of currentVar
 bgChildren = []; // Current format: { 'name', "suffix"}
@@ -149,19 +150,31 @@ getContainerObjects() {
 const div = document.createElement("div");
 div.setAttribute("class", "detailsContainer");
 div.setAttribute("id","detailContainter")
-// const h = document.createElement("h3");
-// h.setAttribute("id", "detailHeading");
-// h.setAttribute("tabindex", "0");
-// h.textContent = "Editing Color";
-// div.appendChild(h);
 
 div.appendChild(this.makeSuffixRadios(div));
-// this.makeSuffixRadios(div)
 div.appendChild( this.makeColorRadios());
-
 div.appendChild( this.makeColorComboBoxes());
+div.appendChild(this.makeNavButtons());
 return div;
 }; // getContainerObjects
+
+ makeNavButtons(    ) {
+try {
+const div = document.createElement("div");
+
+div.setAttribute("class", "detailNavContainter");
+
+const btn = document.createElement("button");
+btn.setAttribute("type", "button");
+btn.setAttribute("id", "detailNavButton");
+btn.setAttribute("class", "detailNavButton");
+btn.textContent = "Edit BG";
+div.appendChild(btn);
+return div;
+} catch(e) {
+hl('colorDetails.makeNavButtons error: '+ e.message);
+}; //  catch
+}; // makeNavButtons 
 
 
  makeColorComboBoxes(    ) {
@@ -185,6 +198,7 @@ inp.setAttribute("type","color");
 inp.setAttribute("id","inputColorEdit");
 inp.setAttribute("class","inputColorEdit");
 inp.setAttribute("aria-labeledby","lblEdit");
+inp.setAttribute("aria-controls", "detailHeading");
 
 spn.appendChild(lbl);
 spn.appendChild(inp);
@@ -195,6 +209,8 @@ const cbP = document.createElement("select");
 cbP.setAttribute( "class", "cbColorParent");
 cbP.setAttribute( "id", "cbColorParent");
 cbP.setAttribute( "aria-label", "Select Parent Color");
+cbP.setAttribute("aria-controls", "detailHeading");
+
 
 
 // cbNamed color combobox
@@ -202,6 +218,7 @@ const cbN = document.createElement("select");
 cbN.setAttribute( "class", "cbColorNamed");
 cbN.setAttribute( "id", "cbColorNamed");
 cbN.setAttribute( "aria-label", "Select Named Color");
+cbN.setAttribute("aria-controls", "detailHeading");
 
 div.appendChild(cbN);
 div.appendChild(cbP);
@@ -409,10 +426,23 @@ this.cbColorNamed.onchange = (e) => {evColorValue("n", e);};
 this.cbColorParent.onchange = (e) => {evColorValue("p", e);};
 this.inputColorEdit.onchange = (e) => {evColorValue("c", e);};
 
+this.detailNavButton.onclick = (e) => { this.navButton(e);};
+this.detailNavButton.onfocus = (e) => { this.hs("Moves to the Editing Color Heading. You can then move down to change color editing mode fg/bg.");};
+
 } catch(e) {
 hl('colorDetails.addListeners error: '+ e.message);
 }; //  catch
 }; // addListeners 
+
+ navButton(  event ) {
+try {
+this.heading.focus();
+
+this.hs("Moving focus to top of Editing [color name]. Here you can view/verify color changes. Then move down to select foreground or background to edit.");
+} catch(e) {
+hl('colorDetails.navButton error: '+ e.message);
+}; //  catch
+}; // navButton 
 
  changeColorValue(  mode = "c" , event) {
 try {
@@ -463,7 +493,11 @@ const fg = p.getColorValue( cv.name, "fg");
 const bg = p.getColorValue( cv.name, "bg");
 
 this.inputColorEdit.setAttribute("style", `backgroud-color: $${this.inputColorEdit.value};`);
-this.heading.setAttribute("style", `color: ${fg};background-color:${bg};`)
+const newStyle = `color: ${fg};background-color:${bg};`;
+this.heading.setAttribute("style", newStyle);
+this.detailNavButton.setAttribute("style",newStyle);
+const tc = this.heading.textContent + ".";
+this.heading.textContent = tc.replace("..", "");
 // hl("Styled color");
 if (skipChildren === false) {
     // const parsed = color.replace("--","").toLowerCase().split("_");
@@ -524,6 +558,10 @@ if (this.heading  === null) { throw new Error("detailHeading not found."); };
     if (this.inputColorEdit === null) { throw new Error("inputColorEdit not found."); };
     this. lblEdit= c.querySelector("#lblEdit");
     if (this.lblEdit=== null) { throw new Error("lblEdit not found."); };
+
+    this. detailNavButton = c.querySelector("#detailNavButton");
+    if (this.detailNavButton === null) { throw new Error("detailNavButton not found."); };
+    
     
 } catch(e) {
 hl('colorDetails.queryControls error: '+ e.message);
@@ -634,6 +672,7 @@ try {
 this.loading = true;
 const rd = ((fg_bg === 'fg') ? this.rdFG : this.rdBG);
 rd.checked = true;
+this.detailNavButton.textContent = "Edit " + ((this.rdFG.checked )? "bg": "fg");
 const cv = this.currentVar;
 const parent = ((fg_bg === "fg") ? cv.parent_fg : cv.parent_bg) ;
 this.clearParentOptions(fg_bg, parent);

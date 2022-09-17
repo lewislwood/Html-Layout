@@ -102,7 +102,7 @@ getListBox() {
     const div = document.createElement("div");
 
     try {
-        const h = document.createElement("h3");
+        const h = document.createElement("h2");
         div.setAttribute("id", "colorlistcontainter");
         h.textContent = "Select a color Variable to view or edit?";
         h.setAttribute("id","colorVarsHeader");
@@ -201,6 +201,7 @@ hl( "colorVar.getListItem error: " + e.message)+ " for " + colorName;
 // for optimizationthe lbItem object can be provided
 setListStyle( colorName, lbItem = null) {
     try {
+        const refreshTC = true; //  (lbItem=== null );  // Doing a refresh forces screen reader to update color attributes
         const lbi = (( lbItem !== null) ? lbItem : this.getListItem(colorName) );
 if (lbi !== undefined) {
     const el = lbi.item;
@@ -212,6 +213,11 @@ color: ${fg};
 `;
 const p = el.parentElement.parentElement; // anchor -> span -> li
 p.setAttribute("style", style);
+if (refreshTC) {
+const tc = el.textContent + ".";    
+el.textContent = tc.replace("..", "");
+
+};
 
 } else {
 hl( "colorVar.setListStyle not found for " + colorName)
