@@ -9,7 +9,7 @@ display: flex;
 justify: left;
 text-align: left;
 }
-#rdSuffixContainer, #rdColorContainter, #cbColorContainer     {
+#rdSuffixContainer, #rdColorContainter, #cbColorContainer, #detailNavContainter     {
        display: flex;
        border: none;
        flex-direction: column;

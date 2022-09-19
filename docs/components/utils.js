@@ -106,55 +106,6 @@ export const getCssVar = (CssVar) => {
 }
 
 export const setCssVar = (CssVar, value) =>    rootElement().style.setProperty(CssVar ,value);
-
-
-export const helpLog = (message) => {
-    console.log("HelpLog: ", message);
-
-    try {
-      
-    if (helpLogExists()) {
-      if ( btnClearLogSet !== true)  { setClearLogButton();};
-        const cur = hl.innerHTML;
-      hl.innerHTML = message + "<br/>" +cur;
-    } // if 
-    } // try
-    catch(e) {
-         console.log("HelpLog Error: ", e.message);    
-         alert(e.message);
-        }
-} // HelpLog
-
-const setClearLogButton = () => {
-btnClearLogSet = true;
-const btn = document.getElementById("clearHelpLog");
-
-if ( btn !== null) {
-  btn.onclick = clearHelpLog;
-} // if if btn ClearLog found
-
-} // setClearLogButton
-
-
-export const helpLogExists = () =>  {
-  return  (hl !== null)   ;
-}
-
-export const clearHelpLog = () => {
-
-  try {
-  if (helpLogExists() )   {
-    hl.innerHTML ="Log Cleared.." ;
-  } // if hl
-  } //try
-  catch(e) {
-      }
-} //ClearLog
-
-
-
-
-
 const setUpDeviceList = ()  =>{
 return "";
 }  //setUpDeviceList
@@ -166,3 +117,48 @@ function quarter() {
     window.screen.availHeight / 2
   );
 }
+
+
+
+export const helpLog = (message) => {
+  console.log("HelpLog: ", message);
+
+  try {
+    
+  if (helpLogExists()) {
+    if ( btnClearLogSet !== true)  { setClearLogButton();};
+      const cur = hl.innerHTML;
+    hl.innerHTML = message + "<br/>" +cur;
+  } // if 
+  } // try
+  catch(e) {
+       console.log("HelpLog Error: ", e.message);    
+       alert(e.message);
+      }
+} // HelpLog
+
+const setClearLogButton = () => {
+btnClearLogSet = true;
+const btn = document.getElementById("clearHelpLog");
+
+if ( btn !== null) {
+btn.onclick = clearHelpLog;
+} // if if btn ClearLog found
+
+} // setClearLogButton
+
+
+export const helpLogExists = () =>  {
+return  (hl !== null)   ;
+}
+
+export const clearHelpLog = () => {
+
+try {
+if (helpLogExists() )   {
+  hl.innerHTML ="Log Cleared.." ;
+} // if hl
+} //try
+catch(e) {
+    }
+} //ClearLog

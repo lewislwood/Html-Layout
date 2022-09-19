@@ -163,6 +163,7 @@ try {
 const div = document.createElement("div");
 
 div.setAttribute("class", "detailNavContainter");
+div.setAttribute("id", "detailNavContainter");
 
 const btn = document.createElement("button");
 btn.setAttribute("type", "button");
