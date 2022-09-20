@@ -21,14 +21,14 @@
             <button>Click Me</button>
         </div>
     </div>  
-<div id="devOpsContainter" class="devOpsContainer">
+<div id="devOpsContainter" class="devOpsContainer" aria-hidden="false" >
     <style>
 
 
     </style>
     <div id="devOpsLogSection">
     <h5 id="devOpsHeading">Help Log</h5>
-    <p id="devOpsLog">Ready to Log</p>
+    <p id="devOpsLog" aria-live="assertive">Ready to Log</p>
     <button id="devOpsClear"type="button">Clear Log</button>
 </div>
 </div>
@@ -36,7 +36,9 @@
 
 
     <script type="module" >
-import {helpLog as hl} from "./components/devops.js";
+import {helpLog} from "./components/devops.js";
+helpLog("Starting."); helpLog("lewis is here.");
+
         </script>
 </body>
 </html>

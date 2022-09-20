@@ -35,9 +35,15 @@ if (devOps.header === undefined) { console.log("header not found.")};
 devOps.hl = dc.querySelector("#devOpsLog");
 if (devOps.hl === undefined) { console.log("HL not found.")};
 devOps.clearButton = dc.querySelector("#devOpsClear");
-if (devOps.clearButton === undefined) { console.log("clear button not found.")};
+if (devOps.clearButton === undefined) { console.log ("clear button not found.")};
+devOps.clearButton.onclick = () => { clearHelpLog(); {;}};
+
+devOps.loaded = true;
+console.log("DevOps Loaded successfully.");
 };
 };
+
+
 
 console.log("Hello World");
 })()
@@ -53,9 +59,8 @@ export const helpLog = (message) => {
     try {
       
     if (helpLogExists()) {
-      if ( btnClearLogSet !== true)  { setClearLogButton();};
-        const cur = hl.innerHTML;
-      hl.innerHTML = message + "<br/>" +cur;
+        const cur = devOps.hl.innerHTML;
+      devOps.hl.innerHTML = message + "<br/>" +cur;
     } // if 
     } // try
     catch(e) {
@@ -76,14 +81,14 @@ if ( btn !== null) {
 
 
 export const helpLogExists = () =>  {
-  return  (hl !== null)   ;
+  return  (devOps.hl !== null)   ;
 }
 
-export const clearHelpLog = () => {
+const clearHelpLog = () => {
 
   try {
   if (helpLogExists() )   {
-    hl.innerHTML ="Log Cleared.." ;
+    devOps.hl.innerHTML ="Log Cleared.." ;
   } // if hl
   } //try
   catch(e) {
