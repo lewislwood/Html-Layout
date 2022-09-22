@@ -21,24 +21,56 @@
             <button>Click Me</button>
         </div>
     </div>  
-<div id="devOpsContainter" class="devOpsContainer" aria-hidden="false" >
+    <div id="devOpsRoot" style="width: 100%;display : block;">
+
     <style>
-
-
+.devOpsNotVisible {
+    transform: scale(0,0);
+  z-index: 0;
+  position: absolute;
+  top: -10;
+  left: -10;
+}
+.devOpsContainer {
+    display : flex;
+    border-width: 3px;
+    border-style: outset;
+    flex-direction: row;
+margin: 5px;
+padding: 5px;
+background-color: #000080; 
+color: yellow;
+}
+#devOpsLogSection {
+    flex-direction: column;
+    align-items: flex-start;
+}
     </style>
+    <div id="devOpsContainer" class="devOpsContainer" aria-hidden="false" >
     <div id="devOpsLogSection">
     <h5 id="devOpsHeading">Help Log</h5>
     <p id="devOpsLog" aria-live="assertive">Ready to Log</p>
     <button id="devOpsClear"type="button">Clear Log</button>
 </div>
 </div>
+</div devOpsRoot>
 
 
 
-    <script type="module" >
-import {helpLog} from "./components/devops.js";
-helpLog("Starting."); helpLog("lewis is here.");
 
-        </script>
+    <script type="module" > 
+    import devOps from "./components/devops.js";
+ import myTest from  "./components/devopstest.js";
+const hl = devOps.log;
+
+
+
+
+
+hl("Starting."); 
+hl("lewis is here.");
+
+myTest();
+</script>
 </body>
 </html>
