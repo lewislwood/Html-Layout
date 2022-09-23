@@ -1,7 +1,7 @@
+import devOps   from "./devops.js";
 
+"use strict";
 
-const hl = document.querySelector("#helpLog");
-let btnClearLogSet = false;
 
 
 
@@ -121,20 +121,7 @@ function quarter() {
 
 
 export const helpLog = (message) => {
-  console.log("HelpLog: ", message);
-
-  try {
-    
-  if (helpLogExists()) {
-    if ( btnClearLogSet !== true)  { setClearLogButton();};
-      const cur = hl.innerHTML;
-    hl.innerHTML = message + "<br/>" +cur;
-  } // if 
-  } // try
-  catch(e) {
-       console.log("HelpLog Error: ", e.message);    
-       alert(e.message);
-      }
+  devOps.log(message);
 } // HelpLog
 
 const setClearLogButton = () => {
@@ -153,12 +140,5 @@ return  (hl !== null)   ;
 }
 
 export const clearHelpLog = () => {
-
-try {
-if (helpLogExists() )   {
-  hl.innerHTML ="Log Cleared.." ;
-} // if hl
-} //try
-catch(e) {
-    }
+  devOps.clearLog();
 } //ClearLog

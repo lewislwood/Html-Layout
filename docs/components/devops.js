@@ -24,7 +24,7 @@ static {
 static #initialize() {
   const dc = devOps.#controls;
   dc.root = document.querySelector("#devOpsRoot");
-  if (dc.root === undefined) {console.log("devOps Root not there."); }  
+  if (dc.root === null) {console.log("devOps Root not there."); }  
   else {
     const dr = dc.root;
     dc.style = dr.querySelector("style");;
