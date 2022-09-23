@@ -10,32 +10,62 @@
     <lw-layout header="false" address="false" >
         <lw-about />
     </lw-layout>
+    <div id="devOpsRoot" style="width: 100%;display : block;">
+
+        <style>
+    .devOpsNotVisible {
+        transform: scale(0,0);
+      z-index: 0;
+      position: absolute;
+      top: -10;
+      left: -10;
+    }
+    .devOpsContainer {
+        display : flex;
+        flex-direction: row;
+        border-width: 3px;
+        border-style: outset;
+        flex-direction: row;
+    margin: 5px;
+    padding: 5px;
+    background-color: #000080; 
+    color: yellow;
+    
+    }
+    #devOpsLogSection {
+        flex-direction: column;
+        justify-self: left;;
+    }
+    .devOpsNoteContainer {
+        display: flex;
+        justify-self: right;
+    width : 600px;
+    font-size:larger;
+    border: solid;
+    }
+        </style>
+        <div id="devOpsContainer" class="devOpsContainer" aria-hidden="false" >
+        <div id="devOpsLogSection">
+        <h5 id="devOpsHeading">Help Log</h5>
+        <p id="devOpsLog" aria-live="assertive">Ready to Log</p>
+        <button id="devOpsClear"type="button">Clear Log</button>
+    </div logContainer>
+    <div id="devOpsNotesContainer" class="devOpsNoteContainer">
+        <h5 id="devOpsNotesHeader">Developer Notebook</h5>
+        <ul id="devOpsNotesList">
+            <li>Alt + shift + D  -  Toggle Developer Console </li>
+            <li>Alt + shift + C -  Clear Developer Console</li>
+            <li>Alt + shift + S  -  Share Developer Console</li>
+            </ul notesList>
+    </div notesContainer>
+    </div container>
+    </div devOpsRoot>
+    
     </body>div>
 
-        <div class="devTools" id="lw-devTools" role="navigation" title="Dev Tools"  >
-            <div class="leftEdge edge">
-                <h5>Left Edge</h5>
-            </div leftEdge>
-            <div class="helpLog" name="helpLog" >
-                <h5>Help Log</h5>
-                <button id="clearHelpLog" type="button">Clear Help Log</button>
-                <p id="helpLog"   aria-live="polite"> Waiting for you</p>
-            </div helplog>
         
-            <div id="mouseTools">
-        <h5>Mouse Coordinate announce Tool</h5>
-        <button type="button" id="mouseLocator" >&Mouse On</button>
-        
-        <button type="button" id="testView" >ViewPort</button>
-        
-        </div mouseTools>    
-        
-        <div class="rightEdge edge">
-            <h5>Right Edge</h5>
-        </div rightEdge >
-    </div devTools>
     <script type="module" >
-        import {helpLog as hl,clearHelpLog,helpLogExists} from "./components/utils.js";
+        import {helpLog as hl} from "./components/utils.js";
          import lwLayout from "./components/layout.js";
          import {lwAbout} from "./components/about.js";
         hl("Layout Ready to register..") ;
@@ -50,54 +80,7 @@
         }
     
     hl("Layout Registered and Ready") ;
-    
-    // Wire Up Clear Help Log Button
-    let chl= document.querySelector("#clearHelpLog");
-    if (chl!== null)  chl.onclick = () =>  clearHelpLog();
-    
-    // Wire Up Mouse Locator Button.
-    let mbtn = document.querySelector("#mouseLocator");
-    if (mbtn !== null)  mbtn.onclick = (e) => {
-        const btn = e.target;
-        const onOff = mbtn.getAttribute("value");
-        
-        if (onOff !== "1") {
-        document.addEventListener("click", logMouseLocation);
-    clearHelpLog()
-    btn.textContent = "Turn Locator Off";
-    btn.setAttribute("value", "1");
-    hl( "Mouse Location On");
-    
-    }
-    else {
-        document.removeEventListener("click", logMouseLocation);
-        btn.setAttribute("value", "1");
-       btn.textContent = "TurnLocator On";
-       hl("Locator Turned Off");
-    }
-    }; //toggleMouseLocator
-    
-    const logMouseLocation= (event) => {
-        hl( "Mouse Client: " + event.clientX.toString() + "(x) " + event.clientY.toString() + " (y)");
-    } ; // logMouseLocation
-    
-    // test ViewPort Devices
-    let vbtn = document.querySelector("#testView");
-    if (vbtn !== null)  vbtn.onclick = (e) => {
-        const w = document.defaultView;
-    try {
-        hl( " width: " + w.screen.availWidth)
-    w.resizeTo(800  ,1080 );
-    
-    }
-    catch(e) {
-     hl( e.message);
-    
-    }
-    };
-    
-    
-    
+       
     
     </script>
     
