@@ -81,9 +81,9 @@ addSkipTo() {
     const sD = document.createElement("div");
     sD.setAttribute('class',"skip-to-container");
     sD.innerHTML = `
-    <button  id="layoutSkipToContent" 
+    <button  id="layoutSkipToContent" style="transform:scale(0,0);z-index: 0;position: absolute;top: -10;left: -10;" 
     type="link" 
-    class="skipToContent"
+    
     data-skip-to-content="layout-body-main"
     >Skip To Content</button>`
 return sD;    

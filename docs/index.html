@@ -7,7 +7,7 @@
 
 </head>
 <body>
-    
+<button type="link" id="devOpsNotesButton" style="transform: scale(0,0);z-index: 0;position: absolute;top: -10;left: -10;">Developer Note Book</button>
       
       
     <lw-layout header="true" >
@@ -25,6 +25,7 @@
 }
 .devOpsContainer {
     display : flex;
+    flex-direction: row;
     border-width: 3px;
     border-style: outset;
     flex-direction: row;
@@ -32,10 +33,18 @@ margin: 5px;
 padding: 5px;
 background-color: #000080; 
 color: yellow;
+
 }
 #devOpsLogSection {
     flex-direction: column;
-    align-items: flex-start;
+    justify-self: left;;
+}
+.devOpsNoteContainer {
+    display: flex;
+    justify-self: right;
+width : 600px;
+font-size:larger;
+border: solid;
 }
     </style>
     <div id="devOpsContainer" class="devOpsContainer" aria-hidden="false" >
@@ -43,8 +52,16 @@ color: yellow;
     <h5 id="devOpsHeading">Help Log</h5>
     <p id="devOpsLog" aria-live="assertive">Ready to Log</p>
     <button id="devOpsClear"type="button">Clear Log</button>
-</div>
-</div>
+</div logContainer>
+<div id="devOpsNotesContainer" class="devOpsNoteContainer">
+    <h5 id="devOpsNotesHeader">Developer Notebook</h5>
+    <ul id="devOpsNotesList">
+        <li>Alt + shift + D  -  Toggle Developer Console </li>
+        <li>Alt + shift + C -  Clear Developer Console</li>
+        <li>Alt + shift + S  -  Share Developer Console</li>
+        </ul notesList>
+</div notesContainer>
+</div container>
 </div devOpsRoot>
 
 <script type="module" >

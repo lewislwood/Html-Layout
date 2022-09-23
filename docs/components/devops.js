@@ -5,14 +5,18 @@
 class devOps {
 static mode = 2;
 static modes =[ "disabled", "visible", "invisible"] // determines mode values and order 
+static notes = true; // Wether or not to add a developers Notes and section
 static #controls = {
   root : null, // #devOpsRoot
-  "container": null,  // #devOpsContainter
-"style": null,   // style
-container : null, 
-"logSection": null,  // #devOpsLogSection
-"header": null,  // #devOpsHeading
-'hl': null,  // #devOpsLog
+style: null,   // style
+"container" : null, 
+logContainer: null,  // #devOpsLogSection
+header: null,  // #devOpsHeading
+hl: null,  // #devOpsLog
+clearButton: null,
+notesContainer: null,
+notesList: null,
+notesHeader : null
 }; // Controls
 static actions =  { mode :    { "Toggle": true, "key": -1,statusMessage: null} , log: { "Toggle": true, "key": -1}, clear: { "Toggle": true, "key": -1, statusMessage:null  }, share: { "Toggle": true, "key": -1, statusMessage:null  }    }
 constructor() {
@@ -29,23 +33,86 @@ static #initialize() {
     const dr = dc.root;
     dc.style = dr.querySelector("style");;
     if (dc.style === undefined) { console.log("Style not found.")};
+    
     dc.container = dr.querySelector("#devOpsContainer");
-  if (dc.container  === undefined) {console.log("containter not there."); }
-  dc.header = dr.querySelector("#devOpsHeading");
-  if (dc.header === undefined) { console.log("header not found.")};
-  dc.hl = dr.querySelector("#devOpsLog");
-  if (dc.hl === undefined) { console.log("HL not found.")};
-  dc.clearButton = dr.querySelector("#devOpsClear");
-  if (dc.clearButton === undefined) { console.log ("clear button not found.")};
-  dc.clearButton.onclick = () => { devOps.clearLog(); {;}};
-  window.addEventListener( "keyup",devOps.keyHandler);
-  
-  devOps.loaded = true;
+    if (dc.container === null) {console.log("devOpsContainter not found.");}
+    else {
+      devOps.#initLog(dr);
+    }; // devOps Containter
+
+    devOps.#initNotes(dr);
   devOps.log("DevOps Loaded successfully.");
   }; // devOps Root is defined.
-  devOps.toggleMode(devOps.mode, true);
-}; // Initialize()}
   
+}; // Initialize()}
+ static #initLog(  root ) {
+try {
+  const dc = devOps.#controls;
+  dc.logContainer = root.querySelector("#devOpsLogSection");
+  if (dc.logContainer  === null) {console.log("Log containter not there."); }
+  else {
+  if (dc.header  === null) dc.header = root.querySelector("#devOpsHeading");
+  if (dc.header === undefined) { console.log("header not found.")};
+if (dc.hl  === null) dc.hl = root.querySelector("#devOpsLog");
+  if (dc.hl === undefined) { console.log("HL not found.")};
+  if (dc.clearButton  === null) dc.clearButton = root.querySelector("#devOpsClear");
+  if (dc.clearButton === undefined) { console.log ("clear button not found.")}
+  else {
+  dc.clearButton.onclick = () => { devOps.clearLog(); {;}};
+  }; // clearButton
+  window.addEventListener( "keyup",devOps.keyHandler);
+  devOps.toggleMode(devOps.mode, true);
+}; // if containter
+  
+  devOps.loaded = true;
+  
+} catch(e) {
+console.log('devOps.initLog error: '+ e.message);
+}; //  catch
+}; // initLog 
+
+ static #initNotes(  root ) {
+try {
+if (devOps.notes) {
+const dc = devOps.#controls;
+if (dc.notesContainer === null) dc.notesContainer = root.querySelector("#devOpsNotesContainer");
+if (dc.notesContainer === null) console.log("Notes Container not found.")
+else {
+dc.notesHeader = root.querySelector("#devOpsNotesHeader");
+if (dc.notesHeader === null) console.log("devOps Notes Header not found.")
+else dc.notesHeader.setAttribute("tabindex", "0");  // allows focus from button
+
+dc.notesList = root.querySelector("#devOpsNotesList");
+if (dc.notesList  === null) console.log("Notes List not found.")
+else {
+  // Add List Items
+  console.log("Will add list items later.");
+}; // if noteList
+}; // if notes container
+const b = document.querySelector("#devOpsNotesButton");
+if (b === null) console.log("Notes button not found.")
+else {
+  console.log("found notes button.");
+  
+  b.onclick = (e) => {devOps.goToNotes(e);};
+}; // if notes button exist
+
+};// if notes enabled
+} catch(e) {
+console.log('devOps.initNotes error: '+ e.message);
+}; //  catch
+}; // initNotes 
+
+static  goToNotes(  e ) {
+try {
+  const dc = devOps.#controls;
+  const nh = dc.notesHeader;
+  if (nh=== null) devOps.log("Notes Header not set.")
+  else nh.focus();
+} catch(e) {
+devOps.log('devOps.goToNotes error: '+ e.message);
+}; //  catch
+}; // goToNotes 
   static log(message) {
     console.log("HelpLog: ", message);
   try {
