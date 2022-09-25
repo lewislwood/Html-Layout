@@ -1,7 +1,7 @@
 import devOps   from "./devops.js";
 import colorVarsMgr from "./colorVarsMgr.js";
 import  themes from "./themes.js";
-import {helpLog as hl, getJSON, getCssVar  as getRootVar} from "./utils.js";
+import { getJSON, getCssVar  as getRootVar} from "./utils.js";
 import {colorVarStyle } from "./styles/colorVarStyles.js";
 import { colorDetails } from "./colorDetails.js";
 
@@ -28,7 +28,7 @@ try {
     this.tmrDetails = null; 
 
     // Set it to HelpLog until caller decides otherwise.
-    this.hs = hl;
+    this.hs = devOps.log;
     
     this.details = new colorDetails(this);
     const ln = (data) => {        this.names = data;};
@@ -38,7 +38,7 @@ try {
 
     
 } catch(e) {
-    hl("cssColorVar constructor error: "+ e.message)
+    devOps.logError("cssColorVar constructor error: "+ e.message)
 }; // catch
 } // constructor
 
@@ -54,13 +54,13 @@ if (DetailCombined  === true) {
 st.textContent = styleText ; 
 return st;
 } catch(e) {
-    hl("colorvar.getStyleObject error: " + e.message);
+    devOps.logError("colorvar.getStyleObject error: " + e.message);
 }; // catch
 }; // getStyleObject
 
 getDetailStyleObject() {
     const d = this.details;
-    // hl("Detail object is " + d);
+    // devOps.log("Detail object is " + d);
     return d.getStyleObject();
 }; // getDetailStyleObject
 
@@ -93,7 +93,7 @@ getRootValue(  cssVar, suffix) {
     };//  value empty
 
     } catch (e) {
-hl("colorVars getRootVar error: " + e.message); 
+        devOps.logError("colorVars getRootVar error: " + e.message); 
     } // catch
     return value;
 }; // getRootValues
@@ -117,7 +117,7 @@ getListBox() {
         
         
     } catch(e) {
-hl( "ColorVars getListBox Error: " + e.message);
+        devOps.logError( "ColorVars getListBox Error: " + e.message);
     } // catch
 return div;
 } // getListBox
@@ -126,7 +126,7 @@ return div;
 getDetailsContainer() {
     const d = this.details;
     const o = d.getContainerObjects();
-    // hl("Details object: " + o);
+    // devOps.log("Details object: " + o);
 
 return o;
 }; // getDetailsContainer
@@ -134,7 +134,7 @@ return o;
 makeListItem( text, value) {
     const li  = document.createElement("li")
     try {
-        // hl("Making item : " +text )
+        // devOps.log("Making item : " +text )
         // li.setAttribute("tabindex", "1");
         
 
@@ -150,12 +150,29 @@ makeListItem( text, value) {
         sp.appendChild(a);
         li.appendChild(sp);;
     } catch(e) {
-        hl("colorVars makeListItem error: " + e.message);
+        devOps.logError("colorVars makeListItem error: " + e.message);
     } // catch
 
     return li;
 } // makeListItem
 
+ getThemeBar(    ) {
+try {
+const div = document.createElement("div");
+div.setAttribute("id","themeColorBar");
+
+const btn = document.createElement("button");
+btn.setAttribute("type", "button");
+btn.setAttribute("id","themeApplyButton");
+btn.setAttribute("text", "Apply");
+const att = () => { this.applyToTheme();};;
+btn.onclick = () => { att();} ;
+div.appendChild(btn);
+return div;
+} catch(e) {
+devOps.logError('colorVars.getThemeBar error: '+ e.message);
+}; //  catch
+}; // getThemeBar 
 // setAllListStyles with class name=colorVar
 // Should only need to reload when initially connected. Calls setStyle for eacth listItem
 setAllListStyles( reLoad = true) {
@@ -177,7 +194,7 @@ this.setListStyle(value, item);
 }); // forEach
 
 } catch(e) {
-hl("colorVars.setAllListStyles error: " + e.message); 
+    devOps.logError("colorVars.setAllListStyles error: " + e.message); 
 }; //catch
 
 }; // setAllListStyles
@@ -189,10 +206,10 @@ getListItem( colorName) {
 const lbi = this.lbItems;
 const reg = new RegExp(colorName,"i");
 // const look = lbi.find( v => reg.test(v.name)) ;
-// if (look === undefined) { hl( JSON.stringify(lbi ));};;
+// if (look === undefined) { devOps.log( JSON.stringify(lbi ));};;
 return lbi.find( v => reg.test(v.name)) ;
     } catch(e) {
-hl( "colorVar.getListItem error: " + e.message)+ " for " + colorName;
+        devOps.logError( "colorVar.getListItem error: " + e.message)+ " for " + colorName;
     }; //catch
 
 }; // getListItem
@@ -220,16 +237,15 @@ el.textContent = tc.replace("..", "");
 };
 
 } else {
-hl( "colorVar.setListStyle not found for " + colorName)
+    devOps.log( "colorVar.setListStyle not found for " + colorName)
 };
 
 
     } catch(e) {
-hl("colorVar.setListStyle error: " + e.message);
+        devOps.logError("colorVar.setListStyle error: " + e.message);
     }; // catch
 
 }; // setListStyle
-
 
 // Loaded Color Names and Color Defaults/variables
 hasLoaded() {   
@@ -238,20 +254,20 @@ return ( (this.names !== undefined) && ( this.variables !== undefined));
 
 // Connectedd... Should call after DOM has loaded
 connected(root, tries = 0) {
-hl("Color Vars Connected called.");
+    devOps.log("Color Vars Connected called.");
 try {
      if ( ! this.hasLoaded()) {
         if ( tries < 10 ) {
 const tryAgain = (r, t) =>  { this.connected(r, t);};
-// hl("Connected waiting for load of colorVars trying again.. " + tries)
+// devOps.log("Connected waiting for load of colorVars trying again.. " + tries)
 setTimeout(tryAgain, 200, root, ++tries );
         } else { 
-hl("Color Vars failed to load, Connected is aborting..");
+            devOps.log("Color Vars failed to load, Connected is aborting..");
      } // tries
     } else {
-        // hl("Redy to connect");
+        // devOps.log("Redy to connect");
 this.listBox = root.querySelector("#lbColorVariable");
-if (this.listBox === undefined) { hl("color var listbox not found.");};
+if (this.listBox === undefined) { devOps.log("color var listbox not found.");};
 this.LoadColorVars();
 this.details.names = this.names;
 this.details.connected(root);
@@ -260,9 +276,8 @@ this.details.connected(root);
 
 
     } // if ! hasLoaded
-} catch(e) 
-{
-hl( "connected colorVars error: " + e.message);
+} catch(e)  {
+    devOps.logError( "connected colorVars error: " + e.message);
 } // catch
 
 } // connected
@@ -270,7 +285,7 @@ hl( "connected colorVars error: " + e.message);
 // Loading ListbBox Color Variables
 LoadColorVars() {
     try {
-hl("Loading color Vars");
+        devOps.log("Loading color Vars");
 const lb = this.listBox;
     const vs = this.variables;
     const proper = (name) => { return (name.substr(0,1).toUpperCase() + name.substr(1).toLowerCase()) ;}
@@ -287,7 +302,7 @@ setTimeout( evl, 1200);// Give styles time to create the list items
 this.hs("Color Variables Loaded by Lewis");
 
 } catch(e) {
-hl("colorVArs LoadColorVars error: " + e.message);
+    devOps.logError("colorVArs LoadColorVars error: " + e.message);
     } // catch
 
 } // loadColorVars
@@ -295,7 +310,7 @@ hl("colorVArs LoadColorVars error: " + e.message);
 // Wires up the list of colors for event handling
 loadEvents() {
 try {
-    hl("Loading Event Handling..");
+    devOps.log("Loading Event Handling..");
 const lbi = this.lbItems;
 lbi.forEach( (v) => { 
 const n = v.name;
@@ -308,7 +323,7 @@ a.addEventListener( "click", de);
 
 }); // forEach
 } catch(e) {
-hl("colorVar.loadEvents error: " + e.message);
+    devOps.logError("colorVar.loadEvents error: " + e.message);
 }; // catch
 }; // LoadEvents
 
@@ -317,7 +332,7 @@ setDetails (colorName ) {
 try {
 this.details.editColorDetail( colorName);
 }     catch(e) {
-        hl("colorvars setDetails error: " + err.message);
+    devOps.logError("colorvars setDetails error: " + err.message);
     } // catch
     } // setDetails
      
@@ -326,8 +341,16 @@ this.details.editColorDetail( colorName);
     try {
     this.hs = parentHS;
     } catch(e) {
-    hl('colorVars.setHS error: '+ e.message);
+        devOps.logError('colorVars.setHS error: '+ e.message);
     }; //  catch
     }; // setHS 
+
+     applyToTheme(    ) {
+    try {
+    themes.applyColorVariables(this.variables);
+    } catch(e) {
+    devOps.logError('colorVars.applyToTheme error: '+ e.message);
+    }; //  catch
+    }; // applyToTheme 
 
 } // class colorCssVars  

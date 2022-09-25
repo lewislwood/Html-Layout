@@ -87,7 +87,7 @@ return value;
     // parseColorVar returns [ name, suffix]
 parseColorVar( colorVar) {
         try {
-        const parsed = colorVarsMgr.replace("--", "").trim().toLowerCase().split("_");
+        const parsed = colorVar.replace("--", "").trim().toLowerCase().split("_");
         // devOps.logError("colorVarsMgr.Parsed: " + JSON.stringify(parsed));
         if (parsed.length === 2)  return [parsed[0], parsed[1]]
         else return [parsed[0], null];
@@ -97,7 +97,21 @@ parseColorVar( colorVar) {
         }; // catch
             }    ; // parseColorVar
 
+ cssVarsList(    ) {
+try {
+const rv = [];
+const vl = this.variables;
+const cv = (n, s) => { return this.getColorValue(n,s);};
+vl.forEach( (v) => {
+ rv.push([`--${v.name}_fg` ,cv(v.name, "fg")]);
+ rv.push([`--${v.name}_bg` ,cv(v.name, "bg")]);
+}); // forEach
+return rv;
 
+} catch(e) {
+devOps.logError('colorVarsMgr.cssVarsList error: '+ e.message);
+}; //  catch
+}; // cssVarsList 
 
 
 

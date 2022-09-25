@@ -114,6 +114,7 @@ try {
     mC.appendChild( cv.getListBox());
     mC.appendChild( cv.getDetailsContainer());    
     mC.appendChild(this.getColumnRadio());
+    mC.appendChild( cv.getThemeBar());    
     mC.appendChild(this.getStatus("content"));
 } // try
 catch(e) {
