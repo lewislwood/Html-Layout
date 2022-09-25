@@ -2,10 +2,9 @@ import devOps   from "./devops.js";
 
 "use strict";
 
-import devOps from "./devops";
 
 class colorVarsMgr{
-variables = [];
+variables = []; // color variables array
 constructor( colorVars = null) {
 try {
 if (colorVars !== null) this.variables = colorVars;
@@ -14,20 +13,20 @@ devOps.logError('colorVarsMgr.constructor error: '+ e.message);
 }; //  catch
      }; // constructor
     
-static getColorValue(  colorName, suffix = null ) {
+getColorValue(  colorName, suffix = null ) {
     try {
     if (suffix === null) {
-const [c, s] = colorvarsmgr.this.parseColorVar( colorName);
+const [c, s] = this.parseColorVar( colorName);
 if (s === null) { throw new Error("Invalid Color value " + c);}
-else { return colorvarsmgr.this.getColorValue( c, s);};
+else { return this.getColorValue( c, s);};
     }; // If no suffix
-    const cvs = colorvarsmgr.this.variables;
+    const cvs = this.variables;
     const reg = new RegExp(colorName, "i");
 
 const cv = cvs.find( v => reg.test(v.name));
 if ( cv === undefined) { throw new Error("Color " + colorName + " not found.");};
 const parent = ((suffix === "fg") ? cv.parent_fg : cv.parent_bg);
-if (parent !== "") {return colorvarsmgr.this.getColorValue(parent);}
+if (parent !== "") {return this.getColorValue(parent);}
 const value = ((suffix === "fg") ? cv.fg : cv.bg);
 return value;
 

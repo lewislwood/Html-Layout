@@ -1,3 +1,5 @@
+import devOps   from "./devops.js";
+import colorVarsMgr from "./colorVarsMgr.js";
 import  themes from "./themes.js";
 import {helpLog as hl, getJSON, getCssVar  as getRootVar} from "./utils.js";
 import {colorVarStyle } from "./styles/colorVarStyles.js";
@@ -9,9 +11,8 @@ import { colorDetails } from "./colorDetails.js";
    Color Css Vars Class encapsulation
 
 */
-export class colorCssVars   {
+export class colorCssVars extends colorVarsMgr   {
 names ;
-variables;
 
 listBox;
 lbItems = []; // Actual Items in listBox, used for styling
@@ -22,6 +23,7 @@ timeDetail = 0; // Used to to delay details refresh
 details;
 
 constructor() {
+    super();
 try {
     this.tmrDetails = null; 
 
@@ -318,87 +320,8 @@ this.details.editColorDetail( colorName);
         hl("colorvars setDetails error: " + err.message);
     } // catch
     } // setDetails
-
-// parseColorVar returns [ name, suffix]
-    parseColorVar( colorVar) {
-try {
-const parsed = colorVar.replace("--", "").trim().toLowerCase().split("_");
-// hl("Parsed: " + JSON.stringify(parsed));
-if (parsed.length === 2)  return [parsed[0], parsed[1]]
-else return [parsed[0], null];
-
-}   catch(e) {
-  hl("colorVar.parseColorVar error: " + e.message);
-}; // catch
-    }    ; // parseColorVar
-
-     getColorValue(  colorName, suffix = null ) {
-    try {
-    if (suffix === null) {
-const [c, s] = this.parseColorVar( colorName);
-if (s === null) { throw new Error("Invalid Color value " + c);}
-else { return this.getColorValue( c, s);};
-    }; // If no suffix
-    const cvs = this.variables;
-    const reg = new RegExp(colorName, "i");
-
-const cv = cvs.find( v => reg.test(v.name));
-if ( cv === undefined) { throw new Error("Color " + colorName + " not found.");};
-const parent = ((suffix === "fg") ? cv.parent_fg : cv.parent_bg);
-if (parent !== "") {return this.getColorValue(parent);}
-const value = ((suffix === "fg") ? cv.fg : cv.bg);
-return value;
-
-    } catch(e) {
-    hl('colorVars.getColorValue error: '+ e.message);
-    }; //  catch
-    }; // getColorValue 
-
-
-     setColorValue(  colorName, suffix = null , value = null) {
-    try {
-        if (suffix === null) {
-            const [c, s] = this.parseColorVar( colorName);
-            if (s === null) { throw new Error("Invalid Color Name" + c);}
-            else { return this.setColorValue( c, s, value);};
-                }; // If no suffix
-                if ( value === null) { throw new Error("No color value specified.");};
-                if (value.startsWith("#") !== true) {                    return this.setColorParent( colorName, suffix, value);                 }; // Value may be a parent value
-                const cvs = this.variables;
-                const reg = new RegExp(colorName, "i");
-
-const cv = cvs.find( v => reg.test(v.name));
-if ( cv === undefined) { throw new Error("Color " + colorName + " not found.");};
-if (suffix === "fg") {cv.fg = value; cv.parent_fg = "";}
-else {cv.bg = value; cv.parent_bg = ""; };
-return value;
-
-
-    } catch(e) {
-    hl('colorVars.setColorValue error: '+ e.message);
-    }; //  catch
-    }; // setColorValue 
-
-     setColorParent(  colorName, suffix = null, value = "") {
-    try {
-        if (suffix === null) {
-            const [c, s] = this.parseColorVar( colorName);
-            if (s === null) { throw new Error("Invalid Color Name" + c);}
-            else { return this.setColorParent( c, s, value);};
-                }; // If no suffix
-const newValue =                ((value === null)? "" : value );
-const cvs = this.variables;
-                const reg = new RegExp(colorName, "i");
-const cv = cvs.find( v => reg.test(v.name));
-if ( cv === undefined) { throw new Error("Color " + colorName + " not found.");};
-if (suffix === "fg") cv.parent_fg = newValue
- else cv.parent_bg = newValue
-return newValue;
-    } catch(e) {
-    hl('colorVars.setColorParent error: '+ e.message);
-    }; //  catch
-    }; // setColorParent 
-
+     
+    // help status update..
      setHS(  parentHS ) {
     try {
     this.hs = parentHS;
