@@ -1,7 +1,7 @@
 import {helpLog as hl} from "./utils.js";
  import { bannerStyle } from "./styles/bannerStyle.js";
  import{bannerTitle, logoUrl, logoAlt  }  from "../data/companyInfo.js";
-
+ "use script";
  const lwBanner = () => {
  customElements.define('lw-banner', 
 class extends HTMLElement {

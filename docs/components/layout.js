@@ -1,9 +1,10 @@
+import  themes from "./themes.js";
 import {helpLog as hl, initSkipToContent } from "./utils.js";
 import { layoutStyle } from "./styles/layoutstyle.js";
 import lwFooter from "./footer.js";
 import lwHeader from "./header.js";
 
-
+"use script";
 const lwLayout = () => {
 
     hl("defining Layout");

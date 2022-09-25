@@ -113,6 +113,7 @@ try {
 devOps.log('devOps.goToNotes error: '+ e.message);
 }; //  catch
 }; // goToNotes 
+static logError(message) { devOps.log(message);}; // devOps.logError
   static log(message) {
     console.log("HelpLog: ", message);
   try {

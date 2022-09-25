@@ -1,7 +1,7 @@
 import {helpLog as hl, getJSON, rootElement } from "./utils.js";
 import {colorCssVars  } from "./colorVars.js";
 
-
+"use script";
 // I use this file to test my latest javascript on test.html
 //
 

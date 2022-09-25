@@ -1,7 +1,7 @@
 import { helpLog as hl} from "./utils.js";
 import menuStyles from './styles/menuStyle.js';
 import menuList from "../data/menuData.js";
-
+"use script";
 const lwMenu = () => {
     hl("registering lw-menu");
     customElements.define("lw-menu", 

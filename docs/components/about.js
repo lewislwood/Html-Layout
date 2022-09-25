@@ -1,7 +1,7 @@
 import {helpLog as hl} from "./utils.js";
  import { aboutStyle } from "./styles/aboutStyle.js";
  import{ companyName,  logoUrl, logoAlt  }  from "../data/companyInfo.js"; 
-
+ "use script";
 export const lwAbout = () => {
 hl("registering lw-about..");
 customElements.define("lw-about", 

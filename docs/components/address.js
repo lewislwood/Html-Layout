@@ -1,7 +1,7 @@
 import { helpLog as hl} from "./utils.js";
 import companyInfo from "../data/companyInfo.js";
  import { addressStyle, addressAboutStyle  }  from './styles/addressStyle.js';
-    
+ "use script";    
 function lwAddress() {
 customElements.define("lw-address", 
 class extends HTMLElement {

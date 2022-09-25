@@ -3,6 +3,8 @@ import { headerStyle} from "./styles/headerrStyle.js";
 import  lwBanner from './banner.js ';
  import lwMenu  from "./menu.js"; 
 
+ "use script";
+
  const lwHeader = () => {
 hl( "Registering LW-Header");
 lwBanner()

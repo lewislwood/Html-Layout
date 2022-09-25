@@ -1,7 +1,7 @@
 import { helpLog as hl } from "./utils.js";
 import {navStyles } from './styles/navstyle.js';
 import menuList from "../data/menuData.js";
-
+"use script";
 function lwNavBar() {
 
 
