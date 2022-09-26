@@ -160,14 +160,25 @@ makeListItem( text, value) {
 try {
 const div = document.createElement("div");
 div.setAttribute("id","themeColorBar");
-
-const btn = document.createElement("button");
-btn.setAttribute("type", "button");
-btn.setAttribute("id","themeApplyButton");
-btn.setAttribute("text", "Apply");
+// Apply button
+const ab = document.createElement("button");
+ab.setAttribute("type", "button");
+ab.setAttribute("id","themeApplyButton");
+ab.setAttribute("text", "Apply");
 const att = () => { this.applyToTheme();};;
-btn.onclick = () => { att();} ;
-div.appendChild(btn);
+ab.onclick = () => { att();} ;
+// css button
+const cb = document.createElement("button");
+cb.setAttribute("type", "button");
+cb.setAttribute("id","themeCSSButton");
+cb.setAttribute("text", "Share CSS");
+const ctt = () => { this.shareAsCSS();};;
+cb.onclick = () => { ctt();} ;
+
+
+div.appendChild(ab);
+div.appendChild(cb);
+
 return div;
 } catch(e) {
 devOps.logError('colorVars.getThemeBar error: '+ e.message);
@@ -348,9 +359,21 @@ this.details.editColorDetail( colorName);
      applyToTheme(    ) {
     try {
     themes.applyColorVariables(this.variables);
+    this.hs("Theme has been applied.  Do not forget to save ");
     } catch(e) {
     devOps.logError('colorVars.applyToTheme error: '+ e.message);
     }; //  catch
     }; // applyToTheme 
+
+ shareAsCSS(    ) {
+try {
+themes.shareCSS(this.variables, "_NewTheme_");
+this.hs("Edited theme has been shared to the clipboard.");
+} catch(e) {
+devOps.logError('colorVars.shareAsCSS error: '+ e.message);
+}; //  catch
+}; // shareAsCSS 
+
+
 
 } // class colorCssVars  

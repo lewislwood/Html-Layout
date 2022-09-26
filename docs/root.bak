@@ -1,0 +1,45 @@
+@import"./components/devtools.css";
+
+
+:root {
+    --main_bg : #8DB600 ;
+    --main_fg: yellow;
+    --header_bg : black;
+    --header_fg: white;
+    --menu_fg:var( --header_fg);
+    --menu_bg: var( --header_bg); 
+     --footer_bg: black; 
+    --footer_fg: white;
+    --navBar_bg: var( --footer_bg, black); 
+    --navBar_fg:var( --footer_fg,  white);    
+    --address_bg: var( --footer_bg, black); 
+    --address_fg:var( --footer_fg,  white);    
+
+    /*   panels */
+    --panel-side_bg: #000080;
+    --panel-side_fg: sunshine;
+    --panel-content_fg : yellow;
+    --panel-content_bg : #058Ac0 ;
+    --panel-left_bg : var(--panel-side_bg);
+    --panel-left_fg : var(--panel-side_fg);
+    --panel-right_bg : var(--panel-side_bg);
+    --panel-right_fg : var(--panel-side_fg);
+
+    --panel-right-enabled: 1;
+    --panel-left-enabled: 1
+    --panel-columns : 3;
+    --panel-content-width : 48%;
+    --panel-side-width : 24%;
+    --panel-left-width : var( --panel-side-width, 24%);
+    --panel-right-width : var( --panel-side-width, 24%);
+}
+
+
+body {
+    background-color: var( --main_bg, blue);
+    color: var( --main_fg, white);
+    font-size:18PX ;
+    font-weight: 700;
+}
+
+

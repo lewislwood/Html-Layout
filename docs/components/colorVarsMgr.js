@@ -114,6 +114,23 @@ devOps.logError('colorVarsMgr.cssVarsList error: '+ e.message);
 }; // cssVarsList 
 
 
+// Generates css vars list with inheritance
+ rootCSssList(    ) {
+try {
+    const rv = [];
+    const vl = this.variables;
+    const fg = (cv) => { return (cv.parent_fg === "")? cv.fg : `var( --${cv.parent_fg});`  };
+    const bg = (cv) => { return (cv.parent_bg === "")? cv.bg : `var( --${cv.parent_bg});`  };
+    vl.forEach( (v) => {
+     rv.push([`--${v.name}_fg` ,fg(v)]);
+     rv.push([`--${v.name}_bg` ,bg(v)]);
+    }); // forEach
+    return rv;
+    
+} catch(e) {
+devOps.logError('ColorVarsMgr.rootCSssList error: '+ e.message);
+}; //  catch
+}; // rootCSssList 
 
 }; // class colorVarsMgr
 

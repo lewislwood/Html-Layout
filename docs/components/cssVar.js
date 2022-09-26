@@ -1,4 +1,5 @@
-import {helpLog as hl, getCssVar, setCssVar , getAllCSSVariableNames} from "./utils.js";
+import devOps   from "./devops.js";
+import { getCssVar } from "./utils.js";
  import { cssVarStyle } from "./styles/cssVarStyle.js";
 import {cssVars, isColorVar, newColor   } from "../data/cssVarData.js";
 import {colorCssVars  } from "./colorVars.js";
@@ -13,7 +14,7 @@ function lwCssVar() {
 
     
 
-hl("ginerating  cssVar ");
+    devOps.log("ginerating  cssVar ");
 
 customElements.define("lw-cssvar", 
 class extends HTMLElement {
@@ -41,17 +42,17 @@ bC.appendChild( this.MainContent());
 bC.appendChild(this.sidePanel("right"));
 
 shadow.appendChild(bC);
-hl("cssVar Element generated");
+devOps.log("cssVar Element generated");
     } // try
 catch(e) {
-hl( "cssVar Error: " +  e.message);
+    devOps.logError( "cssVar Error: " +  e.message);
     } // catch
 
 } // constructor //
 
 
 connectedCallback() {
-    // hl("Connected CssVar");
+    // devOps.log("Connected CssVar");
 
  try {
     const 
@@ -86,14 +87,14 @@ statusList.timer = setTimeout( clearAllStatus, 20000);
 this.colorVars.setHS( hs);
  } // try
  catch(e) {
-hl("cssVars Connected Callback error: " + e.message);
+devOps.logError("cssVars Connected Callback error: " + e.message);
  } //catch
 
 }; // connected-callback
     
 
       disconnectedCallback() {
-        hl("Disconnected CssVar.");
+        devOps.log("Disconnected CssVar.");
       }
 
 MainContent() {
@@ -118,7 +119,7 @@ try {
     mC.appendChild(this.getStatus("content"));
 } // try
 catch(e) {
-hl("mainContent Error: " + e.message);
+    devOps.logError("mainContent Error: " + e.message);
 } // Catch
 return mC;
 }       // mainContent
@@ -149,7 +150,7 @@ p.textContent = st;
 sp.appendChild(p);
 } // try
 catch(e) {
-hl(id + " error: " + e.message)
+    devOps.logError(id + " error: " + e.message)
 } // catch
 
 return sp;
@@ -203,7 +204,7 @@ fs.append( makeColumn("lc", "2 Columns (L, C )", "Display two columns. The left 
 fs.append( makeColumn("c", "One Column Only", "Displays the main content panel only..", "false"))
     } // Try
     catch (e) {
-        hl( "getColumn Error: " + e.message);
+        devOps.logError( "getColumn Error: " + e.message);
     } // catch
 return fs;
 } // getColumnRadio
@@ -280,11 +281,11 @@ case 'all':
     hs( "Only main content is visible. Left and Right panel are now hidden.");
                 break;
                 default:
-                    hl("Invalid columns "+ nextColumn)
+                    devOps.log("Invalid columns "+ nextColumn)
 } // switch
 } // try
 catch(e) {
-    hl( "changeColumns error: " + e.message);
+    devOps.logError( "changeColumns error: " + e.message);
 } // catch
 
 } // changeColumn
@@ -296,7 +297,7 @@ try {
     tmrColumn = setTimeout ( changeColumn, 2500, v);
 } // try
 catch(e) {
-    hl("clickColumn error: " + e.message);
+    devOps.logError("clickColumn error: " + e.message);
 } // catch
 
 } // ColumnsClicked 
