@@ -16,34 +16,19 @@ Only exception is the "docs" folder which is typically named app or src, this wa
 
 [HTML Layout Designer](E )
 
-Color schema variables editing/setting them has been completed.
-I simplified the interface to use a List of items (colors variables).  
-You can choose one, and it immediately shoots you off to Details Heading 3.
-You will hear the color read off, what name if any, color value, parent if it inherits. Also all children spoken and displayed.
- The status message times out and disappears.
- In the color details you can select foreground or background colors to edit in a radio buttons.
- Next is the colr editing mode radio buttons (Named Color, Parent to inherit from, Custome color you enter).
- Depending on the mode you will be able to access one of the following edit options:
- *  Named Color combobox. Select on some colors by their name. Displays the name that currently matches the color value.
-* Parent Color to inherit from. Displays the current color it inherits from or custom if none. 
-*  Custom color Picker. Color picker allows   you to enter color values your favorite way (HSL, RGB, Hex), and sliders as well. 
+You can actually make use of it  now. You can now edit color variables.  Change colors and rearrange inheritance. You can then apply those changes to your current theme.  You can share via clipboard a new root.css.   this file can be used by anyone else to use in their production application.
 
-You will note that when a color is changed, all the children are updated and are clearly shown on the list of Color Vars their color.
-
-Screen Reader Users:
-* NVDA - Press NVDA key and "f" twice to get a dialogue of font with color value.
-*  Jaws - Press Jaws + number 5 to hear the color attribute.   Twice quickly to hear rgb values. Use Jaws history to review in detail.
-
-Currently NVDA and Jaws do not update color attributes until the text changes. I will ask around and try to see if an aria attribute exists to force screen readers to get color values refreshed, on items where text did not change.
-  
-  Otherwise I will do brute force method:
-   (textContent + ".").replace("..", "")
-   I think the above will be enough to do it.
-
-
+Also note I really enhanced the developer Operations.  It is now as a devault set to be invisible to sighted users. Screen readers currently still hear it logging away.
+New devOps features.
+*  Hotkey Alt+shift+D toggles mode (disabled for all, invisible (only screen readers hear it), visible everyone look and see
+*  Alt + shift + C  Will clear the log.
+* Alt + shift + S  Will share the log to clipboard
+*  Developer Notes section, here I list hotkeys presently. developers will be able to add to it.
+*   Developer Notebook button at the top of screen. (future will override disabled
+))
+C
 *  Tasks to do nex:
-*  Theme component (Allow apply theme, save, share)
-*  DevOps debug log hotkeys make it appear and go away. Thinking of rewritin
+*  Theme component (Allow save)
 * Images (this one I deplore, but is neccessary).
 * image gallery sample.
 
