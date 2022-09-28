@@ -155,16 +155,16 @@ static logError(message) { devOps.log(message);}; // devOps.logError
       const c = devOps.#controls.container;
     switch (mode) {
     case "empty":
-      devOps.log("Empty devOps.modes: adding mode visible");
+      if (! silent )devOps.log("Empty devOps.modes: adding mode visible");
       devOps.modes.push("visible");
       case "visible": 
-      act.statusMessage(`Enable Log: Visible`);
+      if (! silent )  act.statusMessage(`Enable Log: Visible`);
 
       c.classList.remove("devOpsNotVisible");
       c.setAttribute("aria-hidden", "false");
       break;
       case "invisible" :
-        act.statusMessage(`Log not visible or accessible without screen reader`);
+        if (! silent ) act.statusMessage(`Log not visible or accessible without screen reader`);
         c.classList.add("devOpsNotVisible");
       c.setAttribute("aria-hidden", "false");
       break;

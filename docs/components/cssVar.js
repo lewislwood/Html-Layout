@@ -1,5 +1,5 @@
 import devOps   from "./devops.js";
-import { getCssVar } from "./utils.js";
+import { getCssVar , setCssVar } from "./utils.js";
  import { cssVarStyle } from "./styles/cssVarStyle.js";
 import {cssVars, isColorVar, newColor   } from "../data/cssVarData.js";
 import {colorCssVars  } from "./colorVars.js";
@@ -107,15 +107,17 @@ h.setAttribute("id", "mainContent");
 h.textContent = "Css Variables Settings";
 mC.appendChild(h);
 const p = document.createElement("p");
-p.textContent = ";Color table below simply press spacebar or click on any row. To hear the color description and see it in the status windows for those with sight."
+p.textContent = "Below you can edit a theme and save it, apply, and share it. Warning themes with a name of underscore at the start are pre-installed names and will be automatically overriden at a later date. All themes are saved locally for you to edit and share as you desire. "
 ;
 mC.appendChild(p);
 try {
     const cv =      this.colorVars ;
+    mC.appendChild( cv.getThemeBar());    
+
+
     mC.appendChild( cv.getListBox());
     mC.appendChild( cv.getDetailsContainer());    
     mC.appendChild(this.getColumnRadio());
-    mC.appendChild( cv.getThemeBar());    
     mC.appendChild(this.getStatus("content"));
 } // try
 catch(e) {

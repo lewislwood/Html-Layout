@@ -31,7 +31,7 @@
         { "name": "panel-side", "parent_fg":"", "parent_bg":"", "fg": "#00FF00", "bg": "#800080", "notes": "Side Panel color. Typically inHeritsfrom Header."},
         { "name": "panel-left", "parent_fg":"panel-side_fg", "parent_bg":"panel-side_bg", "fg": "", "bg": "", "notes": "Lweft side Panel color. Typically inHeritsfrom side panel."},
         { "name": "panel-right", "parent_fg":"panel-side_fg", "parent_bg":"panel-side_bg", "fg": "", "bg": "", "notes": "Right side Panel color. Typically inHeritsfrom side panel."},
-        { "name": "panel-content", "parent_fg":"main_fg", "parent_bg":"main_bg", "fg": "", "bg": "", "notes": "Content panel may inHerit from main or custom, depending on you preferences."}
+        { "name": "panel-content", "parent_fg":"", "parent_bg":"", "fg": "#000000", "bg": "#ff0000", "notes": "Content panel may inHerit from main or custom, depending on you preferences."}
         ] 
      }
 }

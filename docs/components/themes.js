@@ -14,12 +14,16 @@ static currentThemeName = "";  // Name of current theme
 static #current = null; // Active theme may or may not be in theme list.
 static #colorMgr = null;
 static #recent = null;  // used for abort applied theme
+static #listener = null;  // used to listen for changes in setCurrentTheme
 constructor() { throw new error("static Error you cannot create an instnce of themes, is a static class."); };
 static { 
     try {
-        const dbJSON = localStorage.getItem("lwHTMLThemes");
+         const dbJSON = localStorage.getItem("lwHTMLThemes");
         
         themes.localFound = (dbJSON !== null);
+        // force reload
+        // themes.localFound  = false;
+
         themes.#colorMgr = new colorVarsMgr;
 if (!themes.localFound) {
 const wl = (data) => { themes.#webLoad(data);};
@@ -39,20 +43,41 @@ console.log('themes.initB   lock error: '+ e.message);
         if (! themes.localFound) {
     devOps.log("Themes data loaded from web.");
     themes.#themesDB = data;
-    themes.setCurrentTheme();
     localStorage.setItem("lwHTMLThemes",JSON.stringify( data))
+    themes.localFound = true;
+    themes.setCurrentTheme();
     }; // if ! localFound
     } catch(e) {
     devOps.logError('themes.webLoad error: '+ e.message);
     }; //  catch
     }; // webLoad 
 
+    // add a listener for when setCurrentTheme is called
+     static addListener(  callBack = null ) {
+    try {
+    themes.#listener = callBack;
+    if ((callBack !==null) && ( themes.localFound)) {
+        const cm = themes.#colorMgr ;
+        const tn = themes.currentThemeName;
+        setTimeout((e) => {
+callBack( cm.variables, tn);}, 100);
+    };;
+    } catch(e) {
+    devOps.logError('themes.addListener error: '+ e.message);
+    }; //  catch
+    }; // addListener 
+
      static setCurrentTheme(  themeName = null ) {
     try {
         const tdb = themes.#themesDB;
-        
     const tn = (themeName === null) ? tdb.current : themeName;
     devOps.log( "Setting theme to " + tn);
+    themes.#current = tdb.themes[tn];
+    const tc =     themes.#current ;
+    themes.applyColorVariables(tc.colors, tc.name);;
+
+const cb = themes.#listener;
+if (cb!== null) cb(tc.colors, tc.name );
     } catch(e) {
     devOps.logError('themes.setCurrentTheme error: '+ e.message);
     }; //  catch

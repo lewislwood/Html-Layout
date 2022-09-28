@@ -21,6 +21,7 @@ tmrDetails = null;
 keyDetail = "";//  Key value to fill details
 timeDetail = 0; // Used to to delay details refresh
 details;
+themeName = null ;  // ThemName Input on themBar
 
 constructor() {
     super();
@@ -32,11 +33,12 @@ try {
     
     this.details = new colorDetails(this);
     const ln = (data) => {        this.names = data;};
-    const lv = (data) => {        this.cleanUpColorVars(data);};
-    getJSON("data/colorNames.json", ln)
-    getJSON("data/ColorDefaults.json", lv)
+        getJSON("data/colorNames.json", ln)
 
     
+        const lv = (v, n) => {        this.cleanUpColorVars(v, n);};
+        themes.addListener( lv );
+
 } catch(e) {
     devOps.logError("cssColorVar constructor error: "+ e.message)
 }; // catch
@@ -65,38 +67,20 @@ getDetailStyleObject() {
 }; // getDetailStyleObject
 
 
-cleanUpColorVars( data) {
-const vars = data;
-const parents = [];
-const pn = [];
-vars.forEach((e) => {
-    if ((e.parent_fg.trim() === "") || (e.parent_bg.trim() === "")) {
-        parents.push(e);
-    };
-}); // foreach
-parents.forEach((c) => {
-if (c.parent_fg.trim() === "") { c.fg =  this.getRootValue( c, "fg");};
-if (c.parent_bg.trim() === "") {c.bg = this.getRootValue( c,  "bg");};
-}); //foreach parents
+cleanUpColorVars( colorVariables, themeName) {
+    try {
+const vars = colorVariables;
+if (this.themeName !== null) this.themeName.value = themeName;
+
+
     this.variables = vars;
+} catch(e) {
+    devOps.logError("colorVars.CleanUpColorVars error: " + e.message);
+}; // catch
 }; //  cleanUpColorVars
 
 
-getRootValue(  cssVar, suffix) {
-    let value = (( suffix === "fg" ? cssVar.fg : cssVar.bg))
 
-    try {
-        const cv = "--" + cssVar.name + "_" + suffix;
-        if (value.trim() === "") {
-            value = getRootVar(cv);
-            
-    };//  value empty
-
-    } catch (e) {
-        devOps.logError("colorVars getRootVar error: " + e.message); 
-    } // catch
-    return value;
-}; // getRootValues
 
 getListBox() {
     const div = document.createElement("div");
@@ -160,6 +144,26 @@ makeListItem( text, value) {
 try {
 const div = document.createElement("div");
 div.setAttribute("id","themeColorBar");
+
+const lbl = document.createElement("label");
+lbl.setAttribute("class", "themeBarNameLabel");
+lbl.setAttribute("for", "themeNameInput" );
+lbl.textContent = "Theme name:";
+
+const inp = document.createElement("input");
+inp.setAttribute("type", "text");
+inp.setAttribute("id", "themeNameInput");
+inp.setAttribute("placeholder", "Not loaded");
+this.themeName = inp;
+    
+    
+if (themes.localFound ) inp.value = themes.currentThemeName;
+
+div.appendChild(lbl);
+div.appendChild(inp);
+
+
+
 // Apply button
 const ab = document.createElement("button");
 ab.setAttribute("type", "button");

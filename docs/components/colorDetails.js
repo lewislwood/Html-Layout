@@ -404,7 +404,7 @@ await setTimeout( editColor , 1000);
 
 await this.addListeners();
 } catch(e) {
-hl("colorDetail.lodColorVar error: " + e.message);
+hl("colorDetail.loadColorVar error: " + e.message);
 }; // catch
 };  // loadColorVar
 
