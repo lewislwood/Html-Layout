@@ -1,5 +1,5 @@
 import devOps   from "./devops.js";
-import { setCssVar } from "./utils.js";
+import {getJSON ,setCssVar } from "./utils.js";
 import colorVarsMgr from "./colorVarsMgr.js";
 
 
@@ -8,7 +8,8 @@ import colorVarsMgr from "./colorVarsMgr.js";
 
 
 class themes {
-static #themesList = []; // List of all current themes defined
+    static #themesDB = null; // Themes available
+static localFound = false; // Is a local version available
 static currentThemeName = "";  // Name of current theme
 static #current = null; // Active theme may or may not be in theme list.
 static #colorMgr = null;
@@ -16,12 +17,46 @@ static #recent = null;  // used for abort applied theme
 constructor() { throw new error("static Error you cannot create an instnce of themes, is a static class."); };
 static { 
     try {
+        const dbJSON = localStorage.getItem("lwHTMLThemes");
+        
+        themes.localFound = (dbJSON !== null);
         themes.#colorMgr = new colorVarsMgr;
+if (!themes.localFound) {
+const wl = (data) => { themes.#webLoad(data);};
+        getJSON("data/themes.json", wl);
+    }     else {
+        themes.#themesDB   =JSON.parse( dbJSON);
+    themes.setCurrentTheme();
+}; // localFound
+        
     } catch(e) {
-    console.log('themes.initBlock error: '+ e.message);
+console.log('themes.initB   lock error: '+ e.message);
     }; //  catch
-    
-}
+    }; //initializing block
+
+     static #webLoad( data ) {
+    try {
+        if (! themes.localFound) {
+    devOps.log("Themes data loaded from web.");
+    themes.#themesDB = data;
+    themes.setCurrentTheme();
+    localStorage.setItem("lwHTMLThemes",JSON.stringify( data))
+    }; // if ! localFound
+    } catch(e) {
+    devOps.logError('themes.webLoad error: '+ e.message);
+    }; //  catch
+    }; // webLoad 
+
+     static setCurrentTheme(  themeName = null ) {
+    try {
+        const tdb = themes.#themesDB;
+        
+    const tn = (themeName === null) ? tdb.current : themeName;
+    devOps.log( "Setting theme to " + tn);
+    } catch(e) {
+    devOps.logError('themes.setCurrentTheme error: '+ e.message);
+    }; //  catch
+    }; // setCurrentTheme 
 
  static applyColorVariables(  colorVariables , themeName = null ) {
     

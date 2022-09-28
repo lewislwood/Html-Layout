@@ -27,14 +27,57 @@
 
 
 </div>
+<div id="devOpsRoot" style="width: 100%;display : block;">
+    <style>
+.devOpsNotVisible {
+    transform: scale(0,0);
+  z-index: 0;
+  position: absolute;
+  top: -10;
+  left: -10;
+}
+.devOpsContainer {
+    display : flex;
+    flex-direction: row;
+    border-width: 3px;
+    border-style: outset;
+    flex-direction: row;
+margin: 5px;
+padding: 5px;
+background-color: #000080; 
+color: yellow;
 
-<div class="helpLog" name="helpLog" >
-    <h5>Help Log</h5>
-    <button id="clearHelpLog" type="button">Clear Help Log</button>
-    <p id="helpLog"   aria-live="polite"> Waiting for you</p>
+}
+#devOpsLogSection {
+    flex-direction: column;
+    justify-self: left;;
+}
+.devOpsNoteContainer {
+    display: flex;
+    justify-self: right;
+width : 600px;
+font-size:larger;
+border: solid;
+}
+    </style>
+    <div id="devOpsContainer" class="devOpsContainer" aria-hidden="false" >
+    <div id="devOpsLogSection">
+    <h5 id="devOpsHeading">Help Log</h5>
+    <p id="devOpsLog" aria-live="assertive">Ready to Log</p>
+    <button id="devOpsClear"type="button">Clear Log</button>
+</div logContainer>
+<div id="devOpsNotesContainer" class="devOpsNoteContainer">
+    <h5 id="devOpsNotesHeader">Developer Notebook</h5>
+    <ul id="devOpsNotesList">
+        <li>Alt + shift + D  -  Toggle Developer Console </li>
+        <li>Alt + shift + C -  Clear Developer Console</li>
+        <li>Alt + shift + S  -  Share Developer Console</li>
+        </ul notesList>
+</div notesContainer>
+</div >
+</div >
+</div><div></div></div>div>
 
-
-    v helplog>
 
     
     <br/>

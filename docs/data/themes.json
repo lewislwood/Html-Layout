@@ -1,0 +1,38 @@
+{
+    "title": "HTML Layout and Designer Themes",
+    "notes": "All pre-installed themes begin with underline character, thus will override downloaded versions peridically.",
+    "current": "_default_",
+    "downloaded": "10/01/2022",
+    "crator": { "name": "Lewis L. Wood",
+"craeated": "10/01/2022",
+"notes": "I hope everyone finds these themes useful and beneficial.  Happy coding."
+},
+"history": [ { 
+    "name": "Lewis Wood",  
+    "date": "9/28/2022",
+"note": "Added the _default_ theme'"
+}],
+"themes": {
+     "_default_": {
+        "name": "_default",
+        "creator": "Lewis Wood",
+        "created": "09/28/2022",
+        "modifiedby": "Lewis Wood",
+        "modified": "9/28/2022",
+        "colors":[
+            { "name": "main", "parent_fg":"", "parent_bg":"", "fg": "", "bg": "", "notes": "Default color used throughout the web"},
+        { "name": "header",   "parent_fg":"", "parent_bg":"", "fg": "#e10600", "bg": "#000080", "notes": "Default colors used by objects in the header area."},
+            { "name": "footer", "parent_fg":"header_fg", "parent_bg":"header_bg", "fg": "", "bg": "", "notes": "Default colors used by the objects placed in the footer area."},
+        { "name": "banner", "parent_fg":"header_fg", "parent_bg":"header_bg", "fg": "", "bg": "", "notes": "Colors used in the banner area. Typically inherits header colors."},
+            { "name": "menu", "parent_fg":"header_fg", "parent_bg":"header_bg", "fg": "", "bg": "", "notes": "Menu bar colors in the header area. Typically inherits from header."},
+        { "name": "navBar", "parent_fg":"footer_fg", "parent_bg":"footer_bg", "fg": "", "bg": "", "notes": "Navigation Bar is similar to menu, but resiexit  in the footer area. Typically inherits footer colors."},
+            { "name": "address", "parent_fg":"footer_fg", "parent_bg":"footer_bg", "fg": "", "bg": "", "notes": "Address bar is the company address and resides in the footer. Typically inherits footer colors."},
+        { "name": "about", "parent_fg":"main_fg", "parent_bg":"main_bg", "fg": "", "bg": "", "notes": "About page colors. Typically inherits from main colors."},
+        { "name": "panel-side", "parent_fg":"", "parent_bg":"", "fg": "#00FF00", "bg": "#800080", "notes": "Side Panel color. Typically inHeritsfrom Header."},
+        { "name": "panel-left", "parent_fg":"panel-side_fg", "parent_bg":"panel-side_bg", "fg": "", "bg": "", "notes": "Lweft side Panel color. Typically inHeritsfrom side panel."},
+        { "name": "panel-right", "parent_fg":"panel-side_fg", "parent_bg":"panel-side_bg", "fg": "", "bg": "", "notes": "Right side Panel color. Typically inHeritsfrom side panel."},
+        { "name": "panel-content", "parent_fg":"main_fg", "parent_bg":"main_bg", "fg": "", "bg": "", "notes": "Content panel may inHerit from main or custom, depending on you preferences."}
+        ] 
+     }
+}
+}
