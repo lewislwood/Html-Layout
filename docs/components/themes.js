@@ -8,7 +8,7 @@ import colorVarsMgr from "./colorVarsMgr.js";
 
 
 class themes {
-    static #themesDB = null; // Themes available
+    static     #themesDB = null; // Themes available
 static localFound = false; // Is a local version available
 static currentThemeName = "";  // Name of current theme
 static #current = null; // Active theme may or may not be in theme list.
@@ -38,6 +38,39 @@ console.log('themes.initB   lock error: '+ e.message);
     }; //  catch
     }; //initializing block
 
+     static save(  colorVariables = null, themeName = null , author = "Lewis Wood") {
+    try {
+        const dbt  = themes.#themesDB.themes;
+        const cm = themes.#colorMgr;
+    const colors = (colorVariables === null) ? cm.variables : colorVariables;
+const name = (themeName === null) ? themes.currentThemeName : themeName;
+
+let th = dbt[name];
+if (th === undefined) {
+    devOps.log("Theme does not exist creating a new one.");
+th = themes.newTheme(colors,name, author) ;
+    };
+th.colors = JSON.parse( JSON.stringify(colors));
+dbt[name]  = th;
+
+const db = themes.#themesDB;
+localStorage.setItem("lwHTMLThemes",JSON.stringify( db))
+devOps.log(`Theme ${name} saved locally.`);
+    } catch(e) {
+    devOps.logError('themes.save error: '+ e.message);
+    }; //  catch
+    }; // save 
+
+ static exist(  themeName ) {
+try {
+const dbt  = themes.#themesDB.themes;
+return ( dbt[themeName] !== undefined);
+} catch(e) {
+devOps.logError('themes.exist error: '+ e.message);
+return false;
+}; //  catch
+}; // exist 
+
      static #webLoad( data ) {
     try {
         if (! themes.localFound) {
@@ -58,9 +91,10 @@ console.log('themes.initB   lock error: '+ e.message);
     themes.#listener = callBack;
     if ((callBack !==null) && ( themes.localFound)) {
         const cm = themes.#colorMgr ;
+        const vars = JSON.parse( JSON.stringify(cm.variables));
         const tn = themes.currentThemeName;
         setTimeout((e) => {
-callBack( cm.variables, tn);}, 100);
+callBack( vars, tn);}, 100);
     };;
     } catch(e) {
     devOps.logError('themes.addListener error: '+ e.message);
@@ -71,13 +105,13 @@ callBack( cm.variables, tn);}, 100);
     try {
         const tdb = themes.#themesDB;
     const tn = (themeName === null) ? tdb.current : themeName;
-    devOps.log( "Setting theme to " + tn);
+    themes.currentThemeName = tn;
     themes.#current = tdb.themes[tn];
-    const tc =     themes.#current ;
+    const tc = themes.#current ;
     themes.applyColorVariables(tc.colors, tc.name);;
 
 const cb = themes.#listener;
-if (cb!== null) cb(tc.colors, tc.name );
+if (cb!== null) cb(JSON.parse( JSON.stringify(tc.colors)), tc.name );
     } catch(e) {
     devOps.logError('themes.setCurrentTheme error: '+ e.message);
     }; //  catch
@@ -92,6 +126,7 @@ const cm = themes.#colorMgr;
 cm.variables = colorVariables;
 const cssVars = cm.cssVarsList();
 cssVars.forEach((v) => {setCssVar (v[0],   v[1]);});
+devOps.log("Theme Named: " + themeName  + " applied");
 } catch(e) {
 devOps.logError('themes.applyColorVariables error: '+ e.message);
 }; //  catch
@@ -143,6 +178,33 @@ navigator.clipboard.writeText(output.join("\n"));
     }; // shareCSS
     
 
+static      newTheme( colorVariables = null,  themeName  =null, creator = "Lewis Wood"          ) {
+    try {
+        const dbt  = themes.#themesDB.themes;
+        const td = new Date();
+        let tn = (themeName === null) ?"new_theme" : themeName; 
+let sfx = "", i = 0, test;        
+test =  dbt[tn];
+while (test !== undefined) {
+i +=1;
+sfx = "_" + i;
+test =  dbt[tn + sfx];
+}; //while
+tn = tn + sfx;
+const cm = themes.#colorMgr;
+const nColors = (colorVariables === null) ? JSON.parse( JSON.stringify(cm.variables)) : JSON.parse( JSON.stringify(colorVariables));
+        const th = {  "name":tn, 
+        "creator": creator,
+        "created": td.toDateString(),
+        "modified_by": creator,
+        "modified": td.toDateString(),
+        "colors":nColors
+           }
+        return th;
+    } catch(e) {
+    devOps.logError('themes.new error: '+ e.message);
+    }; //  catch
+    }; // new 
 };  // class themes
 
 

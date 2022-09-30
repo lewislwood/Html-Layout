@@ -7,20 +7,23 @@ import devOps from  "./devops.js";
 
 
 const myTest= (e) => {
-   const obj = {
-lewis: [ 1, "programmer"],
-paris: [2, "tech"],
-peggy: [74, "mother"]
-   }; // obj
-
    try {
+      const td = new Date() 
+      const nColors = ["x", "y", "z"];
+const th = {  "name":"_default", 
+"creator": "Lewis Wood",
+"created": td.toDateString(),
+"modifiedby": "Lewis Wood",
+"modified": td.toDateString(),
+"colors":nColors 
+   }
+
    devOps.log("Lewis is testing devOps");
-   devOps.log("lewis " + obj.lewis.join(" "));
-   obj["richard"] = [81, "deceased"];
-   obj["lewis"] = [12, "javascript"];
-devOps.log("richard : " + obj.richard.join(" "));
-devOps.log("lewis " + obj.lewis.join(" "));
-devOps.log("Length: " + obj.length);
+devOps.log( JSON.stringify(th));
+devOps.log(th["sam"]);
+   
+
+
    } catch(e) {
       devOps.logError("Testing error: " + e.message);
    }; // catch

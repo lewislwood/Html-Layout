@@ -171,6 +171,15 @@ ab.setAttribute("id","themeApplyButton");
 ab.setAttribute("text", "Apply");
 const att = () => { this.applyToTheme();};;
 ab.onclick = () => { att();} ;
+
+const sb = document.createElement("button");
+sb.setAttribute("type", "button");
+sb.setAttribute("id","themeBarSaveButton");
+sb.textContent = "Save";
+const cbs = () => { this.saveAsTheme();};
+sb.onclick = () => { cbs();}; 
+
+
 // css button
 const cb = document.createElement("button");
 cb.setAttribute("type", "button");
@@ -181,6 +190,7 @@ cb.onclick = () => { ctt();} ;
 
 
 div.appendChild(ab);
+div.appendChild(sb);
 div.appendChild(cb);
 
 return div;
@@ -377,6 +387,15 @@ this.hs("Edited theme has been shared to the clipboard.");
 devOps.logError('colorVars.shareAsCSS error: '+ e.message);
 }; //  catch
 }; // shareAsCSS 
+
+ 
+saveAsTheme(    ) {
+try {
+themes.save(this.variables, this.themeName.value, "Big Lou") ;
+} catch(e) {
+devOps.logError('colorVars.saveAsTheme error: '+ e.message);
+}; //  catch
+}; // saveAsTheme 
 
 
 
