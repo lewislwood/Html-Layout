@@ -3,6 +3,7 @@ import {helpLog as hl, initSkipToContent } from "./utils.js";
 import { layoutStyle } from "./styles/layoutstyle.js";
 import lwFooter from "./footer.js";
 import lwHeader from "./header.js";
+import devOps from "./devops.js";
 
 "use script";
 const lwLayout = () => {
@@ -95,7 +96,8 @@ connectedCallback() {
         const btn = this.shadowRoot.querySelector("#layoutSkipToContent");;
         const el = this.shadowRoot.querySelector("#layout-body-main");
 btn.onclick = (e) => { el.onclick();};
-
+devOps.log("Layout setting themes time");
+setTimeout( () => { themes.themeBarSelector();}, 500);
 
     } // try
     catch(e) {

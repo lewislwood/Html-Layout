@@ -14,7 +14,7 @@ static currentThemeName = "";  // Name of current theme
 static #current = null; // Active theme may or may not be in theme list.
 static #colorMgr = null;
 static #recent = null;  // used for abort applied theme
-static #listener = null;  // used to listen for changes in setCurrentTheme
+static #listener = [];  // used to listen for changes in setCurrentTheme
 constructor() { throw new error("static Error you cannot create an instnce of themes, is a static class."); };
 static { 
     try {
@@ -88,7 +88,7 @@ return false;
     // add a listener for when setCurrentTheme is called
      static addListener(  callBack = null ) {
     try {
-    themes.#listener = callBack;
+    themes.#listener.push( callBack);
     if ((callBack !==null) && ( themes.localFound)) {
         const cm = themes.#colorMgr ;
         const vars = JSON.parse( JSON.stringify(cm.variables));
@@ -110,12 +110,26 @@ callBack( vars, tn);}, 100);
     const tc = themes.#current ;
     themes.applyColorVariables(tc.colors, tc.name);;
 
-const cb = themes.#listener;
-if (cb!== null) cb(JSON.parse( JSON.stringify(tc.colors)), tc.name );
+
+themes.#callListeners(JSON.parse( JSON.stringify(tc.colors)), tc.name );
     } catch(e) {
     devOps.logError('themes.setCurrentTheme error: '+ e.message);
     }; //  catch
     }; // setCurrentTheme 
+
+     static async #callListeners( p1, p2 ) {
+    try {
+const ls = themes.#listener;
+devOps.log("Calling listener."+ ls.length);
+if (ls.length > 0) {
+    ls.forEach( (cb)=> { cb(p1, p2);});
+
+}; 
+
+   } catch(e) {
+    devOps.logError('themes.callListeners error: '+ e.message);
+    }; //  catch
+    }; // callListeners 
 
  static applyColorVariables(  colorVariables , themeName = null ) {
     
@@ -204,9 +218,85 @@ const nColors = (colorVariables === null) ? JSON.parse( JSON.stringify(cm.variab
     } catch(e) {
     devOps.logError('themes.new error: '+ e.message);
     }; //  catch
-    }; // new 
+    }; // newTheme
+    
+static      themeNames(  selectOptions = false ) {
+    try {
+    const dbt = Object.keys( themes.#themesDB.themes);
+
+    const makeOption = (n) => {
+const o = document.createElement("option");
+o.setAttribute("text", n);
+o.setAttribute("value", n);
+o.textContent = n;
+return o;
+    }; makeOption
+return dbt.map((n) => { return (selectOptions )?makeOption(n) : n;  }) ;
+
+    } catch(e) {
+    devOps.logError('themes.themeNames error: '+ e.message);
+    }; //  catch
+    }; // themeNames 
+
+ static themeBarSelector(    ) {
+try {
+devOps.log("Themes List: " +  themes.themeNames(false).join(", ") );
+} catch(e) {
+devOps.logError('themes.themeBarSelector error: '+ e.message);
+}; //  catch
+}; // themeBarSelector 
+
+
 };  // class themes
 
 
+{
+customElements.define('lw-theme-bar', 
+class extends HTMLElement {
+    cbThemes = null; // Themes comboBox
+constructor() {
+    super();
+try {
+    const shadow = this.attachShadow({mode: "open", delegatesFocus: true});
+    const spn = document.createElement("span");
+    spn.setAttribute("class", "themeBarContainer");
+
+    shadow.appendChild(spn);
+
+    // Create theme select box
+    const cb = document.createElement("select");
+    this.cbThemes = cb;
+    spn.appendChild(cb);
+
+    const tcb = () => { this.themesCallBack(); };
+    themes.addListener(tcb);
+} catch(e) {
+    devOps.log("lwThemeBar error: " + e.message);
+ }; // catch
+}; // constructor
+
+connectedCallback(    ) {
+try {
+ const x = 1;
+} catch(e) {
+devOps.logError("lwThemeBar.connectedCallback error: "+ e.message);
+}; //  catch
+}; // connected_callback 
+
+ async themesCallBack( ) {
+try {
+devOps.log("Loading themes to selector");
+const ops = themes.themeNames(true);
+devOps.log("Thimes Options: " + JSON.stringify(ops));
+    ops.forEach( (o) => { this.cbThemes.appendChild(o);});
+} catch(e) {
+devOps.logError('lwThemeBar.themesCallBack error: '+ e.message);
+}; //  catch
+}; // themesCallBack 
+});  // class lw-theme-bar
+};  // End of self initializing block
+
 
 export default themes;
+
+

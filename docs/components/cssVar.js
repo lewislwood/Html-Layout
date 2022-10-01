@@ -85,6 +85,8 @@ statusList.content = this.shadowRoot.querySelector("#statusContent");
 // Clear all statuses after 20 seconds
 statusList.timer = setTimeout( clearAllStatus, 20000);
 this.colorVars.setHS( hs);
+
+
  } // try
  catch(e) {
 devOps.logError("cssVars Connected Callback error: " + e.message);
