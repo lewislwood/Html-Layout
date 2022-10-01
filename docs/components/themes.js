@@ -112,6 +112,10 @@ callBack( vars, tn);}, 100);
 
 
 themes.#callListeners(JSON.parse( JSON.stringify(tc.colors)), tc.name );
+// Now save the current selected them name for next time.
+const updCurrent = () => { themes.saveSelectedTheme(tc.name);};
+setTimeout(() => {  updCurrent();}, 150);
+
     } catch(e) {
     devOps.logError('themes.setCurrentTheme error: '+ e.message);
     }; //  catch
@@ -120,7 +124,6 @@ themes.#callListeners(JSON.parse( JSON.stringify(tc.colors)), tc.name );
      static async #callListeners( p1, p2 ) {
     try {
 const ls = themes.#listener;
-devOps.log("Calling listener."+ ls.length);
 if (ls.length > 0) {
     ls.forEach( (cb)=> { cb(p1, p2);});
 
@@ -246,6 +249,17 @@ devOps.logError('themes.themeBarSelector error: '+ e.message);
 }; //  catch
 }; // themeBarSelector 
 
+static async saveSelectedTheme(  themeName ) {
+    try {
+        const db = themes.#themesDB;
+        db.current = themeName;
+        localStorage.setItem("lwHTMLThemes",JSON.stringify( db))
+    } catch(e) {
+    devOps.logError('themes.saveSelectedTheme error: '+ e.message);
+    }; //  catch
+    }; // saveSelectedTheme 
+    
+
 
 };  // class themes
 
@@ -263,8 +277,15 @@ try {
 
     shadow.appendChild(spn);
 
+    // Create label for theme select box
+    const lbl = document.createElement("label");
+    lbl.setAttribute("id", "themeBarLabel");
+    lbl.textContent = "Current theme";
+    spn.appendChild(lbl);
+
     // Create theme select box
     const cb = document.createElement("select");
+    cb.setAttribute("aria-labeledby", "themeBarLabel")
     this.cbThemes = cb;
     spn.appendChild(cb);
 
@@ -277,22 +298,41 @@ try {
 
 connectedCallback(    ) {
 try {
- const x = 1;
+ this.cbThemes.onchange = (e) => { this.themeChanged(e);};
 } catch(e) {
 devOps.logError("lwThemeBar.connectedCallback error: "+ e.message);
 }; //  catch
 }; // connected_callback 
 
- async themesCallBack( ) {
+ async themesCallBack( colorVariables, themeName) {
 try {
-devOps.log("Loading themes to selector");
+    const tn = (themeName === undefined) ? themes.currentThemeName : themeName;
+    // remove old first
+const old = Array.from( this.cbThemes.options);
+const cb = this.cbThemes;
+old.forEach((o) => { o.selected = false; cb.remove(o);});
 const ops = themes.themeNames(true);
-devOps.log("Thimes Options: " + JSON.stringify(ops));
-    ops.forEach( (o) => { this.cbThemes.appendChild(o);});
+    ops.forEach( (o,) => { cb.appendChild(o);if (o.value === tn) o.selected = true; });
+    cb.selected = tn;
 } catch(e) {
 devOps.logError('lwThemeBar.themesCallBack error: '+ e.message);
 }; //  catch
 }; // themesCallBack 
+
+ 
+themeChanged(  event ) {
+try {
+    devOps.log("themeChanged");
+const cb = this.cbThemes;
+const o = cb.options[ cb.selectedIndex];
+themes.currentThemeName = o.value;
+themes.setCurrentTheme(o.value);
+
+} catch(e) {
+devOps.logError('lwThemeBar.themeChanged error: '+ e.message);
+}; //  catch
+}; // themeChanged 
+ 
 });  // class lw-theme-bar
 };  // End of self initializing block
 

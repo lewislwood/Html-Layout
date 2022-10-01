@@ -96,8 +96,7 @@ connectedCallback() {
         const btn = this.shadowRoot.querySelector("#layoutSkipToContent");;
         const el = this.shadowRoot.querySelector("#layout-body-main");
 btn.onclick = (e) => { el.onclick();};
-devOps.log("Layout setting themes time");
-setTimeout( () => { themes.themeBarSelector();}, 500);
+
 
     } // try
     catch(e) {
