@@ -101,25 +101,39 @@ devOps.logError("cssVars Connected Callback error: " + e.message);
 
 MainContent() {
 const mC = document.createElement("div");
+try {
 mC.setAttribute("class", "contentPanel panel");
 mC.setAttribute("role", "main");
 mC.setAttribute("title", "main");
+
+const ts = document.createElement("div");
+ts.setAttribute("id","contentTopSection");
+mC.appendChild(ts)
+
+
 const h = document.createElement("h1") ;
 h.setAttribute("id", "mainContent");
 h.textContent = "Css Variables Settings";
-mC.appendChild(h);
+ts.appendChild(h);
+
+const cv =      this.colorVars ;
+ts.appendChild( cv.getThemeBar());    
+
+const ms = document.createElement("div");
+ms.setAttribute("id","contentMidSection");
+mC.appendChild(ms)
+
 const p = document.createElement("p");
-p.textContent = "Below you can edit a theme and save it, apply, and share it. Warning themes with a name of underscore at the start are pre-installed names and will be automatically overriden at a later date. All themes are saved locally for you to edit and share as you desire. "
-;
-mC.appendChild(p);
-try {
-    const cv =      this.colorVars ;
-    mC.appendChild( cv.getThemeBar());    
+p.textContent = "Below you can edit a theme and save it, apply, and share it. Warning themes with a name of underscore at the start are pre-installed names and will be automatically overriden at a later date. All themes are saved locally for you to edit and share as you desire. ";
+ms.appendChild(p);
 
-
-    mC.appendChild( cv.getListBox());
-    mC.appendChild( cv.getDetailsContainer());    
-    mC.appendChild(this.getColumnRadio());
+const bs = document.createElement("div");
+bs.setAttribute("id","contentBotSection");
+mC.appendChild(bs)
+    
+   bs.appendChild( cv.getListBox());
+    bs.appendChild( cv.getDetailsContainer());    
+    bs.appendChild(this.getColumnRadio());
     mC.appendChild(this.getStatus("content"));
 } // try
 catch(e) {

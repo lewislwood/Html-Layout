@@ -21,7 +21,7 @@ ul.colorVarListBox  {
     
 
     .colorVarListBox   li {
-        width: 12iem;
+        width: 7em;
     }
   
 

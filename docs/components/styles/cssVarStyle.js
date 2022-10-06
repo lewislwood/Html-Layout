@@ -11,6 +11,9 @@ export const cssVarStyle = `
   justify-items:center;
 
 }
+#mainContent {
+  width: 400px;;
+}
 
 
 .panel {
@@ -29,12 +32,18 @@ export const cssVarStyle = `
 
 }
 .contentPanel {
-  display : flex;
+  display : block;
   width: var(--panel-content-width);
   background-color : var( --panel-content_bg, --header_bg );
   color : var( --panel-content_fg, --header_fg );
-  flex-direction: row;
 }
+#contentTopSection, #contentMidSection, #contentBotSection  {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align:top;
+}
+
   
 .sidePanel{
   width: var( --panel-side-width);
